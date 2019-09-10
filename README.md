@@ -7,5 +7,5 @@ Teamleden mobile:
 - Wessel
 - Jesse
 
-![cat](http://i.imgur.com/0Y1xISa.gifv)
+![dev](https://bookriot.com/wp-content/uploads/2013/12/typing.gif)
 
