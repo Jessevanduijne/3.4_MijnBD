@@ -7,3 +7,5 @@ Teamleden mobile:
 - Wessel
 - Jesse
 
+![cat](http://i.imgur.com/0Y1xISa.gifv)
+
