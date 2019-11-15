@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_recents"
         android:enabled="true"
         android:icon="@drawable/ic_clipboard_list"
-        android:title="Historie"
+        android:title="@string/lbl_history"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_favorites"
         android:enabled="true"
         android:icon="@drawable/ic_history_black_24dp"
-        android:title="Bezorgingen"
+        android:title="@string/lbl_deliveries"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_nearby"
         android:enabled="true"
         android:icon="@drawable/ic_account"
-        android:title="Mijn B.D."
+        android:title="@string/lbl_preferences"
         app:showAsAction="ifRoom" />
 </menu>

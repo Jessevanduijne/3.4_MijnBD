@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+    Useful info:
+        dp: Density-independent pixels, use instead of px for resizing
+        sp: Scale-independent pixels, use for text (also listens to user's pref)
+        pt & px: points: don't use this, may cause styling bugs on different screens
+    -->
+
+    <dimen name="text_size_h1">32sp</dimen>    <!-- Usages: Title top bar -->
+    <dimen name="text_size_h2">28sp</dimen>    <!-- Usages: List item titles -->
+    <dimen name="text_size_h3">24sp</dimen>    <!-- Usages: list item subtitle, all text on detail, bottom bar  -->
+    <dimen name="text_size_text">18sp</dimen>   <!-- Usages: list item text & date-labels -->
+
+    <dimen name="toolbar_height">56dp</dimen> <!-- According to material guidelines -->
+
+    <dimen name="waiting_gif_width">200dp</dimen>
+    <dimen name="waiting_gif_height">200dp</dimen>
+
+</resources>
