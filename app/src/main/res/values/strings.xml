@@ -1,7 +1,27 @@
 <resources>
     <string name="app_name">MijnBD</string>
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+
+    <!-- Bottom menu bar: -->
+    <string name="lbl_deliveries">Bezorginen</string>
+    <string name="lbl_history">Historie</string>
+    <string name="lbl_preferences">Mijn B.D.</string>
+
+    <!-- Login: -->
+    <string name="username">Gebruikersnaam</string>
+    <string name="password">Wachtwoord</string>
     <string name="login">Login</string>
-    <string name="nocreds">Please fill in your username and password.</string>
+    <string name="nocreds">Vul je gebruikersnaam en wacthwoord in.</string>
+
+    <!-- Bezorgingen: -->
+    <string name="title_deliveries">Bezorgingen</string>
+    <string name="lbl_arrival_client">Aankomsttijd klant</string>
+    <string name="lbl_arrival_expected">verwacht</string>
+    <string name="lbl_arrival_max">uiterlijk</string>
+    <string name="lbl_arrival_duration">Totale reisduur</string>
+    <string name="lbl_minutes">Minuten</string>
+
+    <string name="lbl_expected_duration">Geschatte reisduur</string>
+    <string name="lbl_to_accept">om te accepteren</string>
+
+    <string name="lbl_have_patience_message">Even geduld a.u.b... \nPotentiële bezorgingen verschijnen snel hier </string>
 </resources>
