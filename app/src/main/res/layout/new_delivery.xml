@@ -9,13 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="@dimen/toolbar_height">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
 
             <ImageView
                 android:layout_width="130dp"
@@ -29,7 +30,7 @@
                 android:orientation="vertical"
                 android:background="@drawable/rounded_gray_section"
                 android:layout_marginStart="30dp"
-                android:padding="5dp">
+                android:paddingStart="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -41,7 +42,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="-8dp">
                     <TextView
                         android:id="@+id/expected_arrival_time"
                         android:layout_width="wrap_content"
@@ -62,7 +64,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_marginTop="-10dp">
                     <TextView
                         android:id="@+id/maximum_arrival_time"
                         android:layout_width="wrap_content"
@@ -86,14 +89,13 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_arrival_duration"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_text"
-                    android:layout_marginTop="5dp"/>
+                    android:textSize="@dimen/text_size_text"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="-8dp">
+                    android:layout_marginTop="-10dp">
 
                     <TextView
                         android:id="@+id/expected_arrival_duration"
@@ -120,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="50dp">
 
             <LinearLayout
@@ -137,11 +139,12 @@
                 <ImageView
                     android:contentDescription="@string/lbl_expected_duration"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="70dp"
                     android:src="@drawable/ic_arrowdown"
                     android:layout_marginTop="10dp"/>
 
                 <ImageView
+                    android:contentDescription="@string/lbl_arrival_client"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_destination"/>
@@ -150,7 +153,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginLeft="20dp">
+                android:layout_marginStart="20dp">
 
                 <!-- To warehouse: -->
                 <LinearLayout
@@ -162,7 +165,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dummy_minutes"
-                        android:textSize="@dimen/text_size_h2"
+                        android:textSize="@dimen/text_size_h3"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"/>
 
@@ -170,7 +173,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_minutes"
-                        android:textSize="@dimen/text_size_h2"
+                        android:textSize="@dimen/text_size_h3"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:layout_marginStart="5dp"/>
@@ -181,7 +184,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_expected_duration"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_text"/>
+                    android:textSize="@dimen/text_size_text_smaller"
+                    android:layout_marginTop="-5dp"/>
 
                 <TextView
                     android:id="@+id/warehouse_address"
@@ -189,7 +193,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dummy_address"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_text"
+                    android:textSize="@dimen/text_size_text_smaller"
                     android:textStyle="bold"
                     android:layout_marginTop="5dp"/>
 
@@ -199,21 +203,21 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dummy_zip"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_text"/>
+                    android:textSize="@dimen/text_size_text_smaller"/>
 
                 <!-- To client: -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginTop="20dp">
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/expected_time_to_client"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/dummy_minutes"
-                        android:textSize="@dimen/text_size_h2"
+                        android:textSize="@dimen/text_size_h3"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"/>
 
@@ -221,11 +225,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/lbl_minutes"
-                        android:textSize="@dimen/text_size_h2"
+                        android:textSize="@dimen/text_size_h3"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:layout_marginStart="5dp"/>
-
                 </LinearLayout>
 
                 <TextView
@@ -233,7 +236,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_expected_duration"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_text"/>
+                    android:textSize="@dimen/text_size_text_smaller"
+                    android:layout_marginTop="-5dp"/>
 
                 <TextView
                     android:id="@+id/client_address"
@@ -241,7 +245,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dummy_address"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_text"
+                    android:textSize="@dimen/text_size_text_smaller"
                     android:textStyle="bold"
                     android:layout_marginTop="5dp"/>
 
@@ -251,7 +255,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/dummy_zip"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_text"/>
+                    android:textSize="@dimen/text_size_text_smaller"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -261,26 +265,91 @@
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 android:layout_centerHorizontal="true"
                 android:max="200"
                 android:progress="10"
                 android:progressDrawable="@drawable/progressbar_progress"
                 android:rotation="180"
                 android:background="@drawable/progressbar_background"
-                android:layout_marginTop="-20dp"/>
+                android:layout_marginTop="-30dp"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginStart="15dp">
+                    <TextView
+                        android:id="@+id/minutes_to_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_h2"
+                        android:textColor="@color/white"
+                        android:text="@string/dummy_minutes"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lbl_minutes_short"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_size_h2"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="0dp"/>
+                </LinearLayout>
+                <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_text"
+                android:textColor="@color/white"
+                android:text="@string/lbl_to_accept"
+                android:layout_marginTop="-5dp"/>
+            </LinearLayout>
             <ImageView
-                android:layout_width="200dp"
-                android:layout_height="100dp"
+                android:contentDescription="@string/dummy_description"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
                 android:background="@color/colorPrimaryDark"
-                android:layout_marginTop="68dp"
-                android:layout_marginStart="100dp"/>
+                android:layout_marginTop="115dp"
+                android:layout_marginStart="80dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/ic_cancel_white"
+                    android:layout_marginTop="120dp"
+                    android:layout_marginStart="30dp"/>
+
+                <Button
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:background="@drawable/ic_check_yellow"
+                    android:layout_marginTop="120dp"
+                    android:layout_marginStart="90dp"
+                    />
+            </LinearLayout>
         </RelativeLayout>
 
 
 
 
+
     </LinearLayout>
+
+    <include layout="@layout/toolbar" />
+    <include layout="@layout/bottom_bar"/>
+
 </RelativeLayout>

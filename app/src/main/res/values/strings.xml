@@ -19,13 +19,15 @@
     <string name="lbl_arrival_max">uiterlijk</string>
     <string name="lbl_arrival_duration">Totale reisduur</string>
     <string name="lbl_minutes">minuten</string>
+    <string name="lbl_minutes_short">min.</string>
     <string name="lbl_expected_duration">Geschatte reisduur</string>
     <string name="lbl_to_accept">om te accepteren</string>
-    <string name="lbl_have_patience_message">Even geduld a.u.b... \nPotentiële bezorgingen verschijnen snel hier </string>
+    <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
 
     <!-- Dummies: -->
     <string name="dummy_time">00:00</string>
     <string name="dummy_minutes">00</string>
     <string name="dummy_address">Richard Holkade 14</string>
     <string name="dummy_zip">2033 PZ Haarlem</string>
+    <string name="dummy_description">description</string>
 </resources>
