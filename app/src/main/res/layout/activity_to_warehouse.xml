@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/toolbar_height">
+        <RelativeLayout
+            android:layout_width="300dp"
+            android:layout_height="100dp">
+            <ProgressBar
+                android:layout_width="300dp"
+                android:layout_height="27dp"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:background="@drawable/progressbar_position_background"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_warehouse_w"
+                android:layout_marginTop="24dp"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_house_white"
+                android:layout_marginTop="22dp"
+                android:layout_marginStart="325dp"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="60dp"
+                android:layout_marginTop="21dp">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/gif_location_pulse"/>
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_location_pin"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_warehouse_y"
+                android:layout_marginStart="150dp"/>
+            <TextView
+                android:id="@+id/to_warehouse_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_address"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_h3"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/to_warehouse_zip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dummy_zip"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_h3"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+    <include layout="@layout/toolbar" />
+    <include layout="@layout/bottom_bar"/>
+
+</RelativeLayout>
