@@ -7,20 +7,23 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/toolbar_height">
         <RelativeLayout
             android:layout_width="300dp"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:layout_marginStart="50dp">
             <ProgressBar
                 android:layout_width="300dp"
                 android:layout_height="27dp"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:background="@drawable/progressbar_position_background"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:max="100"
+                android:progress="10"
+                android:progressTint="@color/colorPrimary"/>
 
             <ImageView
                 android:layout_width="25dp"
@@ -55,7 +58,7 @@
         </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <ImageView
                 android:layout_width="100dp"
@@ -69,7 +72,9 @@
                 android:text="@string/dummy_address"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_h3"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"/>
             <TextView
                 android:id="@+id/to_warehouse_zip"
                 android:layout_width="wrap_content"
@@ -77,19 +82,21 @@
                 android:text="@string/dummy_zip"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_h3"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:layout_width="100dp"
+                    android:layout_height="70dp"
+                    />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
-
-
-
-
-
-
-
-
-
     <include layout="@layout/toolbar" />
     <include layout="@layout/bottom_bar"/>
 

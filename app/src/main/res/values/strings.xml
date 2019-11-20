@@ -23,6 +23,17 @@
     <string name="lbl_expected_duration">Geschatte reisduur</string>
     <string name="lbl_to_accept">om te accepteren</string>
     <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
+    <string name="lbl_travel_time">Reisduur</string>
+    <string name="lbl_arrival">Aankomsttijd</string>
+    <string name="lbl_open_maps">Open in maps</string>
+    <string name="lbl_warehouse">Magazijn</string>
+    <string name="lbl_cancel">Afzeggen</string>
+    <string name="lbl_delivery_picked_up">Bestelling opgehaald</string>
+    <string name="lbl_client">Klant</string>
+    <string name="lbl_delivery_not_delivered">Niet bezorgd</string>
+    <string name="lbl_delivery_delivered">Bestelling bezorgd</string>
+    <string name="lbl_to_warehouse">Onderweg naar magazijn</string>
+    <string name="lbl_to_client">Onderweg naar klant</string>
 
     <!-- Dummies: -->
     <string name="dummy_time">00:00</string>
