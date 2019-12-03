@@ -74,7 +74,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/lbl_payoutpd"
+                            android:id="@+id/lbl_mos"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/lbl_mos"
@@ -82,7 +82,7 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/lbl_payouttotal"
+                            android:id="@+id/lbl_payoutpd"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/lbl_payoutpd"
@@ -90,12 +90,13 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:id="@+id/lbl_mosvar"
+                            android:id="@+id/lbl_payouttotal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/lbl_payouttotal"
                             android:textColor="@color/white"
                             android:textSize="18sp" />
+
                     </LinearLayout>
 
                     <LinearLayout
