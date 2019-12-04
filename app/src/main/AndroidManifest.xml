@@ -15,9 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Delivery.ToWarehouseActivity"></activity>
+        <activity android:name=".Delivery.ToWarehouseActivity"/>
         <activity android:name=".Delivery.NewDeliveryActivity" />
         <activity android:name=".Delivery.ChooseDeliveryActivity" />
+        <activity android:name=".MyBD.MyBDAvailability"/>
+        <activity android:name=".MyBD.MyBDMoS" />
+        <activity android:name=".MyBD.MyBDInfo" />
+        <activity android:name=".MyBD.MyBDActivity" />
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">

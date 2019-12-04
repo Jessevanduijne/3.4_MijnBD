@@ -41,4 +41,42 @@
     <string name="dummy_address">Richard Holkade 14</string>
     <string name="dummy_zip">2033 PZ Haarlem</string>
     <string name="dummy_description">description</string>
+
+    <!-- MijnBD Overview: -->
+    <string name="lbl_mybdpersonalia">Mijn Bezorg.Direct</string>
+    <string name="lbl_mos">Vervoer:</string>
+    <string name="lbl_payoutpd">€/bezorging:</string>
+    <string name="lbl_payouttotal">Totale verdiensten:</string>
+    <string name="lbl_availability">Beschikbaarheid</string>
+    <string name="lbl_monday">Maandag:</string>
+    <string name="lbl_tuesday">Dinsdag:</string>
+    <string name="lbl_wednesday">Woensdag:</string>
+    <string name="lbl_thursday">Donderdag:</string>
+    <string name="lbl_friday">Vrijdag:</string>
+    <string name="lbl_saturday">Zaterdag:</string>
+    <string name="lbl_sunday">Zondag:</string>
+    <string name="lbl_monday_var">16:00-20:00</string>
+    <string name="lbl_tuesday_var">Niet beschikbaar</string>
+    <string name="lbl_wednesday_var">Niet beschikbaar</string>
+    <string name="lbl_thursday_var">12:00-18:00</string>
+    <string name="lbl_friday_var">Niet beschikbaar</string>
+    <string name="lbl_saturday_var">Niet beschikbaar</string>
+    <string name="lbl_sunday_var">Niet beschikbaar</string>
+
+    <!-- MijnBD Info: -->
+    <string name="lbl_mybdinfo">Wijzig Personalia</string>
+    <string name="lbl_name">Naam:</string>
+    <string name="lbl_address">Adres:</string>
+    <string name="lbl_dateofbirth">Geboortedatum:</string>
+    <string name="lbl_driverslicenses">Rijbewij(s)(zen):</string>
+    <string name="lbl_email">Email:</string>
+    <string name="lbl_phonenumber">Telefoonnummer:</string>
+
+    <!-- MijnBD Beschikbaarheid: -->
+    <string name="lbl_mybdavailability">Beschikbaarheid</string>
+    <string name="lbl_selectweek">Selecteer Week</string>
+
+    <!-- MijnBD vervoer: -->
+    <string name="lbl_mybdmos">Bezorgvoorkeuren</string>
+    <string name="lbl_radius">Bezorgradius</string>
 </resources>
