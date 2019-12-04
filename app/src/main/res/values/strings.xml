@@ -6,34 +6,11 @@
     <string name="lbl_history">Historie</string>
     <string name="lbl_preferences">Mijn B.D.</string>
 
-    <!-- Login: -->
-    <string name="username">Gebruikersnaam</string>
-    <string name="password">Wachtwoord</string>
-    <string name="login">Login</string>
-    <string name="nocreds">Vul je gebruikersnaam en wacthwoord in.</string>
-
-    <!-- Bezorgingen: -->
-    <string name="title_deliveries">Bezorgingen</string>
-    <string name="lbl_arrival_client">Aankomsttijd klant</string>
-    <string name="lbl_arrival_expected">verwacht</string>
-    <string name="lbl_arrival_max">uiterlijk</string>
-    <string name="lbl_arrival_duration">Totale reisduur</string>
-    <string name="lbl_minutes">minuten</string>
+    <!-- General -->
+    <string name="lbl_seconds_short">sec.</string>
     <string name="lbl_minutes_short">min.</string>
-    <string name="lbl_expected_duration">Geschatte reisduur</string>
-    <string name="lbl_to_accept">om te accepteren</string>
-    <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
-    <string name="lbl_travel_time">Reisduur</string>
-    <string name="lbl_arrival">Aankomsttijd</string>
-    <string name="lbl_open_maps">Open in maps</string>
-    <string name="lbl_warehouse">Magazijn</string>
-    <string name="lbl_cancel">Afzeggen</string>
-    <string name="lbl_delivery_picked_up">Bestelling opgehaald</string>
-    <string name="lbl_client">Klant</string>
-    <string name="lbl_delivery_not_delivered">Niet bezorgd</string>
-    <string name="lbl_delivery_delivered">Bestelling bezorgd</string>
-    <string name="lbl_to_warehouse">Onderweg naar magazijn</string>
-    <string name="lbl_to_client">Onderweg naar klant</string>
+    <string name="lbl_kilometers_short">km.</string>
+    <string name="lbl_edit">wijzig</string>
 
     <!-- Dummies: -->
     <string name="dummy_time">00:00</string>
@@ -41,6 +18,48 @@
     <string name="dummy_address">Richard Holkade 14</string>
     <string name="dummy_zip">2033 PZ Haarlem</string>
     <string name="dummy_description">description</string>
+    <string name="dummy_earnings">00,00</string>
+    <string name="dummy_transport">Motor/scooter</string>
+    <string name="dummy_order_number">#000</string>
+    <string name="dummy_date">01&#8211;01&#8211;1900</string>
+    <string name="dummy_kilometers">0,0</string>
+
+    <!-- Login: -->
+    <string name="username">Gebruikersnaam</string>
+    <string name="password">Wachtwoord</string>
+    <string name="login">Login</string>
+    <string name="nocreds">Vul je gebruikersnaam en wacthwoord in.</string>
+
+    <!-- Bezorgingen: -->
+        <!-- Incoming: -->
+        <string name="title_deliveries">Nieuwe bezorging</string>
+        <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
+        <string name="lbl_earnings">Verdiensten</string>
+        <string name="lbl_delivery">Bezorging</string>
+        <string name="lbl_estimated_travel_time">Geschatte reistijd</string>
+        <string name="lbl_maximum_arrival_time">Uiterlijke levertijd</string>
+        <string name="lbl_to_accept">om te accepteren</string>
+
+        <!-- Getting delivery: -->
+        <string name="lbl_call_warehouse">Bel magazijn</string>
+        <string name="lbl_cancel">Annuleer</string>
+        <string name="lbl_assignment_warehouse">Haal de bezorging op bij het magazijn</string>
+        <string name="lbl_open_maps">Open route in Google Maps</string>
+        <string name="lbl_delivery_picked_up">Bestelling opgehaald</string>
+
+        <!-- Delivering delivery: -->
+        <string name="lbl_assignment_client">Bezorg de bestelling</string>
+        <string name="lbl_delivery_delivered">Bestelling afgeleverd</string>
+
+        <!-- Delivery successful screen: -->
+        <string name="title_success">Succes</string>
+        <string name="lbl_delivery_successful">Succesvol bezorgd</string>
+        <string name="lbl_total_earnings">Totale verdiensten</string>
+        <string name="lbl_today">vandaag</string>
+        <string name="lbl_week">week</string>
+        <string name="lbl_month">maand</string>
+        <string name="lbl_check_details">Bekijk details</string>
+        <string name="lbl_new_assignment">Nieuwe opdracht</string>
 
     <!-- MijnBD Overview: -->
     <string name="lbl_mybdpersonalia">Mijn Bezorg.Direct</string>
