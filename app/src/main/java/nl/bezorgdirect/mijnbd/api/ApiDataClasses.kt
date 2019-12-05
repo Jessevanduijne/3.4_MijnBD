@@ -1,5 +1,6 @@
 package nl.bezorgdirect.mijnbd.api
 
+
 data class Feed (val Id: Int?, val Name: String?)
 
 data class Location (val Id: String?, val Latitude: Float?, val Longitude: Float?, val Address: String?, val PostalCode: String?,
