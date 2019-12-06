@@ -15,10 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Delivery.DeliveryDeliveringActivity"/>
+        <activity android:name=".History.MyBDHistory"></activity>
+        <activity android:name=".Delivery.DeliveryDeliveringActivity" />
         <activity android:name=".Delivery.DeliveryNewActivity" />
         <activity android:name=".Delivery.DeliveryWaitingActivity" />
-        <activity android:name=".MyBD.MyBDAvailability"/>
+        <activity android:name=".MyBD.MyBDAvailability" />
         <activity android:name=".MyBD.MyBDMoS" />
         <activity android:name=".MyBD.MyBDInfo" />
         <activity android:name=".MyBD.MyBDActivity" />
@@ -31,7 +32,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDXcZ1kNGmIoqILUeTlSlW_Ljz_nSlPD18"/>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDXcZ1kNGmIoqILUeTlSlW_Ljz_nSlPD18" />
     </application>
 
 </manifest>

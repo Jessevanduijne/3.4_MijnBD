@@ -46,8 +46,8 @@ interface ApiService {
     fun locationGet(@Header("Authorization") auth: String): Call<ArrayList<Location>>
 
     /************************Deliveries******************************************/
-    @GET("deliverery") //Read Delivery of authenticated Deliverer
-    fun delivereryGet(@Header("Authorization") auth: String): Call<Delivery>
+    @GET("delivery") //Read Delivery of authenticated Deliverer
+    fun deliveryGet(@Header("Authorization") auth: String): Call<Delivery>
 
     @PATCH("delivery/location") //Update currentLocation in Delivery
     fun deliverylocationPatch(@Header("Authorization") auth: String,
@@ -58,8 +58,8 @@ interface ApiService {
                             @Path("id") id: String,
                             @Body params: UpdateStatusParams): Call<Delivery>
 
-    @GET("delivereries") //List Deliveries of authenticated Deliverer
-    fun delivereriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
+    @GET("deliveries") //List Deliveries of authenticated Deliverer
+    fun deliveriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
 
 }
 

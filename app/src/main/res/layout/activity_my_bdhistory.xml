@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark">
+
+    <include layout="@layout/toolbar"/>
+    <include layout="@layout/bottom_bar"/>
+    <ProgressBar
+        android:id="@+id/loadingSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/toolbar_height"
+        android:layout_marginBottom="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swp_historie"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/list_historie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </LinearLayout>
+
+</RelativeLayout>
