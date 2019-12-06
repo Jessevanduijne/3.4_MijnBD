@@ -8,7 +8,7 @@ interface ApiService {
 
     /************************auth******************************************/
     @POST("login") //Login as a Deliverer
-    fun loginPost(@Body creds: Creds): Call<User>
+    fun loginPost(@Body params: LoginParams): Call<User>
 
     @POST("logout") //Logout the authenticated Deliverer
     fun logoutPost(@Header("Authorization") auth: String): Call<Void>
@@ -38,10 +38,8 @@ interface ApiService {
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
 
     @PATCH("notifications/{id}") //Update Notification of authenticated Deliverer
-    @FormUrlEncoded
     fun notifacationPatch(@Header("Authorization") auth: String,
-                          @Path("id") id: String,
-                          @Field("accepted") accepted: Boolean): Call<ResponseBody>
+                          @Body params: UpdateNotificationParams): Call<ResponseBody>
 
     /************************Locations******************************************/
     @GET("locations/warehouses") //List Warehouses
@@ -52,18 +50,13 @@ interface ApiService {
     fun delivereryGet(@Header("Authorization") auth: String): Call<Delivery>
 
     @PATCH("delivery/location") //Update currentLocation in Delivery
-    @FormUrlEncoded
     fun deliverylocationPatch(@Header("Authorization") auth: String,
-                              @Field("latitude") lat: Float,
-                              @Field("longitude") lon: Float): Call<Delivery>
+                              @Body params: UpdateLocationParams): Call<Delivery>
 
     @PATCH("delivery/{id}/status") //Update status in Delivery
-    @FormUrlEncoded
     fun deliverystatusPatch(@Header("Authorization") auth: String,
                             @Path("id") id: String,
-                            @Field("status") status: Int,
-                            @Field("latitude") lat: Float,
-                            @Field("longitude") lon: Float): Call<Delivery>
+                            @Body params: UpdateStatusParams): Call<Delivery>
 
     @GET("delivereries") //List Deliveries of authenticated Deliverer
     fun delivereriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>

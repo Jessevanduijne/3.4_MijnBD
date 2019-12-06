@@ -13,7 +13,7 @@ import nl.bezorgdirect.mijnbd.Delivery.DeliveryWaitingActivity
 import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.api.ApiService
-import nl.bezorgdirect.mijnbd.api.Creds
+import nl.bezorgdirect.mijnbd.api.LoginParams
 import nl.bezorgdirect.mijnbd.api.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,38 +30,21 @@ class LoginActivity : AppCompatActivity() {
         val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
 
         val sharedPref: SharedPreferences = this.getSharedPreferences("mybd", Context.MODE_PRIVATE)
+
         if(Key != null)
         {
             val encryptedUsr = sharedPref.getString("U", "")
             val encryptedPass = sharedPref.getString("P", "")
             val encryptedToken = sharedPref.getString("T", "")
+
             if(encryptedUsr != "" && encryptedPass != "" && encryptedToken != "")
             {
-                //todo test if token works
-                if(true)
-                {
-                    //if token works
-                    goToApp(this)
-                }
-                else
-                {
-                    val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
-                    val decryptedUser = cipherWrapper.decrypt(encryptedUsr!!, Key?.private)
-                    val decryptedPass = cipherWrapper.decrypt(encryptedPass!!, Key?.private)
-                    validate(decryptedUser, decryptedPass, sharedPref, this)
-                }
-
+                goToApp(this)
             }
-
         }
 
-
-
-
         btn_login.setOnClickListener {
-
             validate(txt_username.text.toString(), txt_password.text.toString(), sharedPref, this)
-
         }
 
     }
@@ -84,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
         val editpref = sharedPref.edit()
         loadingSpinner.visibility = View.VISIBLE
-        service.loginPost(Creds(username,password)).enqueue(object : Callback<User> {
+        service.loginPost(LoginParams(username,password)).enqueue(object : Callback<User> {
             override fun onResponse(
                 call: Call<User>,
                 response: Response<User>
@@ -99,18 +82,6 @@ class LoginActivity : AppCompatActivity() {
                     loadingSpinner.visibility = View.GONE
                 }
                     else if (response.code() == 401) {
-                    val keyStoreWrapper = KeyStoreWrapper(context, "mybd")
-                    keyStoreWrapper.createAndroidKeyStoreAsymmetricKey("BD_KEY")
-                    val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
-
-                    val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
-
-                    // Encrypt message with the key, using public key
-                    val encryptedData = cipherWrapper.encrypt(password, Key?.public)
-                  //  sendToast(encryptedData)
-                   // val decryptedData = cipherWrapper.decrypt(encryptedData, Key?.private)
-                   // sendToast(encryptedData + "||"+ decryptedData)
-
                     Toast.makeText(
                         context,
                         resources.getString(R.string.wrongcreds),

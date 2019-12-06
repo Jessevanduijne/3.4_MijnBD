@@ -1,14 +1,10 @@
 package nl.bezorgdirect.mijnbd.api
 
-import retrofit2.http.Field
+data class LoginParams(val emailAddress: String, val password: String)
 
-data class Creds(val emailAddress: String, val password: String)
+data class UpdateNotificationParams(val accepted: Boolean)
 
-@Field("status") status: Int,
-@Field("latitude") lat: Float,
-@Field("longitude")
+data class UpdateLocationParams(val latitude: Float, val longitude: Float)
 
-@Field("latitude") lat: Float,
-@Field("longitude") lon: Float
+data class UpdateStatusParams(val status: Int,val latitude: Float, val longitude: Float)
 
-@Field("accepted") accepted: Boolean
