@@ -31,7 +31,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="78dp"
             android:layout_marginRight="20dp"
-            android:background="@color/darkGray"
+            android:background="@drawable/rounded_gray_section"
             android:orientation="horizontal"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
@@ -143,9 +143,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/darkGray"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -157,7 +155,9 @@
                     android:id="@+id/btn_info"
                     android:layout_width="20dp"
                     android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/rounded_gold_btn"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="info"
                     android:textSize="12sp" />
@@ -166,7 +166,9 @@
                     android:id="@+id/btn_meansoftransport"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_margin="5dp"
                     android:layout_weight="1"
+                    android:background="@drawable/rounded_gold_btn"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="vervoer"
                     android:textSize="12sp" />
@@ -176,7 +178,9 @@
                 android:id="@+id/btn_availability"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:background="@drawable/rounded_gold_btn"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="beschikbaarheid"
                 android:textSize="10sp" />
@@ -190,7 +194,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/darkGray"
+            android:background="@drawable/rounded_gray_section"
             android:orientation="vertical"
             android:padding="5dp">
 
