@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import nl.bezorgdirect.mijnbd.Delivery.DeliveryWaitingActivity
+import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -18,7 +18,7 @@ class LoginActivity : AppCompatActivity() {
             val validated = validate(txt_username.text.toString(), txt_password.text.toString())
             if(validated)
             {
-                val intent = Intent(this, DeliveryWaitingActivity::class.java)
+                val intent = Intent(this, AssignmentActivity::class.java)
                 finish()  //Kill the activity from which you will go to next activity
                 startActivity(intent)
             }

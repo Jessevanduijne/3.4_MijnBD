@@ -31,35 +31,35 @@
     <string name="nocreds">Vul je gebruikersnaam en wacthwoord in.</string>
 
     <!-- Bezorgingen: -->
-        <!-- Incoming: -->
-        <string name="title_deliveries">Nieuwe bezorging</string>
-        <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
-        <string name="lbl_earnings">Verdiensten</string>
-        <string name="lbl_delivery">Bezorging</string>
-        <string name="lbl_estimated_travel_time">Geschatte reistijd</string>
-        <string name="lbl_maximum_arrival_time">Uiterlijke levertijd</string>
-        <string name="lbl_to_accept">om te accepteren</string>
+    <!-- Incoming: -->
+    <string name="title_assignment">Opdracht</string>
+    <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
+    <string name="lbl_earnings">Verdiensten</string>
+    <string name="lbl_delivery">Bezorging</string>
+    <string name="lbl_estimated_travel_time">Geschatte reistijd</string>
+    <string name="lbl_maximum_arrival_time">Uiterlijke levertijd</string>
+    <string name="lbl_to_accept">om te accepteren</string>
 
-        <!-- Getting delivery: -->
-        <string name="lbl_call_warehouse">Bel magazijn</string>
-        <string name="lbl_cancel">Annuleer</string>
-        <string name="lbl_assignment_warehouse">Haal de bezorging op bij het magazijn</string>
-        <string name="lbl_open_maps">Open route in Google Maps</string>
-        <string name="lbl_delivery_picked_up">Bestelling opgehaald</string>
+    <!-- Getting delivery: -->
+    <string name="lbl_call_warehouse">Bel magazijn</string>
+    <string name="lbl_cancel">Annuleer</string>
+    <string name="lbl_assignment_warehouse">Haal de bezorging op bij het magazijn</string>
+    <string name="lbl_open_maps">Open route in Google Maps</string>
+    <string name="lbl_delivery_picked_up">Bestelling opgehaald</string>
 
-        <!-- Delivering delivery: -->
-        <string name="lbl_assignment_client">Bezorg de bestelling</string>
-        <string name="lbl_delivery_delivered">Bestelling afgeleverd</string>
+    <!-- Delivering delivery: -->
+    <string name="lbl_assignment_client">Bezorg de bestelling</string>
+    <string name="lbl_delivery_delivered">Bestelling afgeleverd</string>
 
-        <!-- Delivery successful screen: -->
-        <string name="title_success">Succes</string>
-        <string name="lbl_delivery_successful">Succesvol bezorgd</string>
-        <string name="lbl_total_earnings">Totale verdiensten</string>
-        <string name="lbl_today">vandaag</string>
-        <string name="lbl_week">week</string>
-        <string name="lbl_month">maand</string>
-        <string name="lbl_check_details">Bekijk details</string>
-        <string name="lbl_new_assignment">Nieuwe opdracht</string>
+    <!-- Delivery successful screen: -->
+    <string name="title_success">Succes</string>
+    <string name="lbl_delivery_successful">Succesvol bezorgd</string>
+    <string name="lbl_total_earnings">Totale verdiensten</string>
+    <string name="lbl_today">vandaag</string>
+    <string name="lbl_week">week</string>
+    <string name="lbl_month">maand</string>
+    <string name="lbl_check_details">Bekijk details</string>
+    <string name="lbl_new_assignment">Nieuwe opdracht</string>
 
     <!-- MijnBD Overview: -->
     <string name="lbl_mybdpersonalia">Mijn Bezorg.Direct</string>
@@ -98,4 +98,7 @@
     <!-- MijnBD vervoer: -->
     <string name="lbl_mybdmos">Bezorgvoorkeuren</string>
     <string name="lbl_radius">Bezorgradius</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

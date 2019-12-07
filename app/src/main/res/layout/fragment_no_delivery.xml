@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:gravity="center"
+    android:layout_marginTop="150dp"
+    android:background="@color/colorPrimaryDark">
+
+        <pl.droidsonroids.gif.GifImageView
+            android:contentDescription="@string/lbl_have_patience_message"
+            android:layout_width="@dimen/waiting_gif_width"
+            android:layout_height="@dimen/waiting_gif_height"
+            android:src="@drawable/waiting_delivery" />
+
+        <TextView
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-20dp"
+            android:text="@string/lbl_have_patience_message"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_text"
+            android:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/btn_test_new_activity"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:text="test"
+        android:layout_marginTop="50dp"/>
+</LinearLayout>

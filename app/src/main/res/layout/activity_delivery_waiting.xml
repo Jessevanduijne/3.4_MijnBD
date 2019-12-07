@@ -8,34 +8,17 @@
     <include layout="@layout/toolbar" />
     <include layout="@layout/bottom_bar"/>
 
-    <LinearLayout
+
+
+
+    <fragment
+        android:id="@+id/delivery_fragment"
+        android:name="nl.bezorgdirect.mijnbd.Delivery.NoAssignmentFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginTop="@dimen/toolbar_height"
         android:layout_centerHorizontal="true"
-        android:gravity="center">
+        />
 
-        <pl.droidsonroids.gif.GifImageView
-            android:contentDescription="@string/lbl_have_patience_message"
-            android:layout_width="@dimen/waiting_gif_width"
-            android:layout_height="@dimen/waiting_gif_height"
-            android:src="@drawable/waiting_delivery"
-            android:layout_marginTop="200dp"/>
-
-        <TextView
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="-20dp"
-            android:text="@string/lbl_have_patience_message"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/text_size_text"
-            android:textAlignment="center"/>
-
-        <Button
-            android:id="@+id/btn_test_new_activity"
-            android:layout_width="200dp"
-            android:layout_height="80dp"
-            android:text="test"
-            android:layout_marginTop="50dp"/>
-    </LinearLayout>
 </RelativeLayout>
+

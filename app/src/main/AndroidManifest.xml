@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Delivery.DeliveryDeliveringActivity"/>
         <activity android:name=".Delivery.DeliveryNewActivity" />
-        <activity android:name=".Delivery.DeliveryWaitingActivity" />
+        <activity android:name=".Delivery.AssignmentActivity" />
         <activity android:name=".MyBD.MyBDAvailability"/>
         <activity android:name=".MyBD.MyBDMoS" />
         <activity android:name=".MyBD.MyBDInfo" />

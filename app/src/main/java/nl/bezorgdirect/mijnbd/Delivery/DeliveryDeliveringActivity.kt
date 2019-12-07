@@ -27,7 +27,7 @@ class DeliveryDeliveringActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_delivery_delivering)
+        setContentView(R.layout.fragment_delivering)
         val mapFragment = supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
 
         mapFragment.getMapAsync(this)
