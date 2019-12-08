@@ -38,7 +38,8 @@ interface ApiService {
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
 
     @PATCH("notifications/{id}") //Update Notification of authenticated Deliverer
-    fun notifacationPatch(@Header("Authorization") auth: String,
+    fun notificationPatch(@Header("Authorization") auth: String,
+                          @Path("id") id: String,
                           @Body params: UpdateNotificationParams): Call<ResponseBody>
 
     /************************Locations******************************************/
