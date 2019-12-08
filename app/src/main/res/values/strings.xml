@@ -11,6 +11,8 @@
     <string name="lbl_minutes_short">min.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
+    <!-- Error -->
+    <string name="E500">Oops something went wrong, try again later.</string>
 
     <!-- Dummies: -->
     <string name="dummy_time">00:00</string>
@@ -25,11 +27,11 @@
     <string name="dummy_kilometers">0,0</string>
 
     <!-- Login: -->
-    <string name="username">Gebruikersnaam</string>
+    <string name="username">E-mail</string>
     <string name="password">Wachtwoord</string>
     <string name="login">Login</string>
-    <string name="nocreds">Vul je gebruikersnaam en wacthwoord in.</string>
-
+    <string name="nocreds">Vul uw E-mail adres en wacthwoord in.</string>
+    <string name="wrongcreds">Onjuist E-mail adres of wachtwoord.</string>
     <!-- Bezorgingen: -->
     <!-- Incoming: -->
     <string name="title_assignment">Opdracht</string>
