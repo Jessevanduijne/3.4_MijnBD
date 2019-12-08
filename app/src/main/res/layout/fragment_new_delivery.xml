@@ -41,7 +41,7 @@
                     android:text="@string/dummy_earnings"
                     android:paddingStart="20dp"
                     android:paddingEnd="0dp"
-                    android:paddingTop="10dp"/>
+                    android:paddingTop="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                 android:orientation="horizontal"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:paddingTop="10dp">
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:contentDescription="@string/lbl_delivery"
@@ -117,13 +117,13 @@
                 android:orientation="horizontal"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:paddingTop="10dp">
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:contentDescription="@string/lbl_delivery"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/ic_clock_y"/>
+                    android:src="@drawable/ic_clock_y" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -196,7 +196,7 @@
                 android:orientation="horizontal"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:paddingTop="20dp">
+                android:paddingTop="5dp">
 
                 <ImageView
                     android:contentDescription="@string/lbl_earnings"
@@ -250,7 +250,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -282,13 +282,22 @@
                 android:textSize="@dimen/text_size_text_smaller"
                 android:textColor="@color/white"
                 android:textStyle="bold"
+                android:text="@string/lbl_seconds_short"
+                android:paddingStart="5dp"
+                android:paddingEnd="0dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_text_smaller"
+                android:textColor="@color/white"
+                android:textStyle="bold"
                 android:text="@string/lbl_to_accept" />
         </LinearLayout>
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="370dp"
-            android:layout_height="30dp"
+            android:layout_height="5dp"
             android:id="@+id/progress"
             android:layout_gravity="center_horizontal"
             android:max="100"
@@ -300,9 +309,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
             <ImageButton
+                android:contentDescription="@string/lbl_to_accept"
                 android:id="@+id/butten_delivery_refuse"
                 android:layout_width="175dp"
                 android:layout_height="120dp"
@@ -311,6 +321,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"/>
             <ImageButton
+                android:contentDescription="@string/lbl_to_accept"
                 android:id="@+id/btn_delivery_accept"
                 android:layout_width="175dp"
                 android:layout_height="120dp"

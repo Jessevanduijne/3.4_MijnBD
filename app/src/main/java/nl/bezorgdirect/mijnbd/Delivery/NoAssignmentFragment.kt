@@ -5,8 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import kotlinx.android.synthetic.main.fragment_no_delivery.view.*
 import nl.bezorgdirect.mijnbd.R
+import nl.bezorgdirect.mijnbd.helpers.replaceFragment
 
 class NoAssignmentFragment : Fragment() {
 
@@ -14,11 +15,20 @@ class NoAssignmentFragment : Fragment() {
         fun newInstance() = NoAssignmentFragment()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_no_delivery, container, false)
+
+        val view = inflater.inflate(R.layout.fragment_no_delivery, container, false)
+
+        view.btn_test_new_activity.setOnClickListener {
+             val testAssignment = NewAssignmentFragment()
+            replaceFragment(R.id.delivery_fragment, testAssignment)
+        }
+        return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
     }
 }
