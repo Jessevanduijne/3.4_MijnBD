@@ -15,8 +15,8 @@
 
 
     <dimen name="toolbar_height">56dp</dimen> <!-- According to material guidelines -->
+    <dimen name="notification_height">64dp</dimen>
 
     <dimen name="waiting_gif_width">200dp</dimen>
     <dimen name="waiting_gif_height">200dp</dimen>
-
 </resources>

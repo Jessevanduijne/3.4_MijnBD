@@ -23,22 +23,23 @@ interface ApiService {
     @PUT("availablities") //Update Availabilities of authenticated Deliverer
     fun availablitiesPut(@Header("Authorization") @Body availability: Availability): Call<Availability>
 
-    @DELETE("availablities/{id}") //Delete Availability with {Id} of authenticated Deliverer
+    @DELETE("availabilities/{id}") //Delete Availability with {Id} of authenticated Deliverer
     fun availablitiesDelete(@Path("id") id: String, @Header("x-authtoken") auth: String): Call<ResponseBody>
 
     /************************Deliverers******************************************/
     @GET("me") //Read authenticated Deliverer
-    fun deliverGet(@Header("Authorization") auth: String): Call<User>
+    fun delivererGet(@Header("Authorization") auth: String): Call<User>
 
     @PUT("me") //Update authenticated Deliverer
-    fun deliverPut(@Header("Authorization") @Body user: User): Call<Availability>
+    fun delivererPut(@Header("Authorization") @Body user: User): Call<Availability>
 
     /************************Notifications******************************************/
-    @GET("notifications") //Read Notification of authenticated Deliverer
+    @GET("notification") //Read Notification of authenticated Deliverer
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
 
     @PATCH("notifications/{id}") //Update Notification of authenticated Deliverer
-    fun notifacationPatch(@Header("Authorization") auth: String,
+    fun notificationPatch(@Header("Authorization") auth: String,
+                          @Path("id") id: String,
                           @Body params: UpdateNotificationParams): Call<ResponseBody>
 
     /************************Locations******************************************/
@@ -48,6 +49,10 @@ interface ApiService {
     /************************Deliveries******************************************/
     @GET("delivery") //Read Delivery of authenticated Deliverer
     fun deliveryGet(@Header("Authorization") auth: String): Call<Delivery>
+
+    @GET("deliveries/{id}") //Read Delivery of authenticated Deliverer
+    fun deliveryGetById(@Header("Authorization") auth: String,
+                        @Path("id") id: String): Call<Delivery>
 
     @PATCH("delivery/location") //Update currentLocation in Delivery
     fun deliverylocationPatch(@Header("Authorization") auth: String,
@@ -59,7 +64,7 @@ interface ApiService {
                             @Body params: UpdateStatusParams): Call<Delivery>
 
     @GET("deliveries") //List Deliveries of authenticated Deliverer
-    fun deliveriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
+    fun delivereriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
 
 }
 

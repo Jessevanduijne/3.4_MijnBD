@@ -1,5 +1,6 @@
 package nl.bezorgdirect.mijnbd
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -9,7 +10,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import nl.bezorgdirect.mijnbd.Delivery.DeliveryWaitingActivity
 import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.api.ApiService
@@ -20,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.services.NotificationService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -59,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.178.18:7071/api/")
+            .baseUrl("http://10.0.2.2:7071/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -129,7 +131,8 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun goToApp(context: Context)
     {
-        val intent = Intent(context, DeliveryWaitingActivity::class.java)
+        startNotificationService()
+        val intent = Intent(context, AssignmentActivity::class.java)
         finish()  //Kill the activity from which you will go to next activity
         startActivity(intent)
     }
@@ -143,5 +146,25 @@ class LoginActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
 
+    }
+
+    private fun startNotificationService(){
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val notificationServiceClass = NotificationService::class.java
+        val notificationIntent = Intent(applicationContext, notificationServiceClass)
+
+        var notificationServiceIsRunning = false
+        // Loop through running services
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (notificationServiceClass.name == service.service.className) {
+                // If the service is running then return true
+                notificationServiceIsRunning = true
+            }
+        }
+
+        if(!notificationServiceIsRunning) {
+            startService(notificationIntent)
+        }
+        else Log.e("NOTIFICATION", "Notification service already started (on login)")
     }
 }

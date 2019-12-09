@@ -12,6 +12,7 @@
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
     <string name="lbl_distance">Afstand</string>
+    <string name="lbl_euro">€</string>
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
 
@@ -33,9 +34,10 @@
     <string name="login">Login</string>
     <string name="nocreds">Vul uw E-mail adres en wacthwoord in.</string>
     <string name="wrongcreds">Onjuist E-mail adres of wachtwoord.</string>
+
     <!-- Bezorgingen: -->
     <!-- Incoming: -->
-    <string name="title_deliveries">Nieuwe bezorging</string>
+    <string name="title_assignment">Opdracht</string>
     <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
     <string name="lbl_earnings">Verdiensten</string>
     <string name="lbl_delivery">Bezorging</string>
@@ -122,4 +124,12 @@
     <string name="lbl_radiustext">Radius vanaf huisadres: </string>
 
 
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Notifications -->
+    <string name="lbl_channel_name">mijnbd_notification_channel</string>
+    <string name="lbl_earn">verdien</string>
 </resources>

@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".MijnbdApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,11 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".History.MyBDHistoryDetails"></activity>
+        <activity android:name=".Delivery.AssignmentActivity" />
+        <activity android:name=".MyBD.MyBDAvailability"/>
+        <activity android:name=".History.MyBDHistoryDetails"/>
         <activity android:name=".History.MyBDHistory" />
-        <activity android:name=".Delivery.DeliveryDeliveringActivity" />
-        <activity android:name=".Delivery.DeliveryNewActivity" />
-        <activity android:name=".Delivery.DeliveryWaitingActivity" />
         <activity android:name=".MyBD.MyBDAvailability" />
         <activity android:name=".MyBD.MyBDMoS" />
         <activity android:name=".MyBD.MyBDInfo" />
@@ -33,6 +33,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+        <!-- Services: -->
+        <service
+            android:name=".services.NotificationService"
+            android:enabled="true"
+            android:exported="true"/>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
