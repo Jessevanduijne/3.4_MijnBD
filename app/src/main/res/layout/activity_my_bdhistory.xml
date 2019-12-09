@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <include layout="@layout/toolbar"/>
-    <include layout="@layout/bottom_bar"/>
     <ProgressBar
         android:id="@+id/loadingSpinner"
         android:layout_width="wrap_content"
@@ -19,8 +17,6 @@
         />
 
     <LinearLayout
-        android:layout_marginTop="@dimen/toolbar_height"
-        android:layout_marginBottom="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">

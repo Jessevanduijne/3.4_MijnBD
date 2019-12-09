@@ -1,6 +1,6 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
-import android.content.Intent
+
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.History.MyBDHistory
 import nl.bezorgdirect.mijnbd.R.*
+
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -27,18 +28,16 @@ class AssignmentActivity : AppCompatActivity() {
             BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.getItemId()) {
-                    nl.bezorgdirect.mijnbd.R.id.action_history -> {
-                        //todo make history fragment
-                        //replaceFragment(R.id.delivery_fragment, assignment)
-                        val intent = Intent(this@AssignmentActivity, MyBDHistory::class.java)
-                        startActivity(intent)
+                   id.action_history -> {
+                        val myBDHistory = MyBDHistory()
+                        supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBDHistory).commit()
                     }
-                    nl.bezorgdirect.mijnbd.R.id.action_deliveries -> Toast.makeText(
+                    id.action_deliveries -> Toast.makeText(
                         this@AssignmentActivity,
                         "deliveries",
                         Toast.LENGTH_SHORT
                     ).show()
-                    nl.bezorgdirect.mijnbd.R.id.action_mybd -> Toast.makeText(
+                    id.action_mybd -> Toast.makeText(
                         this@AssignmentActivity,
                         "mybd",
                         Toast.LENGTH_SHORT
