@@ -101,8 +101,6 @@
     <string name="lbl_mybdmostitle">Bezorgvoorkeuren</string>
     <string name="lbl_mybdmos">Vervoersmiddel</string>
     <string name="lbl_radius">Bezorgradius</string>
-<<<<<<< HEAD
-=======
     <string name="btn_bicycle">Fiets</string>
     <string name="btn_motorcycle">Scooter/Motor</string>
     <string name="btn_car">Auto</string>
@@ -110,10 +108,4 @@
     <string name="lbl_radkm2">30 KM</string>
     <string name="lbl_radiustext">Radius vanaf huisadres: </string>
 
-    <!-- Dummies: -->
-    <string name="dummy_time">00:00</string>
-    <string name="dummy_minutes">00</string>
-    <string name="dummy_address">Richard Holkade 14</string>
-    <string name="dummy_zip">2033 PZ Haarlem</string>
->>>>>>> preferences
 </resources>
