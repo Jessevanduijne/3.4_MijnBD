@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".History.MyBDHistory"></activity>
+        <activity android:name=".History.MyBDHistoryDetails"></activity>
+        <activity android:name=".History.MyBDHistory" />
         <activity android:name=".Delivery.DeliveryDeliveringActivity" />
         <activity android:name=".Delivery.DeliveryNewActivity" />
         <activity android:name=".Delivery.DeliveryWaitingActivity" />

@@ -8,7 +8,9 @@
     android:layout_marginTop="6dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
-    android:layout_marginBottom="14dp">
+    android:layout_marginBottom="14dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,10 +28,13 @@
             android:id="@+id/img_vehicle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_loading_56dp"
+            android:src="@drawable/ic_motor_w"
             android:paddingStart="10dp"
-            android:height="56dp"
-            android:width="56dp"
+            android:paddingTop="10dp"
+            android:maxWidth="56dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:maxHeight="56dp"
             android:layout_marginBottom="10dp"
             />
     </LinearLayout>
@@ -44,6 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="26sp"
+            android:maxWidth="250dp"
             android:textColor="@color/colorPrimary"/>
         <TextView
             android:id="@+id/lbl_time"

@@ -1,6 +1,7 @@
 package nl.bezorgdirect.mijnbd.History
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +34,28 @@ class MyBDHistory : AppCompatActivity() {
     {
         override fun onItemClick(position: Int)
         {
+            val intent = Intent(this@MyBDHistory, MyBDHistoryDetails::class.java)
+            println("Pos "+position)
+            println(deliveries[position])
+            //warehouse
+            intent.putExtra("warehouseAddress",deliveries[position].Warehouse.Address)
+            intent.putExtra("warehouseDistance",deliveries[position].WarehouseDistaceInKilometers)
+            intent.putExtra("warehousePickUp",deliveries[position].WarehousePickUpAt)
+            //customer
+            intent.putExtra("customerAddress",deliveries[position].Customer.Address)
+            intent.putExtra("customerDistance",deliveries[position].CustomerDistanceInKilometers)
+            intent.putExtra("customerDeliveredAt",deliveries[position].DeliveredAt)
+            //price
+            intent.putExtra("price",deliveries[position].Price)
+            intent.putExtra("tip",deliveries[position].tip)
+            //status+vehicle
+            intent.putExtra("statusDisplayName",deliveries[position].StatusDisplayName)
+            intent.putExtra("status",deliveries[position].Status)
+            intent.putExtra("vehicle",deliveries[position].Vehicle)
+
+            startActivity(intent)
         }
+
     }
 
 
@@ -128,8 +150,10 @@ class MyBDHistory : AppCompatActivity() {
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     deliveries = values
+
                     println(deliveries[0].CurrentId)
                     println(list_historie.adapter)
+
                     list_historie.adapter = HistoryAdapter(deliveries, clickHistory)
                     setLoadingDone()
                 }
@@ -154,4 +178,6 @@ class MyBDHistory : AppCompatActivity() {
         swp_historie.isRefreshing = false
         activeCall = false
     }
+
+
 }

@@ -11,6 +11,7 @@
     <string name="lbl_minutes_short">min.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
+    <string name="lbl_distance">Afstand</string>
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
 
@@ -102,5 +103,12 @@
     <string name="lbl_radius">Bezorgradius</string>
 
     <!-- Historie: -->
-
+    <string name="title_order_details">Order details</string>
+    <string name="lbl_warehouse_ready_text">Gereed magazijn</string>
+    <string name="lbl_warehouse_pickup_text">Order opgehaald</string>
+    <string name="lbl_accepted_text">Geaccepteerd</string>
+    <string name="lbl_reward_header">Verdiensten</string>
+    <string name="lbl_tip_text">Fooi</string>
+    <string name="lbl_reward_text">Totaal</string>
+    <string name="lbl_add">+</string>
 </resources>

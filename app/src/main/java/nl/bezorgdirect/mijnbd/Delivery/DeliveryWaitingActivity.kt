@@ -1,6 +1,8 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -20,6 +22,12 @@ class DeliveryWaitingActivity : AppCompatActivity() {
 
         custom_toolbar_title.setText(getString(nl.bezorgdirect.mijnbd.R.string.title_deliveries))
         setSupportActionBar(custom_toolbar)
+        btn_logout.setOnClickListener{
+            println("listener")
+            logout()
+            println("done")
+        }
+
 
         bottom_navigation.setOnNavigationItemSelectedListener(object :
             BottomNavigationView.OnNavigationItemSelectedListener {
@@ -27,7 +35,6 @@ class DeliveryWaitingActivity : AppCompatActivity() {
                 when (item.getItemId()) {
                     nl.bezorgdirect.mijnbd.R.id.action_history -> {
                         val intent = Intent(this@DeliveryWaitingActivity, MyBDHistory::class.java)
-                        finish()  //Kill the activity from which you will go to next activity
                         startActivity(intent)
                     }
                     nl.bezorgdirect.mijnbd.R.id.action_deliveries -> Toast.makeText(
@@ -49,5 +56,12 @@ class DeliveryWaitingActivity : AppCompatActivity() {
             val intent = Intent(this@DeliveryWaitingActivity, DeliveryNewActivity::class.java)
             startActivity(intent)
         }
+    }
+    fun logout()
+    {
+        val sharedPref: SharedPreferences = this.getSharedPreferences("mybd", Context.MODE_PRIVATE)
+        val editpref = sharedPref.edit()
+        editpref.clear().commit()
+        println("logout")
     }
 }

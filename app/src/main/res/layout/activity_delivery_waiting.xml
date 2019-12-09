@@ -15,6 +15,13 @@
         android:layout_centerHorizontal="true"
         android:gravity="center">
 
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="out" />
+
         <pl.droidsonroids.gif.GifImageView
             android:contentDescription="@string/lbl_have_patience_message"
             android:layout_width="@dimen/waiting_gif_width"
@@ -37,5 +44,6 @@
             android:layout_height="80dp"
             android:text="test"
             android:layout_marginTop="50dp"/>
+
     </LinearLayout>
 </RelativeLayout>
