@@ -10,6 +10,8 @@ import nl.bezorgdirect.mijnbd.R
 
 class NewAssignmentFragment : Fragment() {
 
+    // TODO: on accept or refuse, set notification global var
+
     companion object {
         fun newInstance() = NewAssignmentFragment()
     }

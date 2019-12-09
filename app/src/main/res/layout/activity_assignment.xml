@@ -8,22 +8,11 @@
     <include layout="@layout/toolbar" />
     <include layout="@layout/bottom_bar"/>
 
-    <Button
-        android:id="@+id/btn_tesT_notification"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/toolbar_height"
-        android:text="test notification"/>
-
     <FrameLayout
         android:id="@+id/delivery_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/toolbar_height" />
-
-
-
 
 </RelativeLayout>
 

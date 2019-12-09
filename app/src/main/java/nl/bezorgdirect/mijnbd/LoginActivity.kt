@@ -1,5 +1,6 @@
 package nl.bezorgdirect.mijnbd
 
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -20,6 +21,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.services.NotificationService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -129,6 +131,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun goToApp(context: Context)
     {
+        startNotificationService()
         val intent = Intent(context, AssignmentActivity::class.java)
         finish()  //Kill the activity from which you will go to next activity
         startActivity(intent)
@@ -143,5 +146,25 @@ class LoginActivity : AppCompatActivity() {
             Toast.LENGTH_LONG
         ).show()
 
+    }
+
+    private fun startNotificationService(){
+        val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val notificationServiceClass = NotificationService::class.java
+        val notificationIntent = Intent(applicationContext, notificationServiceClass)
+
+        var notificationServiceIsRunning = false
+        // Loop through running services
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (notificationServiceClass.name == service.service.className) {
+                // If the service is running then return true
+                notificationServiceIsRunning = true
+            }
+        }
+
+        if(!notificationServiceIsRunning) {
+            startService(notificationIntent)
+        }
+        else Log.e("NOTIFICATION", "Notification service already started (on login)")
     }
 }
