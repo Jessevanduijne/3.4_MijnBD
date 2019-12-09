@@ -20,7 +20,6 @@
         <activity android:name=".MyBD.MyBDAvailability"/>
         <activity android:name=".History.MyBDHistoryDetails"/>
         <activity android:name=".History.MyBDHistory" />
-        <activity android:name=".MyBD.MyBDAvailability" />
         <activity android:name=".MyBD.MyBDMoS" />
         <activity android:name=".MyBD.MyBDInfo" />
         <activity android:name=".MyBD.MyBDActivity" />

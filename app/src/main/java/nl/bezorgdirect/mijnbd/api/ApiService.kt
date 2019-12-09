@@ -64,7 +64,7 @@ interface ApiService {
                             @Body params: UpdateStatusParams): Call<Delivery>
 
     @GET("deliveries") //List Deliveries of authenticated Deliverer
-    fun delivereriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
+    fun deliveriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>
 
 }
 
