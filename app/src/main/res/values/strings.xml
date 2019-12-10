@@ -109,5 +109,5 @@
 
     <!-- Notifications -->
     <string name="lbl_channel_name">mijnbd_notification_channel</string>
-    <string name="lbl_earn">verdien</string>
+    <string name="lbl_earn">Verdien</string>
 </resources>

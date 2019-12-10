@@ -33,6 +33,7 @@ class NotificationService: Service() {
     private val apiService = getApiService()
 
     override fun onBind(intent: Intent?): IBinder? {
+        // If the application needs to send data the service, this method will be used
         throw UnsupportedOperationException("Not yet implemented")
     }
 
@@ -42,6 +43,8 @@ class NotificationService: Service() {
 
         mHandler = Handler()
         mRunnable = Runnable { checkForNotifications() }
+
+        // Initial delay is mandatory: otherwise runnable won't get triggered
         mHandler.postDelayed(mRunnable, 10000)
         return Service.START_STICKY
     }
@@ -55,9 +58,10 @@ class NotificationService: Service() {
     private fun checkForNotifications() {
         if(canReceiveNotification) {
             getNotification()
-            mHandler.postDelayed(mRunnable, 10000)
+
+            // Check every 20 seconds
+            mHandler.postDelayed(mRunnable, 20000)
         }
-        mHandler.postDelayed(mRunnable, 10000)
     }
 
     private fun getNotification() {
@@ -72,33 +76,31 @@ class NotificationService: Service() {
 
                         canReceiveNotification = false // Until response of user, receive no new notifications
                     }
-                    else Log.e("NOTIFICATION", "notification call unsuccessful or body empty")
+                    else Log.e("NOTIFICATION", "No notification for you at the moment") // TODO: Remove in final version, or this will be spam
                 }
 
                 override fun onFailure(call: Call<BDNotification>, t: Throwable) {
-                    Log.e("NOTIFICATION", "Something went wrong with the notification call")
+                    Log.e("NOTIFICATION", "Something went wrong with the notification call (getNotification)")
                 }
             })
     }
 
-    private fun getDeliveryInfoForNotification(deliveryId: String): Delivery? {
-        var delivery: Delivery? = null
+    private fun getDeliveryInfoForNotification(deliveryId: String){
         val decryptedToken = getDecryptedToken(this.applicationContext!!)
         apiService.deliveryGetById(decryptedToken, deliveryId)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
-                        delivery = response.body()!!
-                        showNotification(delivery!!)
+                        val delivery = response.body()!!
+                        showNotification(delivery)
                     }
                     else Log.e("NOTIFICATION", "delivery call unsuccessful or body empty")
                 }
 
                 override fun onFailure(call: Call<Delivery>, t: Throwable) {
-                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (notificationservice)")
+                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (getDeliveryForNotification)")
                 }
             })
-        return delivery
     }
 
     private fun showNotification(deliveryInfo: Delivery){
@@ -107,13 +109,12 @@ class NotificationService: Service() {
         val pendingIntent = PendingIntent.getActivity(this,0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val contentView = RemoteViews(packageName, R.layout.notification)
-        contentView.setTextViewText(R.id.notification_title,
-           getString(R.string.app_name) + " " +
-                getString(R.string.lbl_new_assignment))
-        contentView.setTextViewText(R.id.notification_subtext1,
-            getString(R.string.lbl_earn) + " " +
-            getString(R.string.lbl_euro) +
-            deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
+        contentView.setTextViewText(R.id.notification_title, getString(R.string.app_name))
+        contentView.setTextViewText(R.id.notification_header, getString(R.string.lbl_new_assignment))
+        contentView.setTextViewText(R.id.notification_subtext1, getString(R.string.lbl_earn))
+        contentView.setTextViewText(R.id.notification_subtext2, getString(R.string.lbl_euro))
+        contentView.setTextViewText(R.id.notification_subtext3, deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationChannel = NotificationChannel(channelId, getString(R.string.lbl_channel_name), NotificationManager.IMPORTANCE_HIGH)
@@ -138,4 +139,5 @@ class NotificationService: Service() {
 
         notificationManager.notify(0, builder.build()) // Todo: what does this id do?
     }
+
 }
