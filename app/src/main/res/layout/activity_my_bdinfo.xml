@@ -152,6 +152,7 @@
                 android:text="@string/lbl_email"
                 android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -163,7 +164,7 @@
                         android:background="@drawable/rounded_gray_section"
                         android:ems="10"
                         android:enabled="false"
-                        android:inputType="phone"
+                        android:inputType="textEmailAddress"
                         android:padding="5dp"
                         android:textColor="@color/white"
                         android:textSize="20sp" />
