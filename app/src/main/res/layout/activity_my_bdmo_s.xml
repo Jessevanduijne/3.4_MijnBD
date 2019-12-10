@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/colorPrimaryDark">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <include layout="@layout/toolbar" />
-    <include layout="@layout/bottom_bar"/>
 
-    <TextView
-        android:id="@+id/lbl_mybdmostitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_marginTop="10dp"
-        android:text="@string/lbl_mybdmostitle"
-        android:textSize="26sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="621dp"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
@@ -105,11 +99,12 @@
                     android:textColor="@color/colorPrimary" />
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/sb_radius"
                     android:layout_width="145dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:progressBackgroundTint="@color/colorPrimary" />
+                    android:progressBackgroundTint="@color/colorPrimary"
+                    android:progressTint="@color/colorPrimary" />
 
                 <TextView
                     android:id="@+id/lbl_radkm2"
@@ -154,3 +149,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+</ScrollView>

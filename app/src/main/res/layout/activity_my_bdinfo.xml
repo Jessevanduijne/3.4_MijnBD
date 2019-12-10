@@ -1,202 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    tools:context=".LoginActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@color/colorPrimaryDark">
 
-    <include layout="@layout/toolbar" />
-    <include layout="@layout/bottom_bar"/>
 
-    <TextView
-        android:id="@+id/lbl_mybdmostitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_marginTop="10dp"
-        android:text="@string/lbl_mybdavailability"
-        android:textSize="26sp" />
-
-    <LinearLayout
-        android:layout_width="310dp"
-        android:layout_height="615dp"
-        android:layout_centerInParent="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/rounded_gray_section"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/img_profile"
+            <include layout="@layout/toolbar" />
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:srcCompat="@tools:sample/avatars[0]" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/lbl_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lbl_name"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/lbl_namevar"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="Naam"
-                android:textColor="@color/white"
-                android:textSize="20sp" />
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-        <TextView
-            android:id="@+id/lbl_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lbl_address"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <ImageView
+                    android:id="@+id/img_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:srcCompat="@tools:sample/avatars[0]" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/lbl_addressvar"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbl_name"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="voorbeeldstraat 1;1111AA; Haarlem"
-                android:textColor="@color/white"
+                android:text="@string/lbl_name"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/lbl_dateofbirth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lbl_dateofbirth"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lbl_namevar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="Naam"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/lbl_dateofbirthvar"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbl_address"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="01-01-2000"
-                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:text="@string/lbl_address"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/lbl_driverslicenses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lbl_driverslicenses"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lbl_addressvar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="voorbeeldstraat 1;1111AA; Haarlem"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/lbl_driverslicensesvar"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbl_dateofbirth"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="A;B"
-                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:text="@string/lbl_dateofbirth"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/lbl_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lbl_email"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lbl_dateofbirthvar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="01-01-2000"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/lbl_emailvar"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbl_driverslicenses"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="email@provider.nl"
-                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:text="@string/lbl_driverslicenses"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
-        </LinearLayout>
 
-        <TextView
-            android:id="@+id/lbl_phonenumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/lbl_phonenumber"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/lbl_driverslicensesvar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="A;B"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/lbl_phonenumbervar"
-                android:layout_width="wrap_content"
+                android:id="@+id/lbl_email"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_gray_section"
-                android:padding="2dp"
-                android:text="0612345678"
-                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:text="@string/lbl_email"
+                android:textColor="@color/colorPrimary"
                 android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lbl_emailvar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="email@provider.nl"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/lbl_phonenumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/lbl_phonenumber"
+                android:textColor="@color/colorPrimary"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/lbl_phonenumbervar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/rounded_gray_section"
+                    android:padding="2dp"
+                    android:text="0612345678"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
 
-</RelativeLayout>
+</ScrollView>

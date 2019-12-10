@@ -27,8 +27,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="75dp"
         android:src="@drawable/ic_logo_y" />
 
@@ -72,15 +72,14 @@
             android:inputType="text"
             android:padding="5dp" />
 
-    <TextView
-        android:id="@+id/lbl_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginStart="70dp"
-        android:textSize="26sp"
-        />
+        <TextView
+            android:id="@+id/lbl_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:text="@string/password"
+            android:textColor="@color/colorPrimary"
+            android:textSize="26sp" />
 
         <EditText
             android:id="@+id/txt_password"

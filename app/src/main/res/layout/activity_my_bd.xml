@@ -1,35 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimaryDark">
-
-    <include layout="@layout/toolbar" />
-    <include layout="@layout/bottom_bar"/>
-
-    <TextView
-        android:id="@+id/lbl_mybdpersonalia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_marginTop="10dp"
-        android:text="@string/lbl_mybdpersonalia"
-        android:textSize="26sp" />
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="675dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorPrimaryDark"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="78dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/rounded_gray_section"
             android:orientation="horizontal"
@@ -44,7 +32,7 @@
                 android:layout_width="207dp"
                 android:layout_height="107dp"
                 android:layout_weight="1"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:src="@drawable/ic_logo_y" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -406,5 +394,5 @@
         </LinearLayout>
 
     </LinearLayout>
+</ScrollView>
 
-</RelativeLayout>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -72,6 +73,12 @@ class MyBDHistory : Fragment() {
     ): View? {
 
         val root = inflater.inflate(R.layout.activity_my_bdhistory, container, false)
+
+        if(activity != null) {
+            val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
+            custom_toolbar_title.text = getString(R.string.lbl_history)
+        }
+
 
         val verticalList = LinearLayoutManager(root.context)
 
