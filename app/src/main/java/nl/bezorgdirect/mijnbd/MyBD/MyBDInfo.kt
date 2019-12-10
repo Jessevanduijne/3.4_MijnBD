@@ -35,7 +35,7 @@ class MyBDInfo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_bdinfo)
 
-        custom_toolbar_title.text = getString(R.string.lbl_mos)
+        custom_toolbar_title.text = getString(R.string.lbl_mybdinfo)
         setSupportActionBar(custom_toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
