@@ -18,6 +18,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Delivery.AssignmentActivity" />
         <activity android:name=".MyBD.MyBDAvailability"/>
+        <activity android:name=".History.MyBDHistoryDetails"/>
+        <activity android:name=".History.MyBDHistory" />
         <activity android:name=".MyBD.MyBDMoS" />
         <activity android:name=".MyBD.MyBDInfo" />
         <activity android:name=".MyBD.MyBDActivity" />
@@ -40,8 +42,9 @@
             android:exported="true"/>
 
 
-
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDXcZ1kNGmIoqILUeTlSlW_Ljz_nSlPD18"/>
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDXcZ1kNGmIoqILUeTlSlW_Ljz_nSlPD18" />
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@
     <string name="lbl_minutes_short">min.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
+    <string name="lbl_distance">Afstand</string>
     <string name="lbl_euro">€</string>
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
@@ -71,13 +72,13 @@
     <string name="lbl_payoutpd">€/bezorging:</string>
     <string name="lbl_payouttotal">Totale verdiensten:</string>
     <string name="lbl_availability">Beschikbaarheid</string>
-    <string name="lbl_monday">Maandag:</string>
-    <string name="lbl_tuesday">Dinsdag:</string>
-    <string name="lbl_wednesday">Woensdag:</string>
-    <string name="lbl_thursday">Donderdag:</string>
-    <string name="lbl_friday">Vrijdag:</string>
-    <string name="lbl_saturday">Zaterdag:</string>
-    <string name="lbl_sunday">Zondag:</string>
+    <string name="lbl_monday">Ma</string>
+    <string name="lbl_tuesday">Di</string>
+    <string name="lbl_wednesday">Wo</string>
+    <string name="lbl_thursday">Do</string>
+    <string name="lbl_friday">Vr</string>
+    <string name="lbl_saturday">Za</string>
+    <string name="lbl_sunday">Zo</string>
     <string name="lbl_monday_var">16:00-20:00</string>
     <string name="lbl_tuesday_var">Niet beschikbaar</string>
     <string name="lbl_wednesday_var">Niet beschikbaar</string>
@@ -100,8 +101,29 @@
     <string name="lbl_selectweek">Selecteer Week</string>
 
     <!-- MijnBD vervoer: -->
-    <string name="lbl_mybdmos">Bezorgvoorkeuren</string>
+    <string name="lbl_mybdmostitle">Bezorgvoorkeuren</string>
+    <string name="lbl_mybdmos">Vervoersmiddel</string>
     <string name="lbl_radius">Bezorgradius</string>
+
+
+    <!-- Historie: -->
+    <string name="title_order_details">Order details</string>
+    <string name="lbl_warehouse_ready_text">Gereed magazijn</string>
+    <string name="lbl_warehouse_pickup_text">Order opgehaald</string>
+    <string name="lbl_accepted_text">Geaccepteerd</string>
+    <string name="lbl_reward_header">Verdiensten</string>
+    <string name="lbl_tip_text">Fooi</string>
+    <string name="lbl_reward_text">Totaal</string>
+    <string name="lbl_add">+</string>
+
+    <string name="btn_bicycle">Fiets</string>
+    <string name="btn_motorcycle">Scooter/Motor</string>
+    <string name="btn_car">Auto</string>
+    <string name="lbl_radkm1">0 KM</string>
+    <string name="lbl_radkm2">30 KM</string>
+    <string name="lbl_radiustext">Radius vanaf huisadres: </string>
+
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
