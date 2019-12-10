@@ -95,8 +95,15 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         {
             holder.distance.text = "? km."
         }
-        val earnings = round(item.Price!! * 100) / 100
-        holder.earnings.text = "€$earnings"
+        if(item.Price != null) {
+            val earnings = round(item.Price!! * 100) / 100
+            holder.earnings.text = "€$earnings"
+        }
+        else
+        {
+            holder.earnings.text = "?"
+        }
+
 
         holder.itemView.setOnClickListener{
             clicklistener.onItemClick(position)

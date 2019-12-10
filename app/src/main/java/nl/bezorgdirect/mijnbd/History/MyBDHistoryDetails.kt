@@ -9,6 +9,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.R
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.round
 
 class MyBDHistoryDetails : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MyBDHistoryDetails : AppCompatActivity() {
         lbl_status.text = intent.getStringExtra("statusDisplayName")
         lbl_date.text = getDate(intent.getStringExtra("customerDeliveredAt"))
         lbl_time.text = getFromTo(intent.getStringExtra("customerDeliveredAt"), intent.getStringExtra("timeAccepted"))
-        lbl_total_reward.text = getTotalReward(intent.getIntExtra("price", -1), intent.getIntExtra("tip", -1))
+        lbl_total_reward.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
         lbl_total_distance.text = getTotalDistance(intent.getIntExtra("customerDistance", -1), intent.getIntExtra("warehouseDistance", -1))
 
         lbl_ready_warehouse_time.text = getTime(intent.getStringExtra("wareHouseReady"))
@@ -41,11 +42,11 @@ class MyBDHistoryDetails : AppCompatActivity() {
         lbl_customer_distance_value.text = checkNullInt(intent.getIntExtra("customerDistance", -1))
 
         lbl_fail_reason.text = "none"
-        lbl_reward_value.text = checkNullInt(intent.getIntExtra("price", -1))
+        lbl_reward_value.text = roundFloat(intent.getFloatExtra("price", -1.0f))
         lbl_reward_type.text = "Auto levering"
-        lbl_tip_value.text = checkNullInt(intent.getIntExtra("tip", -1))
+        lbl_tip_value.text = roundFloat(intent.getFloatExtra("tip", -1.0f))
 
-        lbl_total_reward_value.text = getTotalReward(intent.getIntExtra("price", -1), intent.getIntExtra("tip", -1))
+        lbl_total_reward_value.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
        /* var delivery : Delivery? =  intent.getParcelableExtra("delivery")
         if(delivery !=  null)
         {
@@ -129,17 +130,27 @@ class MyBDHistoryDetails : AppCompatActivity() {
         }
         return output
     }
-    fun getTotalReward(price: Int, tip: Int): String
+    fun roundFloat(input : Float) : String
+    {
+        var output = "?"
+        if(input != -1.0f ) {
+            var rounded = round(input * 100) / 100
+            output = "$rounded"
+        }
+        return output
+    }
+    fun getTotalReward(price: Float, tip: Float): String
     {
         var output = ""
-        if(price == -1 || tip == -1)
+        if(price == -1.0f || tip == -1.0f)
         {
             output = "?"
         }
         else
         {
-            var total = price+tip
-            output = "€$total"
+            val total = price+tip
+            val totalstring = roundFloat(total)
+            output = "€$totalstring"
         }
         return output
     }
