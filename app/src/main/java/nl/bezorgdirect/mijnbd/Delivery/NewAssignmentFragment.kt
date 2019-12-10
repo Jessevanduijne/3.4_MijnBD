@@ -43,7 +43,6 @@ class NewAssignmentFragment : Fragment() {
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var lat: Double = 52.3673779
     private var long: Double = 4.9581227 // TODO: Edit these values
-    private val MY_PERMISSION_ACCESS_COARSE_LOCATION = 11
 
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
