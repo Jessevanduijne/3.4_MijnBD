@@ -7,7 +7,7 @@ data class Location (val Id: String?, val Latitude: Float?, val Longitude: Float
                      val Place: String?, val IsWareHouse: Boolean?)
 
 data class User (val id: String?, val emailAddress: String?, val token: String?, val phoneNumber: String?,
-                          val home: Location?, val dateOfBirth: String?, val range: Int?, val vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
+                          val home: Location, val dateOfBirth: String?, val range: Int?, val vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
 
 data class Availability (val Id: String?, val DelivererId: String?, val Date:  String?, val StartTime: String?, val EndTime: String?)
 

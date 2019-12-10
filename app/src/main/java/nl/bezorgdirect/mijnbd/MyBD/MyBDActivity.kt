@@ -16,6 +16,7 @@ import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.ApiService
+import nl.bezorgdirect.mijnbd.api.Location
 import nl.bezorgdirect.mijnbd.api.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,8 +26,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MyBDActivity : Fragment() {
 
-    private var User = ArrayList<User>()
+    private var user = User(null, null, null , null, Location(null, null, null, null , null, null ,null),
+        null, null ,null ,null, null, null )
     private var activeCall = false
+
 
     companion object {
         fun newInstance() = MyBDActivity()
@@ -36,7 +39,6 @@ class MyBDActivity : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.activity_my_bd, container, false)
-
         if(activity != null) {
             val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
             custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
@@ -46,8 +48,7 @@ class MyBDActivity : Fragment() {
         val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
 
         btn_info.setOnClickListener{
-            val intent : Intent = Intent(root.context, MyBDInfo::class.java)
-            startActivity(intent)
+            gotoInfo(root.context)
         }
 
         btn_availability.setOnClickListener {
@@ -56,8 +57,7 @@ class MyBDActivity : Fragment() {
         }
 
         btn_meansoftransport.setOnClickListener {
-            val intent : Intent = Intent(root.context, MyBDMoS::class.java)
-            startActivity(intent)
+            gotoMeansoftransport(root.context)
         }
 
         getDeliverer(root.context, root)
@@ -109,6 +109,7 @@ class MyBDActivity : Fragment() {
                     ).show()
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
+                    user = values
                     println("vals")
                     println(values)
                     val lbl_name: TextView = root.findViewById(R.id.lbl_name)
@@ -136,7 +137,30 @@ class MyBDActivity : Fragment() {
 
         })
 
+    }
+    fun gotoInfo(context: Context)
+    {
+        val intent : Intent = Intent(context, MyBDInfo::class.java)
 
-
+        //val address = user.home.Address + "; " + user.home.Place + "; " + user.home.PostalCode
+        putObjects(intent)
+        startActivity(intent)
+    }
+    fun gotoMeansoftransport(context: Context)
+    {
+        val intent : Intent = Intent(context, MyBDMoS::class.java)
+        putObjects(intent)
+        startActivity(intent)
+    }
+    fun putObjects(intent: Intent)
+    {
+        intent.putExtra("email", user.emailAddress)
+        intent.putExtra("vehicle", user.vehicle)
+        intent.putExtra("range", user.range)
+        intent.putExtra("phonenumber", user.phoneNumber)
+        intent.putExtra("vehicledisplayname", user.vehicleDisplayName)
+        intent.putExtra("dateofbirth",user.dateOfBirth)
+        intent.putExtra("fare",user.fare)
+        intent.putExtra("totalearnings",user.totalEarnings)
     }
 }
