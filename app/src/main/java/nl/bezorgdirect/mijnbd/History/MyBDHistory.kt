@@ -163,12 +163,20 @@ class MyBDHistory : Fragment() {
                 else if (response.code() == 401) {
                     Toast.makeText(
                         context,
-                        resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
+                        resources.getString(R.string.E401),
                         Toast.LENGTH_LONG
                     ).show()
                     setLoadingDone()
 
-                } else if (response.isSuccessful && response.body() != null) {
+                } else if (response.code() == 204) {
+                    Toast.makeText(
+                        context,
+                        resources.getString(nl.bezorgdirect.mijnbd.R.string.nodeliveries),
+                        Toast.LENGTH_LONG
+                    ).show()
+                    setLoadingDone()
+
+                }else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     deliveries = values
 
@@ -176,6 +184,10 @@ class MyBDHistory : Fragment() {
                     println(list_historie.adapter)
 
                     list_historie.adapter = HistoryAdapter(deliveries, clickHistory)
+                    setLoadingDone()
+                }
+                else
+                {
                     setLoadingDone()
                 }
             }
