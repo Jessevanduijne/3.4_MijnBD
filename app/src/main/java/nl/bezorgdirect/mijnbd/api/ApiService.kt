@@ -14,13 +14,13 @@ interface ApiService {
     fun logoutPost(@Header("Authorization") auth: String): Call<Void>
 
     /************************availablities******************************************/
-    @POST("availablities") //Availabilities will be pushed to authenticated Deliverer's Availabilities array
+    @POST("availabilities") //Availabilities will be pushed to authenticated Deliverer's Availabilities array
     fun availablitiesPost(@Header("Authorization") auth: String): Call<ResponseBody>
 
-    @GET("availablities") //List Availabilities of authenticated Deliverer
+    @GET("availabilities") //List Availabilities of authenticated Deliverer
     fun availablitiesGet(@Header("Authorization") auth: String): Call<ArrayList<Availability>>
 
-    @PUT("availablities") //Update Availabilities of authenticated Deliverer
+    @PUT("availabilities") //Update Availabilities of authenticated Deliverer
     fun availablitiesPut(@Header("Authorization") @Body availability: Availability): Call<Availability>
 
     @DELETE("availabilities/{id}") //Delete Availability with {Id} of authenticated Deliverer

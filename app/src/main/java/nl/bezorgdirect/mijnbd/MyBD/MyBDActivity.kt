@@ -16,16 +16,20 @@ import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.ApiService
+import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.api.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MyBDActivity : Fragment() {
 
-    private var User = ArrayList<User>()
+    private var availabilities = ArrayList<Availability>()
     private var activeCall = false
 
     companion object {
@@ -41,6 +45,12 @@ class MyBDActivity : Fragment() {
             val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
             custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
         }
+
+        fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
+            val formatter = SimpleDateFormat(format, locale)
+            return formatter.format(this)
+        }
+
         val btn_info: Button = root.findViewById(R.id.btn_info)
         val btn_availability: Button = root.findViewById(R.id.btn_availability)
         val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
@@ -67,7 +77,7 @@ class MyBDActivity : Fragment() {
 
     private fun getDeliverer(context: Context, root: View){
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.178.18:7071/api/")
+            .baseUrl("http://10.0.2.2:7071/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -116,7 +126,7 @@ class MyBDActivity : Fragment() {
                     val lbl_pd: TextView = root.findViewById(R.id.lbl_payoutpdvar)
                     val lbl_total_earnings: TextView = root.findViewById(R.id.lbl_payouttotalvar)
                     lbl_vehicle.text = values.vehicleDisplayName
-                    lbl_name.text = values.emailAddress
+                    lbl_name.text = values.emailAddress?.substringBefore(delimiter= '@', missingDelimiterValue = "string does not contain delimiter @")
                     val fare = values.fare
                     lbl_pd.text = "$fare"
                     val total = values.totalEarnings
@@ -135,8 +145,67 @@ class MyBDActivity : Fragment() {
             }
 
         })
+    }
 
+    private fun getAvailabilities(context: Context){
 
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://10.0.2.2:7071/api/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
+        val service = retrofit.create(ApiService::class.java)
+        val sharedPref: SharedPreferences = context.getSharedPreferences("mybd", Context.MODE_PRIVATE)
+        val encryptedToken = sharedPref.getString("T", "")
+
+        val keyStoreWrapper = KeyStoreWrapper(context, "mybd")
+        val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
+        var token = ""
+        if(encryptedToken != "" && Key != null)
+        {
+            val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
+            token = cipherWrapper.decrypt(encryptedToken!!, Key?.private)
+        }
+        else
+        {
+            return
+        }
+
+        service.availablitiesGet(auth = token).enqueue(object : Callback<ArrayList<Availability>> {
+            override fun onResponse(
+                call: Call<ArrayList<Availability>>,
+                response: Response<ArrayList<Availability>>
+            ) {
+                println(response)
+                if (response.code() == 500) {
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.E500),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                else if (response.code() == 401) {
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.wrongcreds),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else if (response.isSuccessful && response.body() != null) {
+                    val values = response.body()!!
+
+                    availabilities = values
+                }
+            }
+
+            override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
+                Log.e("HTTP", "Could not fetch data", t)
+                Toast.makeText(
+                    context, resources.getString(R.string.E500),
+                    Toast.LENGTH_LONG
+                ).show()
+                return
+            }
+
+        })
     }
 }
