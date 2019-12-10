@@ -9,24 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_my_bd.*
-import kotlinx.android.synthetic.main.activity_my_bdhistory.*
-import kotlinx.android.synthetic.main.activity_my_bdhistory.loadingSpinner
 import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
-import nl.bezorgdirect.mijnbd.RecyclerViews.HistoryAdapter
 import nl.bezorgdirect.mijnbd.api.ApiService
-import nl.bezorgdirect.mijnbd.api.Delivery
-import nl.bezorgdirect.mijnbd.api.LoginParams
 import nl.bezorgdirect.mijnbd.api.User
 import retrofit2.Call
 import retrofit2.Callback
@@ -78,7 +67,7 @@ class MyBDActivity : Fragment() {
 
     private fun getDeliverer(context: Context, root: View){
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:7071/api/")
+            .baseUrl("http://192.168.178.18:7071/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
@@ -120,9 +109,18 @@ class MyBDActivity : Fragment() {
                     ).show()
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
-
+                    println("vals")
+                    println(values)
                     val lbl_name: TextView = root.findViewById(R.id.lbl_name)
-                    lbl_name.text = values.EmailAddress
+                    val lbl_vehicle: TextView = root.findViewById(R.id.lbl_mosvar)
+                    val lbl_pd: TextView = root.findViewById(R.id.lbl_payoutpdvar)
+                    val lbl_total_earnings: TextView = root.findViewById(R.id.lbl_payouttotalvar)
+                    lbl_vehicle.text = values.vehicleDisplayName
+                    lbl_name.text = values.emailAddress
+                    val fare = values.fare
+                    lbl_pd.text = "$fare"
+                    val total = values.totalEarnings
+                    lbl_total_earnings.text = "$total"
 
                 }
             }
