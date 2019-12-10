@@ -1,16 +1,29 @@
 package nl.bezorgdirect.mijnbd.helpers
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
-
-public fun Fragment.addFragment(frameId: Int, fragment: Fragment){
+fun Fragment.addFragment(frameId: Int, fragment: Fragment){
     fragmentManager?.beginTransaction()?.add(frameId, fragment)?.commit()
 }
 
-public fun Fragment.replaceFragment(frameId: Int, fragment: Fragment) {
+fun Fragment.replaceFragment(frameId: Int, fragment: Fragment) {
     fragmentManager?.beginTransaction()?.replace(frameId, fragment)?.commit()
 }
 
-public fun Fragment.removeFragment(fragment: Fragment) {
+fun Fragment.removeFragment(fragment: Fragment) {
     fragmentManager?.beginTransaction()?.remove(fragment)?.commit()
+}
+
+fun AppCompatActivity.addFragment(frameId: Int, fragment: Fragment){
+   supportFragmentManager.beginTransaction().add(frameId, fragment).commit()
+}
+
+fun AppCompatActivity.replaceFragment(frameId: Int, fragment: Fragment) {
+    supportFragmentManager.beginTransaction().replace(frameId, fragment).commit()
+}
+
+fun AppCompatActivity.removeFragment(fragment: Fragment) {
+    supportFragmentManager.beginTransaction().remove(fragment).commit()
 }

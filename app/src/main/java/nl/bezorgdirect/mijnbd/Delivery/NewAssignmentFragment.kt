@@ -1,23 +1,193 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
+import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import kotlinx.android.synthetic.main.fragment_new_delivery.*
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.api.*
+import nl.bezorgdirect.mijnbd.helpers.getApiService
+import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.replaceFragment
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Context.LOCATION_SERVICE
+import android.content.pm.PackageManager
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Build
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
+import java.text.SimpleDateFormat
 
-import nl.bezorgdirect.mijnbd.R
 
 class NewAssignmentFragment : Fragment() {
 
-    // TODO: on accept or refuse, set notification global var
-
-    companion object {
-        fun newInstance() = NewAssignmentFragment()
-    }
+    private val apiService = getApiService()
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var latitude: Double = 52.3673779
+    private var longitude: Double = 4.9581227 // TODO: Edit these values
+    private val MY_PERMISSION_ACCESS_COARSE_LOCATION = 11
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_new_delivery, container, false)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
+
+        getNotificationId { notification -> run {
+                getDeliveryById(notification.DeliveryId!!) { delivery -> run {
+                        setClickListeners(notification.Id!!, delivery)
+                        setLayoutData(delivery)
+                    }
+                }
+            }
+        }
+        return inflater.inflate(nl.bezorgdirect.mijnbd.R.layout.fragment_new_delivery, container, false)
+    }
+
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
+    private fun setLayoutData(delivery: Delivery){
+        val formattedTime: String
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val localDateTime = LocalDateTime.parse(delivery.DueDate)
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+            formattedTime = formatter.format(localDateTime)
+        }
+        else {
+            val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val formatter = SimpleDateFormat("HH:mm")
+            formattedTime = formatter.format(parser.parse(delivery.DueDate!!)!!)
+        }
+
+        lbl_new_assignment_earnings.text = delivery.Price!!.toBigDecimal().setScale(2).toString()
+        lbl_new_assignment_due_date.text = formattedTime
+        lbl_new_assignment_vehicle.text = delivery.VehicleDisplayName
+
+        // TODO: Calculate this info with the CreatedAt property from notification
+//        lbl_new_assignment_minutes_to_accept.text = ""
+//        lbl_new_assignment_seconds_to_accept.text = ""
+
+        // TODO: Get this info from google API
+//        lbl_new_assignment_kilometers.text = ""
+//        lbl_new_assignment_estimated_minutes.text = ""
+    }
+
+    private fun setClickListeners(notificationId: String, delivery: Delivery){
+        btn_delivery_accept.setOnClickListener {
+            confirmAssignment(true, notificationId, delivery)
+        }
+
+        btn_delivery_refuse.setOnClickListener{
+            confirmAssignment(false, notificationId, delivery)
+            canReceiveNotification = true
+        }
+    }
+
+    private fun getDeliveryById(deliveryId: String, callback: (Delivery) -> Unit) {
+        val decryptedToken = getDecryptedToken(context!!)
+        apiService.deliveryGetById(decryptedToken, deliveryId)
+            .enqueue(object: Callback<Delivery> {
+                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val delivery = response.body()!!
+                        callback(delivery)
+                    }
+                    else Log.e("NOTIFICATION", "delivery call unsuccessful or body empty")
+                }
+
+                override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (getDeliveryForNotification)")
+                }
+            })
+    }
+
+    private fun getNotificationId(callback: (BDNotification) -> Unit) {
+        val decryptedToken = getDecryptedToken(context!!)
+        apiService.notificationGet(decryptedToken)
+            .enqueue(object: Callback<BDNotification> {
+                override fun onResponse(call: Call<BDNotification>, response: Response<BDNotification>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val notification: BDNotification = response.body()!!
+                        callback(notification)
+                    }
+                    else Log.e("NEW_ASSIGNMENT", "Get notification ID unsuccessful or empty body")
+                }
+
+                override fun onFailure(call: Call<BDNotification>, t: Throwable) {
+                    Log.e("NEW_ASSIGNMENT", "Get notification ID failed miserably")
+                }
+            })
+    }
+
+    private fun confirmAssignment(accepted: Boolean, notificationId: String, delivery: Delivery){
+        val decryptedToken = getDecryptedToken(this.activity!!)
+
+        val updateNotificationBody = UpdateNotificationParams(accepted)
+        apiService.notificationPatch(decryptedToken, notificationId, updateNotificationBody) // TODO: Get NotificationID from Notification object
+            .enqueue(object: Callback<ResponseBody> {
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    if(response.isSuccessful) {
+                        if(accepted) {
+                            updateDeliveryStatusManually(delivery)
+                        }
+                        else {
+                            val fragment = NoAssignmentFragment()
+                            replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+                        }
+                    }
+                    else Log.e("NEW_ASSIGNMENT", "Confirming assignment response unsuccessful")
+                }
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    Log.e("NEW_ASSIGNMENT", "Confirming assignment failed")
+                }
+            })
+    }
+
+    private fun updateDeliveryStatusManually(delivery: Delivery){ // The API doesn't update the delivery after accepting notification
+        obtainLocation() // TODO: Fix location
+
+        val updateStatusBody = UpdateStatusParams(2, latitude.toFloat(), longitude.toFloat()) // status 2 = bevestigd
+        val decryptedToken = getDecryptedToken(this.activity!!)
+        apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody) // TODO: Get DeliveryID from Notification object
+            .enqueue(object: Callback<Delivery> {
+                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
+                    if(response.isSuccessful) {
+                        val fragment = DeliveringFragment(delivery)
+                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+                    }
+                    else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
+                }
+                override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    Log.e("NEW_ASSIGNMENT", "Updating delivery by delivery by deliveryId failed")
+                }
+            })
+    }
+
+    private fun obtainLocation(){
+        if (ContextCompat.checkSelfPermission(this.activity!!, ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
+            ActivityCompat.requestPermissions(
+                this.activity!!,
+                arrayOf(ACCESS_COARSE_LOCATION),
+                MY_PERMISSION_ACCESS_COARSE_LOCATION
+            )
+        }
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                latitude = location.latitude
+                longitude = location.longitude
+            }
     }
 }
