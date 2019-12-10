@@ -11,7 +11,7 @@
         android:id="@+id/action_deliveries"
         android:enabled="true"
         android:icon="@drawable/ic_history_black_24dp"
-        android:title="@string/lbl_deliveries"
+        android:title="@string/title_assignment"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_mybd"

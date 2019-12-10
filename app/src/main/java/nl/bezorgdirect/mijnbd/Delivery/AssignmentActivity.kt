@@ -23,6 +23,8 @@ import retrofit2.Response
 import android.os.IBinder
 import android.content.ComponentName
 import android.content.ServiceConnection
+import com.google.android.gms.maps.SupportMapFragment
+import nl.bezorgdirect.mijnbd.R
 import java.util.*
 
 
@@ -36,7 +38,6 @@ class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
         custom_toolbar_title.setText(getString(string.title_assignment))
         setSupportActionBar(custom_toolbar)
         setBottomNav()
-
         setFragment()
     }
 
@@ -51,8 +52,10 @@ class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
-                        val deliveringFragment = DeliveringFragment()
+                        val delivery = response.body()
+                        val deliveringFragment = DeliveringFragment(delivery)
                         replaceFragment(id.delivery_fragment, deliveringFragment)
+                        canReceiveNotification = false
                     }
                     else {
                         if(canReceiveNotification) {
@@ -80,10 +83,7 @@ class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
                         val myBDHistory = MyBDHistory()
                         supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBDHistory).commit()
                     }
-                    id.action_deliveries -> {
-                        val noAssignment = NoAssignmentFragment()
-                        supportFragmentManager.beginTransaction().replace(id.delivery_fragment, noAssignment).commit()
-                    }
+                    id.action_deliveries -> setFragment()
                     id.action_mybd -> {
                         val myBD = MyBDActivity()
                         supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBD).commit()

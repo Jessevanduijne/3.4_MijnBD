@@ -35,12 +35,17 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         // Inflate the layout for this fragment
         var test = delivery
 
-        val mapFragment = fragmentManager!!.findFragmentById(R.id.fragment_map) as SupportMapFragment
 
-        mapFragment.getMapAsync(this)
-        getRoute()
 
         return inflater.inflate(R.layout.fragment_delivering, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+//        val mapFragment = this.activity!!.supportFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+//
+//        mapFragment.getMapAsync(this)
+//        getRoute()
     }
 
     private fun setLayout(){
