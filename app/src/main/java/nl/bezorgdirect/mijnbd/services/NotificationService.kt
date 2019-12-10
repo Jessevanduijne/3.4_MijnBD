@@ -19,8 +19,14 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.lang.UnsupportedOperationException
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
+import android.app.ActivityManager
+import android.R
+import android.annotation.SuppressLint
+import android.content.ComponentName
+import androidx.core.content.getSystemService
+import nl.bezorgdirect.mijnbd.Delivery.NewAssignmentListener
+
 
 class NotificationService: Service() {
 
@@ -34,6 +40,7 @@ class NotificationService: Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         // If the application needs to send data the service, this method will be used
+        Log.e("", "")
         throw UnsupportedOperationException("Not yet implemented")
     }
 
@@ -52,7 +59,7 @@ class NotificationService: Service() {
     override fun onDestroy() {
         super.onDestroy()
         Log.e("NOTIFICATION", "DESTROYING")
-        mHandler.removeCallbacks(mRunnable)
+//        mHandler.removeCallbacks(mRunnable)
     }
 
     private fun checkForNotifications() {
@@ -108,16 +115,16 @@ class NotificationService: Service() {
         val intent = Intent(this, AssignmentActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this,0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val contentView = RemoteViews(packageName, R.layout.notification)
-        contentView.setTextViewText(R.id.notification_title, getString(R.string.app_name))
-        contentView.setTextViewText(R.id.notification_header, getString(R.string.lbl_new_assignment))
-        contentView.setTextViewText(R.id.notification_subtext1, getString(R.string.lbl_earn))
-        contentView.setTextViewText(R.id.notification_subtext2, getString(R.string.lbl_euro))
-        contentView.setTextViewText(R.id.notification_subtext3, deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
+        val contentView = RemoteViews(packageName, nl.bezorgdirect.mijnbd.R.layout.notification)
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_title, getString(nl.bezorgdirect.mijnbd.R.string.app_name))
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_header, getString(nl.bezorgdirect.mijnbd.R.string.lbl_new_assignment))
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext1, getString(nl.bezorgdirect.mijnbd.R.string.lbl_earn))
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext2, getString(nl.bezorgdirect.mijnbd.R.string.lbl_euro))
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext3, deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notificationChannel = NotificationChannel(channelId, getString(R.string.lbl_channel_name), NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel = NotificationChannel(channelId, getString(nl.bezorgdirect.mijnbd.R.string.lbl_channel_name), NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.enableLights(true)
             notificationChannel.lightColor = Color.YELLOW
             notificationChannel.enableVibration(false)
@@ -125,19 +132,18 @@ class NotificationService: Service() {
 
             builder = Notification.Builder(this, channelId)
                 .setContent(contentView)
-                .setSmallIcon(R.drawable.ic_logo_b)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_logo_y))
+                .setSmallIcon(nl.bezorgdirect.mijnbd.R.drawable.ic_logo_b)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, nl.bezorgdirect.mijnbd.R.drawable.ic_logo_y))
                 .setContentIntent(pendingIntent)
         }
         else {
             builder = Notification.Builder(this)
                 .setContent(contentView)
-                .setSmallIcon(R.drawable.ic_launcher_round)
-                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher))
+                .setSmallIcon(nl.bezorgdirect.mijnbd.R.drawable.ic_launcher_round)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, nl.bezorgdirect.mijnbd.R.drawable.ic_launcher))
                 .setContentIntent(pendingIntent)
         }
 
         notificationManager.notify(0, builder.build()) // Todo: what does this id do?
     }
-
 }

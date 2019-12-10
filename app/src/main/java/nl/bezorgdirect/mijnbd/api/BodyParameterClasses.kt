@@ -6,5 +6,5 @@ data class UpdateNotificationParams(val accepted: Boolean)
 
 data class UpdateLocationParams(val latitude: Float, val longitude: Float)
 
-data class UpdateStatusParams(val status: Int,val latitude: Float, val longitude: Float)
+data class UpdateStatusParams(val status: Int, val latitude: Float, val longitude: Float)
 

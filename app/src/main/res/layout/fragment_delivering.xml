@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="@dimen/toolbar_height"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
 
@@ -80,7 +79,7 @@
                 android:textSize="@dimen/text_size_text"
                 android:layout_marginTop="20dp"/>
             <TextView
-                android:id="@+id/to_warehouse_address"
+                android:id="@+id/lbl_to_warehouse_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dummy_address"
@@ -88,7 +87,7 @@
                 android:textSize="@dimen/text_size_h3"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/to_warehouse_zip"
+                android:id="@+id/lbl_to_warehouse_zip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dummy_zip"
@@ -107,9 +106,9 @@
                 android:layout_height="80dp"
                 android:background="@drawable/rounded_yellow_section"
                 android:layout_marginTop="20dp"/>
+
+
         </LinearLayout>
     </LinearLayout>
-    <include layout="@layout/toolbar" />
-    <include layout="@layout/bottom_bar"/>
 
 </RelativeLayout>

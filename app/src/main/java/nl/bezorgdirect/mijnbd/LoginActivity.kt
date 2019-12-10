@@ -21,6 +21,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.Delivery.NewAssignmentListener
 import nl.bezorgdirect.mijnbd.services.NotificationService
 
 class LoginActivity : AppCompatActivity() {
@@ -164,7 +165,11 @@ class LoginActivity : AppCompatActivity() {
 
         if(!notificationServiceIsRunning) {
             startService(notificationIntent)
+
+
         }
         else Log.e("NOTIFICATION", "Notification service already started (on login)")
     }
+
+
 }

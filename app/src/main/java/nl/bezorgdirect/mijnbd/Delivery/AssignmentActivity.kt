@@ -1,7 +1,9 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,12 +12,22 @@ import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.History.MyBDHistory
 import nl.bezorgdirect.mijnbd.R.*
+import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.helpers.getApiService
+import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.replaceFragment
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import android.os.IBinder
+import android.content.ComponentName
+import android.content.ServiceConnection
+import java.util.*
 
 
-
-class AssignmentActivity : AppCompatActivity() {
-
-
+class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
+    val apiService = getApiService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,20 +35,52 @@ class AssignmentActivity : AppCompatActivity() {
 
         custom_toolbar_title.setText(getString(string.title_assignment))
         setSupportActionBar(custom_toolbar)
+        setBottomNav()
 
+        setFragment()
+    }
+
+    override fun onNewAssignment() {
+        val newAssignmentFragment = NewAssignmentFragment()
+        replaceFragment(id.delivery_fragment, newAssignmentFragment)
+    }
+
+    private fun setFragment() {
+        val decryptedToken = getDecryptedToken(this)
+        apiService.deliveryGet(decryptedToken)
+            .enqueue(object: Callback<Delivery> {
+                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val deliveringFragment = DeliveringFragment()
+                        replaceFragment(id.delivery_fragment, deliveringFragment)
+                    }
+                    else {
+                        if(canReceiveNotification) {
+                            val noAssignmentFragment = NoAssignmentFragment()
+                            replaceFragment(id.delivery_fragment, noAssignmentFragment)
+                        }
+                        else {
+                            val newAssignmentFragment = NewAssignmentFragment()
+                            replaceFragment(id.delivery_fragment, newAssignmentFragment)
+                        }
+                    }
+                }
+                override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    Log.e("ASSIGNMENT", "Something went wrong with the Get Delivery call in AssignmentActivity")
+                }
+            })
+    }
+
+    private fun setBottomNav(){
         bottom_navigation.setOnNavigationItemSelectedListener(object :
             BottomNavigationView.OnNavigationItemSelectedListener {
             override fun onNavigationItemSelected(item: MenuItem): Boolean {
                 when (item.getItemId()) {
-                   id.action_history -> {
+                    id.action_history -> {
                         val myBDHistory = MyBDHistory()
                         supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBDHistory).commit()
                     }
-                    id.action_deliveries -> Toast.makeText(
-                        this@AssignmentActivity,
-                        "deliveries",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    id.action_deliveries -> setFragment()
                     id.action_mybd -> Toast.makeText(
                         this@AssignmentActivity,
                         "mybd",
@@ -46,9 +90,5 @@ class AssignmentActivity : AppCompatActivity() {
                 return true
             }
         })
-
-        val noAssignmentFragment = NoAssignmentFragment()
-        supportFragmentManager.beginTransaction().replace(id.delivery_fragment, noAssignmentFragment).commit()
     }
-
 }
