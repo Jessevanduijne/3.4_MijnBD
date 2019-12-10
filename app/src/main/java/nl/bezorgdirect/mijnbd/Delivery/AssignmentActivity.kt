@@ -1,7 +1,6 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
 
-import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -10,22 +9,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.History.MyBDHistory
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.MyBD.MyBDActivity
 import nl.bezorgdirect.mijnbd.R.*
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import nl.bezorgdirect.mijnbd.helpers.replaceFragment
-import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.os.IBinder
-import android.content.ComponentName
-import android.content.ServiceConnection
-import com.google.android.gms.maps.SupportMapFragment
-import nl.bezorgdirect.mijnbd.R
-import java.util.*
 
 
 class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
@@ -93,4 +86,6 @@ class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
             }
         })
     }
+
+
 }

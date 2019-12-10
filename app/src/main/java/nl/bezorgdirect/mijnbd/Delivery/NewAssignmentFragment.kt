@@ -1,17 +1,30 @@
 package nl.bezorgdirect.mijnbd.Delivery
 
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.app.Activity
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
+import com.google.android.gms.location.*
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.api.*
+import nl.bezorgdirect.mijnbd.api.BDNotification
+import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.api.UpdateNotificationParams
+import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import nl.bezorgdirect.mijnbd.helpers.replaceFragment
@@ -19,33 +32,26 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Context.LOCATION_SERVICE
-import android.content.pm.PackageManager
-import android.location.LocationListener
-import android.location.LocationManager
-import android.os.Build
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import java.text.SimpleDateFormat
 
 
 class NewAssignmentFragment : Fragment() {
 
     private val apiService = getApiService()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var latitude: Double = 52.3673779
-    private var longitude: Double = 4.9581227 // TODO: Edit these values
-    private val MY_PERMISSION_ACCESS_COARSE_LOCATION = 11
+    private var lat: Double = 52.3673779
+    private var long: Double = 4.9581227 // TODO: Edit these values
+
+    val PERMISSION_ID = 42
+    lateinit var mFusedLocationClient: FusedLocationProviderClient
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
+
+        getLastLocation()
 
         getNotificationId { notification -> run {
                 getDeliveryById(notification.DeliveryId!!) { delivery -> run {
@@ -157,9 +163,8 @@ class NewAssignmentFragment : Fragment() {
     }
 
     private fun updateDeliveryStatusManually(delivery: Delivery){ // The API doesn't update the delivery after accepting notification
-        obtainLocation() // TODO: Fix location
 
-        val updateStatusBody = UpdateStatusParams(2, latitude.toFloat(), longitude.toFloat()) // status 2 = bevestigd
+        val updateStatusBody = UpdateStatusParams(2, lat.toFloat(), long.toFloat()) // status 2 = bevestigd
         val decryptedToken = getDecryptedToken(this.activity!!)
         apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody) // TODO: Get DeliveryID from Notification object
             .enqueue(object: Callback<Delivery> {
@@ -176,18 +181,92 @@ class NewAssignmentFragment : Fragment() {
             })
     }
 
-    private fun obtainLocation(){
-        if (ContextCompat.checkSelfPermission(this.activity!!, ACCESS_COARSE_LOCATION ) != PackageManager.PERMISSION_GRANTED ) {
-            ActivityCompat.requestPermissions(
-                this.activity!!,
-                arrayOf(ACCESS_COARSE_LOCATION),
-                MY_PERMISSION_ACCESS_COARSE_LOCATION
-            )
-        }
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location ->
-                latitude = location.latitude
-                longitude = location.longitude
+
+    @SuppressLint("MissingPermission")
+    private fun getLastLocation() {
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+
+                mFusedLocationClient.lastLocation.addOnCompleteListener(this.activity!!) { task ->
+                    var location: Location? = task.result
+                    if (location == null) {
+                        requestNewLocationData()
+                    } else {
+                        lat = location.latitude
+                        long = location.longitude
+                    }
+                }
+            } else {
+                Toast.makeText(this.activity!!, "Turn on location", Toast.LENGTH_LONG).show()
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
             }
+        } else {
+            requestPermissions()
+        }
     }
+
+    @SuppressLint("MissingPermission")
+    private fun requestNewLocationData() {
+        var mLocationRequest = LocationRequest()
+        mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        mLocationRequest.interval = 0
+        mLocationRequest.fastestInterval = 0
+        mLocationRequest.numUpdates = 1
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
+        mFusedLocationClient!!.requestLocationUpdates(
+            mLocationRequest, mLocationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private val mLocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            var mLastLocation: Location = locationResult.lastLocation
+            println(mLastLocation.longitude)
+            lat = mLastLocation.latitude
+            long = mLastLocation.longitude
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        var locationManager: LocationManager = context!!.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
+    }
+
+    private fun checkPermissions(): Boolean {
+        if (ActivityCompat.checkSelfPermission(
+                this.activity!!,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+            ActivityCompat.checkSelfPermission(
+                this.activity!!,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            return true
+        }
+        return false
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(
+            this.activity!!,
+            arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION),
+            PERMISSION_ID
+        )
+    }
+
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == PERMISSION_ID) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                getLastLocation()
+            }
+        }
+    }
+
 }
