@@ -8,9 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
@@ -43,6 +41,8 @@ class MyBDActivity : Fragment() {
             val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
             custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
         }
+
+
         val btn_info: Button = root.findViewById(R.id.btn_info)
         val btn_availability: Button = root.findViewById(R.id.btn_availability)
         val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
@@ -100,6 +100,7 @@ class MyBDActivity : Fragment() {
                         resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    doneLoading(root)
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -107,6 +108,7 @@ class MyBDActivity : Fragment() {
                         resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    doneLoading(root)
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     user = values
@@ -122,7 +124,7 @@ class MyBDActivity : Fragment() {
                     lbl_pd.text = "$fare"
                     val total = values.totalEarnings
                     lbl_total_earnings.text = "$total"
-
+                    doneLoading(root)
                 }
             }
 
@@ -132,6 +134,7 @@ class MyBDActivity : Fragment() {
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
+                doneLoading(root)
                 return
             }
 
@@ -162,5 +165,12 @@ class MyBDActivity : Fragment() {
         intent.putExtra("dateofbirth",user.dateOfBirth)
         intent.putExtra("fare",user.fare)
         intent.putExtra("totalearnings",user.totalEarnings)
+    }
+    fun doneLoading(root: View)
+    {
+        val content: LinearLayout = root.findViewById(R.id.mybd_content)
+        val loadingSpinner: ProgressBar = root.findViewById(R.id.loadingSpinner)
+        content.visibility = View.VISIBLE
+        loadingSpinner.visibility = View.GONE
     }
 }
