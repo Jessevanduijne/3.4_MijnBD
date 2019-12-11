@@ -5,8 +5,8 @@ data class Feed (val Id: Int?, val Name: String?)
 data class Location (val Id: String?, val Latitude: Float?, val Longitude: Float?, val Address: String?, val PostalCode: String?,
                      val Place: String?, val IsWareHouse: Boolean?)
 
-data class User (val id: String?, val emailAddress: String?, val token: String?, val phoneNumber: String?,
-                          val home: Location, val dateOfBirth: String?, val range: Int?, val vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
+data class User (val id: String?, var emailAddress: String?, val token: String?, var phoneNumber: String?,
+                          val home: Location, val dateOfBirth: String?, var range: Int?, var vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
 
 data class Availability (val Id: String?, val DelivererId: String?, val Date:  String?, val StartTime: String?, val EndTime: String?)
 

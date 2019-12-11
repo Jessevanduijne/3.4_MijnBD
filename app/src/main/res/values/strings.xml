@@ -5,7 +5,10 @@
     <string name="lbl_deliveries">Bezorgingen</string>
     <string name="lbl_history">Historie</string>
     <string name="lbl_preferences">Mijn B.D.</string>
-
+    <!-- vehicles: -->
+    <string name="V1">Fiets</string>
+    <string name="V2_3">Motor</string>
+    <string name="V4">Auto</string>
     <!-- General -->
     <string name="lbl_seconds_short">sec.</string>
     <string name="lbl_minutes_short">min.</string>

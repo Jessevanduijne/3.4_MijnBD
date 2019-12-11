@@ -1,5 +1,6 @@
 package nl.bezorgdirect.mijnbd.MyBD
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -22,12 +23,18 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+
+
+
+
 class MyBDActivity : Fragment() {
 
     private var user = User(null, null, null , null, Location(null, null, null, null , null, null ,null),
         null, null ,null ,null, null, null )
     private var activeCall = false
 
+    var email: TextView? = null
+    var vehicle: TextView? = null
 
     companion object {
         fun newInstance() = MyBDActivity()
@@ -36,16 +43,18 @@ class MyBDActivity : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.activity_my_bd, container, false)
+        val root = inflater.inflate(nl.bezorgdirect.mijnbd.R.layout.activity_my_bd, container, false)
         if(activity != null) {
-            val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
-            custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
+            val custom_toolbar_title: TextView = activity!!.findViewById(nl.bezorgdirect.mijnbd.R.id.custom_toolbar_title)
+            custom_toolbar_title.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_mybdpersonalia)
         }
 
+        email = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
+        vehicle = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
 
-        val btn_info: Button = root.findViewById(R.id.btn_info)
-        val btn_availability: Button = root.findViewById(R.id.btn_availability)
-        val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
+        val btn_info: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_info)
+        val btn_availability: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_availability)
+        val btn_meansoftransport: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_meansoftransport)
 
         btn_info.setOnClickListener{
             gotoInfo(root.context)
@@ -97,7 +106,7 @@ class MyBDActivity : Fragment() {
                 if (response.code() == 500) {
                     Toast.makeText(
                         context,
-                        resources.getString(R.string.E500),
+                        resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
                     doneLoading(root)
@@ -105,7 +114,7 @@ class MyBDActivity : Fragment() {
                 else if (response.code() == 401) {
                     Toast.makeText(
                         context,
-                        resources.getString(R.string.wrongcreds),
+                        resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
                     doneLoading(root)
@@ -114,10 +123,10 @@ class MyBDActivity : Fragment() {
                     user = values
                     println("vals")
                     println(values)
-                    val lbl_name: TextView = root.findViewById(R.id.lbl_name)
-                    val lbl_vehicle: TextView = root.findViewById(R.id.lbl_mosvar)
-                    val lbl_pd: TextView = root.findViewById(R.id.lbl_payoutpdvar)
-                    val lbl_total_earnings: TextView = root.findViewById(R.id.lbl_payouttotalvar)
+                    val lbl_name: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
+                    val lbl_vehicle: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
+                    val lbl_pd: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
+                    val lbl_total_earnings: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payouttotalvar)
                     lbl_vehicle.text = values.vehicleDisplayName
                     lbl_name.text = values.emailAddress
                     val fare = values.fare
@@ -131,7 +140,7 @@ class MyBDActivity : Fragment() {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
-                    context, resources.getString(R.string.E500),
+                    context, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
                 doneLoading(root)
@@ -147,13 +156,13 @@ class MyBDActivity : Fragment() {
 
         //val address = user.home.Address + "; " + user.home.Place + "; " + user.home.PostalCode
         putObjects(intent)
-        startActivity(intent)
+        startActivityForResult(intent, 1)
     }
     fun gotoMeansoftransport(context: Context)
     {
         val intent : Intent = Intent(context, MyBDMoS::class.java)
         putObjects(intent)
-        startActivity(intent)
+        startActivityForResult(intent,3)
     }
     fun putObjects(intent: Intent)
     {
@@ -168,9 +177,51 @@ class MyBDActivity : Fragment() {
     }
     fun doneLoading(root: View)
     {
-        val content: LinearLayout = root.findViewById(R.id.mybd_content)
-        val loadingSpinner: ProgressBar = root.findViewById(R.id.loadingSpinner)
+        val content: LinearLayout = root.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
+        val loadingSpinner: ProgressBar = root.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
         content.visibility = View.VISIBLE
         loadingSpinner.visibility = View.GONE
     }
+
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                email!!.text = data!!.getStringExtra("email")
+                user.emailAddress = data!!.getStringExtra("email")
+                user.phoneNumber = data!!.getStringExtra("phonenumber")
+        }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+         else if(requestCode == 2)
+        {
+            if (resultCode == Activity.RESULT_OK) {
+                val result = data!!.getStringExtra("result")
+
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+                 //Write your code if there's no result
+             }
+        }
+        else if(requestCode == 3) //meansoftransport
+        {
+            if (resultCode == Activity.RESULT_OK) {
+                val vehicleval = data!!.getIntExtra("vehicle", -1)
+                user.range = data!!.getIntExtra("range", -1)
+                user.vehicle = vehicleval
+                when(vehicleval)
+                {
+                    1 -> vehicle!!.text = resources.getString(R.string.V1)
+                    2 -> vehicle!!.text = resources.getString(R.string.V2_3)
+                    3 -> vehicle!!.text = resources.getString(R.string.V2_3)
+                    4 -> vehicle!!.text = resources.getString(R.string.V4)
+                }
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
+
+            }
+        }
+    }//onActivityResult
 }

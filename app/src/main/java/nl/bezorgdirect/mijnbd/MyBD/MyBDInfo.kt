@@ -1,5 +1,7 @@
 package nl.bezorgdirect.mijnbd.MyBD
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -135,6 +137,11 @@ class MyBDInfo : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             android.R.id.home -> {
+                val returnIntent = Intent()
+                returnIntent.putExtra("email", email)
+                returnIntent.putExtra("phonenumber", phonenumber)
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
                 finish()
                 return true
             }
