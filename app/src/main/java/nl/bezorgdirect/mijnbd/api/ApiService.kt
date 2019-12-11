@@ -15,7 +15,7 @@ interface ApiService {
 
     /************************availablities******************************************/
     @POST("availabilities") //Availabilities will be pushed to authenticated Deliverer's Availabilities array
-    fun availablitiesPost(@Header("Authorization") auth: String): Call<ResponseBody>
+    fun availablitiesPost(@Header("Authorization") auth: String, @Body availabilityPost: ArrayList<AvailabilityPost>): Call<ResponseBody>
 
     @GET("availabilities") //List Availabilities of authenticated Deliverer
     fun availablitiesGet(@Header("Authorization") auth: String): Call<ArrayList<Availability>>

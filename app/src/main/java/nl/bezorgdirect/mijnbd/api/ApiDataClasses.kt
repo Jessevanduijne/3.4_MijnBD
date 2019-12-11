@@ -20,3 +20,5 @@ data class Delivery (val Id: String?, val DelivererId: String?, val CustomerPhon
                      val CustomerETA: String?, val CustomerId: String?, val CurrentId: String?, val DeliveredAt: String?, val Price: Float?, val tip: Float?,
                      val PaymentMethod: Int?, val PaymenMethodDisplayName: String?, val Status: Int?, val StatusDisplayName: String?, val Warehouse: Location,
                      val Customer: Location, val Current: Location)
+
+data class AvailabilityPost (val date: String?, val startTime: String?, val endTime: String?)

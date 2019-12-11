@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_my_bd.*
 import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
@@ -46,14 +47,21 @@ class MyBDActivity : Fragment() {
             custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
         }
 
-        fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
-            val formatter = SimpleDateFormat(format, locale)
-            return formatter.format(this)
-        }
-
         val btn_info: Button = root.findViewById(R.id.btn_info)
         val btn_availability: Button = root.findViewById(R.id.btn_availability)
         val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
+
+
+        //change date format to show day of week,
+        /*
+        val lbl_monday_var: TextView = root.findViewById(R.id.lbl_monday_var)
+
+        val outputFormat = SimpleDateFormat("EEE")
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val start = "2019-12-06T15:16:25.84Z"
+        val starttime: Date = inputFormat.parse(start)
+        val formattedstart: String = outputFormat.format(starttime)
+        lbl_monday_var.text = formattedstart */
 
         btn_info.setOnClickListener{
             val intent : Intent = Intent(root.context, MyBDInfo::class.java)

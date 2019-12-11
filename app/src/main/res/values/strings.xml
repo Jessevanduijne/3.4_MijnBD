@@ -79,13 +79,13 @@
     <string name="lbl_friday">Vr</string>
     <string name="lbl_saturday">Za</string>
     <string name="lbl_sunday">Zo</string>
-    <string name="lbl_monday_var">16:00-20:00</string>
-    <string name="lbl_tuesday_var">Niet beschikbaar</string>
-    <string name="lbl_wednesday_var">Niet beschikbaar</string>
-    <string name="lbl_thursday_var">12:00-18:00</string>
-    <string name="lbl_friday_var">Niet beschikbaar</string>
-    <string name="lbl_saturday_var">Niet beschikbaar</string>
-    <string name="lbl_sunday_var">Niet beschikbaar</string>
+    <string name="lbl_monday_var">Onbekend</string>
+    <string name="lbl_tuesday_var">Onbekend</string>
+    <string name="lbl_wednesday_var">Onbekend</string>
+    <string name="lbl_thursday_var">Onbekend</string>
+    <string name="lbl_friday_var">Onbekend</string>
+    <string name="lbl_saturday_var">Onbekend</string>
+    <string name="lbl_sunday_var">Onbekend</string>
 
     <!-- MijnBD Info: -->
     <string name="lbl_mybdinfo">Wijzig Personalia</string>
