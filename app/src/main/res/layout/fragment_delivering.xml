@@ -58,11 +58,13 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
                 <ImageView
+                    android:id="@+id/img_delivering_destination"
                     android:contentDescription="@string/lbl_assignment_warehouse"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_warehouse_w"/>
                 <TextView
+                    android:id="@+id/lbl_assignment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_h3"
@@ -77,38 +79,39 @@
                 android:text="@string/lbl_address"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_size_text"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="5dp"/>
             <TextView
-                android:id="@+id/lbl_to_warehouse_address"
+                android:id="@+id/lbl_delivering_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dummy_address"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_h3"
+                android:textSize="@dimen/text_size_text"
                 android:textStyle="bold"/>
             <TextView
-                android:id="@+id/lbl_to_warehouse_zip"
+                android:id="@+id/lbl_delivering_zip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/dummy_zip"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_h3"
+                android:textSize="@dimen/text_size_text"
                 android:textStyle="bold"/>
 
             <fragment
                 android:id="@+id/fragment_map"
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="180dp" />
 
-            <ImageButton
+            <Button
+                android:id="@+id/btn_delivering_completed"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="50dp"
                 android:background="@drawable/rounded_yellow_section"
-                android:layout_marginTop="20dp"/>
-
-
+                android:layout_marginTop="20dp"
+                android:text="@string/lbl_warehouse_pickup_text"
+                android:textAllCaps="false"
+                android:layout_marginBottom="10dp"/>
         </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
