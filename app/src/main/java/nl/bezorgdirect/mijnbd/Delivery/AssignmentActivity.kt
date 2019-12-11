@@ -63,6 +63,8 @@ class AssignmentActivity : AppCompatActivity(), NewAssignmentListener {
                 }
                 override fun onFailure(call: Call<Delivery>, t: Throwable) {
                     Log.e("ASSIGNMENT", "Something went wrong with the Get Delivery call in AssignmentActivity")
+                    val newAssignmentFragment = NewAssignmentFragment()
+                    replaceFragment(id.delivery_fragment, newAssignmentFragment)
                 }
             })
     }

@@ -17,10 +17,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.Fragment
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.BDNotification
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.UpdateNotificationParams
@@ -41,8 +44,8 @@ class NewAssignmentFragment : Fragment() {
 
     private val apiService = getApiService()
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var lat: Double = 52.3673779
-    private var long: Double = 4.9581227 // TODO: Edit these values
+    private var lat: Double = 52.44473779
+    private var long: Double = 4.661227 // TODO: Edit these values
 
     val PERMISSION_ID = 42
     lateinit var mFusedLocationClient: FusedLocationProviderClient
@@ -50,7 +53,6 @@ class NewAssignmentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this.activity!!)
-
         getLastLocation()
 
         getNotificationId { notification -> run {
@@ -81,6 +83,14 @@ class NewAssignmentFragment : Fragment() {
         lbl_new_assignment_earnings.text = delivery.Price!!.toBigDecimal().setScale(2).toString()
         lbl_new_assignment_due_date.text = formattedTime
         lbl_new_assignment_vehicle.text = delivery.VehicleDisplayName
+
+        when(delivery.Vehicle)
+        {
+            1 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_bike_y)
+            2 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
+            3 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
+            4 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_car_y)
+        }
 
         // TODO: Calculate this info with the CreatedAt property from notification
 //        lbl_new_assignment_minutes_to_accept.text = ""
@@ -170,7 +180,8 @@ class NewAssignmentFragment : Fragment() {
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful) {
-                        val fragment = DeliveringFragment(delivery)
+                        val latlong = LatLng(lat, long)
+                        val fragment = DeliveringFragment(delivery, latlong)
                         replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
                     }
                     else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
