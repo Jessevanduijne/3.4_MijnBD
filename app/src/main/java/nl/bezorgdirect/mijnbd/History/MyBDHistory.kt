@@ -123,7 +123,7 @@ class MyBDHistory : Fragment() {
             loadingSpinner.visibility = View.VISIBLE
         }
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.178.18:7071/api/")
+            .baseUrl("http://10.0.2.2:7071/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
