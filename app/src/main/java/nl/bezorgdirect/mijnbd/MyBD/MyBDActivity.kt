@@ -19,11 +19,13 @@ import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.ApiService
 import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.api.User
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -32,6 +34,7 @@ class MyBDActivity : Fragment() {
 
     private var availabilities = ArrayList<Availability>()
     private var activeCall = false
+    private var count = 0
 
     companion object {
         fun newInstance() = MyBDActivity()
@@ -52,16 +55,73 @@ class MyBDActivity : Fragment() {
         val btn_meansoftransport: Button = root.findViewById(R.id.btn_meansoftransport)
 
 
-        //change date format to show day of week,
-        /*
-        val lbl_monday_var: TextView = root.findViewById(R.id.lbl_monday_var)
+        //fill in dates on schedule
+        val calendar = Calendar.getInstance()
+        val currentDateFormat = SimpleDateFormat("MM-dd")
+        val currentDateFormatDay = SimpleDateFormat("EEE")
+        val lbl_mondaydate: TextView = root.findViewById(R.id.lbl_mondaydate)
+        val lbl_tuesdaydate: TextView = root.findViewById(R.id.lbl_tuesdaydate)
+        val lbl_wednesdaydate: TextView = root.findViewById(R.id.lbl_wednesdaydate)
+        val lbl_thursdaydate: TextView = root.findViewById(R.id.lbl_thursdaydate)
+        val lbl_fridaydate: TextView = root.findViewById(R.id.lbl_fridaydate)
+        val lbl_saturdaydate: TextView = root.findViewById(R.id.lbl_saturdaydate)
+        val lbl_sundaydate: TextView = root.findViewById(R.id.lbl_sundaydate)
 
-        val outputFormat = SimpleDateFormat("EEE")
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val start = "2019-12-06T15:16:25.84Z"
-        val starttime: Date = inputFormat.parse(start)
-        val formattedstart: String = outputFormat.format(starttime)
-        lbl_monday_var.text = formattedstart */
+        val lbl_monday: TextView = root.findViewById(R.id.lbl_monday)
+        val lbl_tuesday: TextView = root.findViewById(R.id.lbl_tuesday)
+        val lbl_wednesday: TextView = root.findViewById(R.id.lbl_wednesday)
+        val lbl_thursday: TextView = root.findViewById(R.id.lbl_thursday)
+        val lbl_friday: TextView = root.findViewById(R.id.lbl_friday)
+        val lbl_saturday: TextView = root.findViewById(R.id.lbl_saturday)
+        val lbl_sunday: TextView = root.findViewById(R.id.lbl_sunday)
+
+        val lbl_monday_var: TextView = root.findViewById(R.id.lbl_monday_var)
+        val lbl_tuesday_var: TextView = root.findViewById(R.id.lbl_tuesday_var)
+        val lbl_wednesday_var: TextView = root.findViewById(R.id.lbl_wednesday_var)
+        val lbl_thursday_var: TextView = root.findViewById(R.id.lbl_thursday_var)
+        val lbl_friday_var: TextView = root.findViewById(R.id.lbl_friday_var)
+        val lbl_saturday_var: TextView = root.findViewById(R.id.lbl_saturday_var)
+        val lbl_sunday_var: TextView = root.findViewById(R.id.lbl_sunday_var)
+
+        val formattedDateOne = currentDateFormat.format(calendar.time)
+        val formattedDateOneDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateTwo = currentDateFormat.format(calendar.time)
+        val formattedDateTwoDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateThree = currentDateFormat.format(calendar.time)
+        val formattedDateThreeDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateFour = currentDateFormat.format(calendar.time)
+        val formattedDateFourDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateFive = currentDateFormat.format(calendar.time)
+        val formattedDateFiveDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateSix = currentDateFormat.format(calendar.time)
+        val formattedDateSixDay = currentDateFormatDay.format(calendar.time)
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val formattedDateSeven = currentDateFormat.format(calendar.time)
+        val formattedDateSevenDay = currentDateFormatDay.format(calendar.time)
+
+        lbl_mondaydate.text = formattedDateOne
+        lbl_tuesdaydate.text = formattedDateTwo
+        lbl_wednesdaydate.text = formattedDateThree
+        lbl_thursdaydate.text = formattedDateFour
+        lbl_fridaydate.text = formattedDateFive
+        lbl_saturdaydate.text = formattedDateSix
+        lbl_sundaydate.text = formattedDateSeven
+
+        lbl_monday.text = formattedDateOneDay
+        lbl_tuesday.text = formattedDateTwoDay
+        lbl_wednesday.text = formattedDateThreeDay
+        lbl_thursday.text = formattedDateFourDay
+        lbl_friday.text = formattedDateFiveDay
+        lbl_saturday.text = formattedDateSixDay
+        lbl_sunday.text = formattedDateSevenDay
+
+        getAvailabilities(root.context)
+
 
         btn_info.setOnClickListener{
             val intent : Intent = Intent(root.context, MyBDInfo::class.java)
@@ -200,7 +260,41 @@ class MyBDActivity : Fragment() {
                     ).show()
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
-
+                    var countmax = values.size
+                    if (lbl_mondaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_monday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_monday_var.text = "Vrij"}
+                    if (lbl_tuesdaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_tuesday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_tuesday_var.text = "vrij"}
+                    if (lbl_wednesdaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_wednesday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_wednesday_var.text = "vrij"}
+                    if (lbl_thursdaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_thursday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_thursday_var.text = "vrij"}
+                    if (lbl_fridaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_friday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_friday_var.text = "vrij"}
+                    if (lbl_saturdaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_saturday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                        //if (count < countmax){count += 1}
+                    }
+                    else{lbl_saturday_var.text = "Vrij"}
+                    if (lbl_sundaydate.text == values[count].Date.toString().substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)){
+                        lbl_sunday_var.text = (values[count].StartTime.toString().substring(0, 5) + " - " + values[0].EndTime.toString().substring(0, 5))
+                    }
+                    else{lbl_sunday_var.text = "Vrij"}
                     availabilities = values
                 }
             }

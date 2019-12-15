@@ -19,8 +19,7 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: AvailabilityAdapter.MyViewHolder, position: Int) {
         val item = list[position]
         if(item.Date != null){
-            var formattedDate = item.Date.substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date")
-            formattedDate = formattedDate.substring(5)
+            var formattedDate = item.Date.substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date").substring(5)
             holder.date.text = formattedDate
         }
         else holder.date.text = "??-??"
