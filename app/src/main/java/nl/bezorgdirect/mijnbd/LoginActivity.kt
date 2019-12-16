@@ -22,6 +22,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
 import nl.bezorgdirect.mijnbd.Delivery.NewAssignmentListener
+import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.services.NotificationService
 
 class LoginActivity : AppCompatActivity() {
@@ -61,12 +62,7 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:7071/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(ApiService::class.java)
+        val service = getApiService()
 
         val editpref = sharedPref.edit()
         loadingSpinner.visibility = View.VISIBLE

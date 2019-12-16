@@ -24,6 +24,7 @@ import nl.bezorgdirect.mijnbd.RecyclerViews.HistoryAdapter
 import nl.bezorgdirect.mijnbd.RecyclerViews.HistoryListener
 import nl.bezorgdirect.mijnbd.api.ApiService
 import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.helpers.getApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -122,12 +123,8 @@ class MyBDHistory : Fragment() {
             loadingSpinner.bringToFront()
             loadingSpinner.visibility = View.VISIBLE
         }
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.178.18:7071/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
 
-        val service = retrofit.create(ApiService::class.java)
+        val service = getApiService()
         val sharedPref: SharedPreferences = context.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         val encryptedToken = sharedPref.getString("T", "")
 

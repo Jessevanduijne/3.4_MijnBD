@@ -21,6 +21,7 @@ import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
 import nl.bezorgdirect.mijnbd.api.GoogleService
+import nl.bezorgdirect.mijnbd.helpers.getGoogleService
 import nl.bezorgdirect.mijnbd.helpers.replaceFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -112,16 +113,5 @@ class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = n
                 Log.e("HTTP", "Google directions call failed")
             }
         })
-    }
-
-    private fun getGoogleService(): GoogleService {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(GoogleService::class.java)
-        return service
     }
 }

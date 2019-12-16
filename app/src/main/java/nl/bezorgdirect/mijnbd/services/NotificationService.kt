@@ -145,5 +145,9 @@ class NotificationService: Service() {
         }
 
         notificationManager.notify(0, builder.build()) // Todo: what does this id do?
+
+        val assignmentIntent = Intent(this.applicationContext, AssignmentActivity::class.java)
+        assignmentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(assignmentIntent)
     }
 }

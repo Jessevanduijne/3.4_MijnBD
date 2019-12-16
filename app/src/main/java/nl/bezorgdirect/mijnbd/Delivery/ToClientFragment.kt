@@ -28,6 +28,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.helpers.getGoogleService
 
 class ToClientFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
 
@@ -118,16 +119,4 @@ class ToClientFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCa
             }
         })
     }
-
-    private fun getGoogleService(): GoogleService {
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://maps.googleapis.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val service = retrofit.create(GoogleService::class.java)
-        return service
-    }
-
 }
