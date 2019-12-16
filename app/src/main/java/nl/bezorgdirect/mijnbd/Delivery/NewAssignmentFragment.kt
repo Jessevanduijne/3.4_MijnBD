@@ -176,13 +176,13 @@ class NewAssignmentFragment : Fragment() {
 
         val updateStatusBody = UpdateStatusParams(2, lat.toFloat(), long.toFloat()) // status 2 = bevestigd
         val decryptedToken = getDecryptedToken(this.activity!!)
-        apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody) // TODO: Get DeliveryID from Notification object
+        apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful) {
                         val latlong = LatLng(lat, long)
                         val fragment = DeliveringFragment(delivery, latlong)
-                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+                        replaceFragment(R.id.delivery_fragment, fragment)
                     }
                     else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
                 }
