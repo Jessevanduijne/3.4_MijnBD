@@ -1,8 +1,8 @@
 package nl.bezorgdirect.mijnbd.helpers
 
 import android.content.Context
-import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
+import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
+import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 
 fun getDecryptedToken(context: Context): String{
     val sharedPrefs = context.getSharedPreferences("mybd", Context.MODE_PRIVATE)

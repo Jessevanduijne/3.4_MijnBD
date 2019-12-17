@@ -10,7 +10,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
-import nl.bezorgdirect.mijnbd.Delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
 import nl.bezorgdirect.mijnbd.api.BDNotification
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
@@ -20,12 +20,6 @@ import retrofit2.Response
 import java.lang.UnsupportedOperationException
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.api.Delivery
-import android.app.ActivityManager
-import android.R
-import android.annotation.SuppressLint
-import android.content.ComponentName
-import androidx.core.content.getSystemService
-import nl.bezorgdirect.mijnbd.Delivery.NewAssignmentListener
 
 
 class NotificationService: Service() {
@@ -135,6 +129,7 @@ class NotificationService: Service() {
                 .setSmallIcon(nl.bezorgdirect.mijnbd.R.drawable.ic_logo_b)
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources, nl.bezorgdirect.mijnbd.R.drawable.ic_logo_y))
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
         }
         else {
             builder = Notification.Builder(this)
@@ -142,6 +137,7 @@ class NotificationService: Service() {
                 .setSmallIcon(nl.bezorgdirect.mijnbd.R.drawable.ic_launcher_round)
                 .setLargeIcon(BitmapFactory.decodeResource(this.resources, nl.bezorgdirect.mijnbd.R.drawable.ic_launcher))
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
         }
 
         notificationManager.notify(0, builder.build()) // Todo: what does this id do?

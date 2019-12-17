@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.RecyclerViews
+package nl.bezorgdirect.mijnbd.recyclerviews
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_my_bdavailability.view.*
-import kotlinx.android.synthetic.main.activity_my_bdhistory_details.view.*
 import kotlinx.android.synthetic.main.activity_my_bdhistory_details.view.lbl_date
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Availability

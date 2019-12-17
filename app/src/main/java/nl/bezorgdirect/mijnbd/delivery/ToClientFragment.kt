@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.Delivery
+package nl.bezorgdirect.mijnbd.delivery
 
 import android.graphics.Color
 import android.os.Bundle
@@ -16,25 +16,24 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import kotlinx.android.synthetic.main.fragment_delivering.*
-import kotlinx.android.synthetic.main.fragment_new_delivery.*
+import kotlinx.android.synthetic.main.spinner.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
-import nl.bezorgdirect.mijnbd.api.GoogleService
-import nl.bezorgdirect.mijnbd.helpers.getGoogleService
-import nl.bezorgdirect.mijnbd.helpers.replaceFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.api.ApiService
+import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
+import nl.bezorgdirect.mijnbd.helpers.*
 
-class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = null): Fragment(), OnMapReadyCallback {
+class ToClientFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
+    private val apiService = getApiService()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        //setClickListener()
         return inflater.inflate(R.layout.fragment_delivering, container, false)
     }
 
@@ -42,18 +41,23 @@ class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = n
         super.onViewCreated(view, savedInstanceState)
         setLayout()
         setOnClickListeners()
+        hideSpinner(view)
     }
 
     private fun setOnClickListeners(){
         btn_delivering_completed.setOnClickListener {
-            val fragment = ToClientFragment(delivery)
-            replaceFragment(R.id.delivery_fragment, fragment)
+            canReceiveNotification = true
+            showSpinner(view!!)
+            updateDeliveryStatus()
         }
     }
 
     private fun setLayout(){
-        lbl_delivering_address.text = delivery!!.Warehouse.Address!!.substringBefore(',') // cut zip code off
-        lbl_delivering_zip.text = (delivery!!.Warehouse.PostalCode + " " + delivery!!.Warehouse.Place)
+        lbl_delivering_address.text = delivery!!.Customer.Address!!.substringBefore(',') // cut zip code off
+        lbl_delivering_zip.text = (delivery!!.Customer.PostalCode + " " + delivery!!.Warehouse.Place)
+        btn_delivering_completed.text = getString(R.string.lbl_delivery_delivered)
+        lbl_assignment.text = getString(R.string.lbl_assignment_client)
+        img_delivering_destination.setImageResource(R.drawable.ic_house_w)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -62,10 +66,10 @@ class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = n
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = latlng!!
-        val latLngDestination = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
+        val latLngOrigin = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
+        val latLngDestination = LatLng(delivery!!.Customer.Latitude!!.toDouble(), delivery!!.Customer.Longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Current"))
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.Address))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Customer.Address))
         this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 16.5f))
     }
 
@@ -73,8 +77,8 @@ class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = n
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = latlng!!.latitude.toString() + "," + latlng!!.longitude.toString()
-        val endLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val startLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val endLatLong = delivery!!.Customer.Latitude.toString() + "," + delivery!!.Customer.Longitude.toString()
 
         var travelmode = ""
         when(delivery!!.Vehicle)
@@ -113,5 +117,26 @@ class DeliveringFragment(val delivery: Delivery? = null, val latlng: LatLng? = n
                 Log.e("HTTP", "Google directions call failed")
             }
         })
+    }
+
+    private fun updateDeliveryStatus(){
+        val decryptedToken = getDecryptedToken(this.activity!!)
+        val updateStatusBody = UpdateStatusParams(4, delivery!!.Customer.Latitude!!, delivery!!.Customer.Longitude!!) // status 4 = afgeleverd
+
+        apiService.deliverystatusPatch(decryptedToken, delivery!!.Id!!, updateStatusBody)
+            .enqueue(object: Callback<Delivery> {
+                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val updatedAssignment = response.body()!!
+
+                        val fragment = AssignmentFinishedFragment(updatedAssignment)
+                        replaceFragment(R.id.delivery_fragment, fragment)
+                    }
+                    else Log.e("DELIVERING", "Updating delivery status response unsuccessful")
+                }
+                override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    Log.e("DELIVERING", "Updating delivery by delivery by deliveryId failed")
+                }
+            })
     }
 }

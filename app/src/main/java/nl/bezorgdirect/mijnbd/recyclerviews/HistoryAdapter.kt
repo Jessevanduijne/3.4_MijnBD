@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.RecyclerViews
+package nl.bezorgdirect.mijnbd.recyclerviews
 
 import android.content.Context
 import android.view.LayoutInflater

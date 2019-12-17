@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.MyBD
+package nl.bezorgdirect.mijnbd.mijnBD
 
 import android.app.Activity
 import android.content.Context
@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
+import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
+import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.ApiService
 import nl.bezorgdirect.mijnbd.api.Location

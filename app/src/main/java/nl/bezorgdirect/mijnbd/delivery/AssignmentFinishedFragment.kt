@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.Delivery
+package nl.bezorgdirect.mijnbd.delivery
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,9 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_assignment_finished.*
-import nl.bezorgdirect.mijnbd.History.MyBDHistoryDetails
+import kotlinx.android.synthetic.main.spinner.*
+import nl.bezorgdirect.mijnbd.history.MyBDHistoryDetails
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.helpers.hideSpinner
 import nl.bezorgdirect.mijnbd.helpers.replaceFragment
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -19,7 +21,6 @@ import java.time.format.DateTimeFormatter
 
 class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        //setClickListener()
         return inflater.inflate(R.layout.fragment_assignment_finished, container, false)
     }
 
@@ -27,6 +28,7 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
         super.onViewCreated(view, savedInstanceState)
         setOnClickListeners()
         setLayout()
+        hideSpinner(view)
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")

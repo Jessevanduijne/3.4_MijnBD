@@ -8,6 +8,8 @@
     android:layout_marginTop="150dp"
     android:background="@color/colorPrimaryDark">
 
+        <include layout="@layout/spinner"/>
+
         <pl.droidsonroids.gif.GifImageView
             android:contentDescription="@string/lbl_have_patience_message"
             android:layout_width="@dimen/waiting_gif_width"

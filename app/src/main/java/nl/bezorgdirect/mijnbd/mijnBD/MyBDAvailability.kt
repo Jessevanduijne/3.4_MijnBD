@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.MyBD
+package nl.bezorgdirect.mijnbd.mijnBD
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_my_bdavailability.*
-import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
+import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
+import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
-import nl.bezorgdirect.mijnbd.RecyclerViews.AvailabilityAdapter
+import nl.bezorgdirect.mijnbd.recyclerviews.AvailabilityAdapter
 import nl.bezorgdirect.mijnbd.api.ApiService
 import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.api.AvailabilityPost

@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.MyBD
+package nl.bezorgdirect.mijnbd.mijnBD
 
 import android.app.Activity
 import android.content.Intent

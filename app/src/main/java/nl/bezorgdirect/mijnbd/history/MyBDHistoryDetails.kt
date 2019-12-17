@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.History
+package nl.bezorgdirect.mijnbd.history
 
 import android.os.Bundle
 import android.view.Menu

@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.Encryption
+package nl.bezorgdirect.mijnbd.encryption
 
 import android.annotation.TargetApi
 import android.content.Context

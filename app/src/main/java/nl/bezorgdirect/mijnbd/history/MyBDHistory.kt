@@ -1,4 +1,4 @@
-package nl.bezorgdirect.mijnbd.History
+package nl.bezorgdirect.mijnbd.history
 
 import android.content.Context
 import android.content.Intent
@@ -17,19 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_my_bdhistory.*
-import nl.bezorgdirect.mijnbd.Encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.Encryption.KeyStoreWrapper
+import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
+import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
-import nl.bezorgdirect.mijnbd.RecyclerViews.HistoryAdapter
-import nl.bezorgdirect.mijnbd.RecyclerViews.HistoryListener
-import nl.bezorgdirect.mijnbd.api.ApiService
+import nl.bezorgdirect.mijnbd.recyclerviews.HistoryAdapter
+import nl.bezorgdirect.mijnbd.recyclerviews.HistoryListener
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MyBDHistory : Fragment() {
