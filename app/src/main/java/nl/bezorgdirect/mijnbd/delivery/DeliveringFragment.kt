@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
+import com.ncorti.slidetoact.SlideToActView
+import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_delivering.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
@@ -31,20 +33,23 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     private val apiService = getApiService()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.activity?.bottom_navigation?.visibility = View.GONE
         return inflater.inflate(R.layout.fragment_delivering, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout()
-        setOnClickListeners()
+        setOnSlideListener()
         hideSpinner(view)
     }
 
-    private fun setOnClickListeners(){
-        btn_delivering_completed.setOnClickListener {
-            showSpinner(view!!)
-            updateDeliveryStatus()
+    private fun setOnSlideListener(){
+        btn_delivering_completed.onSlideCompleteListener = object: SlideToActView.OnSlideCompleteListener {
+            override fun onSlideComplete(slider: SlideToActView) {
+                showSpinner(view!!)
+                updateDeliveryStatus()
+            }
         }
     }
 

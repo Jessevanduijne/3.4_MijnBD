@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
@@ -105,15 +105,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp" />
 
-            <Button
+            <com.ncorti.slidetoact.SlideToActView
                 android:id="@+id/btn_delivering_completed"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_yellow_section"
                 android:layout_marginTop="20dp"
-                android:text="@string/lbl_warehouse_pickup_text"
-                android:textAllCaps="false"
-                android:layout_marginBottom="10dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:outer_color="@color/white"
+                app:inner_color="@color/colorPrimary"
+                app:slider_icon_color="@color/colorPrimaryDark"
+                app:text_color="@color/colorPrimaryDark"
+                app:text="@string/lbl_delivery_picked_up"
+                android:layout_marginBottom="10dp"
+                app:text_style="bold"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

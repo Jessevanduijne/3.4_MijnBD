@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_assignment_finished.*
-import kotlinx.android.synthetic.main.spinner.*
 import nl.bezorgdirect.mijnbd.history.MyBDHistoryDetails
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
@@ -21,6 +21,7 @@ import java.time.format.DateTimeFormatter
 
 class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        this.activity?.bottom_navigation?.visibility = View.VISIBLE
         return inflater.inflate(R.layout.fragment_assignment_finished, container, false)
     }
 

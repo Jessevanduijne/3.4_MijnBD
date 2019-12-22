@@ -2,7 +2,7 @@ package nl.bezorgdirect.mijnbd.helpers
 
 import android.view.View
 import android.widget.ProgressBar
-import kotlinx.android.synthetic.main.spinner.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import nl.bezorgdirect.mijnbd.R
 
 fun showSpinner(view: View){

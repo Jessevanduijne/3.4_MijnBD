@@ -1,13 +1,17 @@
 package nl.bezorgdirect.mijnbd.delivery
 
 import android.annotation.SuppressLint
+import android.app.Notification
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
@@ -23,6 +27,9 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.time.Duration
+import kotlin.time.ExperimentalTime
 
 
 class NewAssignmentFragment : Fragment() {
@@ -34,6 +41,7 @@ class NewAssignmentFragment : Fragment() {
                 getDeliveryById(notification.DeliveryId!!) { delivery -> run {
                         setClickListeners(notification.Id!!, delivery)
                         setLayoutData(delivery)
+                        setTimer(notification, delivery)
                     }
                 }
             }
@@ -72,25 +80,18 @@ class NewAssignmentFragment : Fragment() {
             4 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_car_y)
         }
 
-        // TODO: Calculate this info with the CreatedAt property from notification
-//        lbl_new_assignment_minutes_to_accept.text = ""
-//        lbl_new_assignment_seconds_to_accept.text = ""
-
         // Google API data:
         setDistanceData(delivery)
     }
 
     private fun setClickListeners(notificationId: String, delivery: Delivery){
         btn_delivery_accept.setOnClickListener {
-
-            showSpinner(view!!)
             confirmAssignment(true, notificationId, delivery)
         }
 
         btn_delivery_refuse.setOnClickListener{
-            showSpinner(view!!)
-            confirmAssignment(false, notificationId, delivery)
             canReceiveNotification = true
+            confirmAssignment(false, notificationId, delivery)
         }
     }
 
@@ -132,6 +133,7 @@ class NewAssignmentFragment : Fragment() {
 
     private fun confirmAssignment(accepted: Boolean, notificationId: String, delivery: Delivery){
         val decryptedToken = getDecryptedToken(this.activity!!)
+        showSpinner(view!!)
 
         val updateNotificationBody = UpdateNotificationParams(accepted)
         apiService.notificationPatch(decryptedToken, notificationId, updateNotificationBody)
@@ -238,5 +240,36 @@ class NewAssignmentFragment : Fragment() {
                 }
             })
         } }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private fun setTimer(notification: BDNotification, delivery: Delivery){
+
+        val currentTime = Calendar.getInstance().time
+        val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.ExpiredAt!!)
+        val diffInMilliSec = (expirationTime!!.time - currentTime.time)
+        val maxResponseTimeMilliSec = 10 * 60 * 1000
+        val minute = 60 * 1000
+
+        val timer = object: CountDownTimer(diffInMilliSec, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minutesLeft = millisUntilFinished / 1000 / 60
+                val secondsLeft = (millisUntilFinished / 1000) - (minutesLeft * 60)
+                val percentageTimeLeft = ((diffInMilliSec.toFloat() / maxResponseTimeMilliSec.toFloat()) * 100)
+
+                lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
+                lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
+
+                if(percentageTimeLeft < minute) {
+                    pgb_decision_timer.progress = Color.RED
+                }
+                pgb_decision_timer.progress = percentageTimeLeft.toInt()
+            }
+
+            override fun onFinish() {
+                confirmAssignment(false, notification.Id!!, delivery)
+            }
+        }
+        timer.start()
     }
 }
