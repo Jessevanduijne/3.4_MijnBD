@@ -16,6 +16,11 @@ import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.content.Context.NOTIFICATION_SERVICE
+import androidx.core.content.ContextCompat.getSystemService
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Handler
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -30,6 +35,16 @@ class AssignmentActivity : AppCompatActivity() {
         setSupportActionBar(custom_toolbar)
         setBottomNav()
         setFragment() // Sets the initial state
+
+      //  Handler().postDelayed({
+            hideNotification()
+    //    }, 2000)
+
+    }
+
+    private fun hideNotification(){
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancelAll()
     }
 
     private fun setFragment() {

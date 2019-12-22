@@ -1,5 +1,6 @@
 package nl.bezorgdirect.mijnbd.api
 
+// Route result classes:
 data class GoogleDirections (
 
     val geocoded_waypoints : List<Geocoded_waypoints>,
@@ -99,4 +100,24 @@ data class Start_location (
 
     val lat : Double,
     val lng : Double
+)
+
+// Distance matrix result classes:
+data class GoogleDistance (
+
+    val destination_addresses : List<String>,
+    val origin_addresses : List<String>,
+    val rows : List<Rows>,
+    val status : String
+)
+
+data class Rows (
+    val elements : List<Elements>
+)
+
+data class Elements (
+
+    val distance : Distance,
+    val duration : Duration,
+    val status : String
 )

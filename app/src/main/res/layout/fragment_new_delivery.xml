@@ -213,14 +213,14 @@
                     android:src="@drawable/ic_location_pin_y"/>
 
                 <TextView
-                    android:id="@+id/lbl_new_assignment_kilometers"
+                    android:id="@+id/lbl_to_warehouse_kilometers"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_h2"
+                    android:textSize="@dimen/text_size_text"
                     android:textStyle="bold"
                     android:textColor="@color/white"
                     android:text="@string/dummy_kilometers"
-                    android:paddingStart="70dp"
+                    android:paddingStart="10dp"
                     android:paddingEnd="0dp"
                     android:paddingTop="10dp"
                     android:layout_marginTop="-10dp"/>
@@ -229,29 +229,71 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/lbl_kilometers_short"
-                    android:textSize="@dimen/text_size_h2"
+                    android:textSize="@dimen/text_size_text"
                     android:textColor="@color/white"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="-10dp"/>
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/ic_warehouse_y"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:id="@+id/lbl_to_client_kilometers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_text"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:text="@string/dummy_kilometers"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginTop="-10dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lbl_kilometers_short"
+                    android:textSize="@dimen/text_size_text"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="-10dp"/>
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/ic_house_y"
-                    android:layout_marginStart="70dp"/>
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="0dp"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_width="200dp"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/whiteline"
                 android:layout_marginStart="80dp"
-                android:layout_marginTop="-15dp"/>
+                android:layout_marginTop="-18dp"/>
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_arrowhead_right_w"
-                android:layout_marginTop="-15dp"
-                android:layout_marginStart="260dp"/>
+                android:layout_marginTop="-16dp"
+                android:layout_marginStart="140dp"/>
+            <LinearLayout
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/whiteline"
+                android:layout_marginStart="220dp"
+                android:layout_marginTop="-18dp"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_arrowhead_right_w"
+                android:layout_marginTop="-16dp"
+                android:layout_marginStart="280dp"/>
         </LinearLayout>
 
         <LinearLayout

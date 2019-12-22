@@ -3,11 +3,13 @@ package nl.bezorgdirect.mijnbd.delivery
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
 import kotlinx.android.synthetic.main.spinner.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
@@ -74,9 +76,8 @@ class NewAssignmentFragment : Fragment() {
 //        lbl_new_assignment_minutes_to_accept.text = ""
 //        lbl_new_assignment_seconds_to_accept.text = ""
 
-        // TODO: Get this info from google API
-//        lbl_new_assignment_kilometers.text = ""
-//        lbl_new_assignment_estimated_minutes.text = ""
+        // Google API data:
+        setDistanceData(delivery)
     }
 
     private fun setClickListeners(notificationId: String, delivery: Delivery){
@@ -158,6 +159,7 @@ class NewAssignmentFragment : Fragment() {
         val decryptedToken = getDecryptedToken(this.activity!!)
         val locationHelper = LocationHelper(this.activity!!)
 
+        // Location on time of acceping assignment:
         locationHelper.getLastLocation { location -> run {
             val updateStatusBody = UpdateStatusParams(2, location.latitude, location.longitude) // status 2 = bevestigd
 
@@ -176,6 +178,65 @@ class NewAssignmentFragment : Fragment() {
                         Log.e("NEW_ASSIGNMENT", "Updating delivery by delivery by deliveryId failed")
                     }
                 })
+        } }
+    }
+
+    private fun setDistanceData(delivery: Delivery){
+        val service = getGoogleService()
+        val locationHelper = LocationHelper(this.activity!!)
+        val apiKey = getString(R.string.google_maps_key)
+
+        val warehouseDestination = "${delivery.Warehouse.Latitude},${delivery.Warehouse.Longitude}"
+        val clientDestination = "${delivery.Customer.Latitude},${delivery.Customer.Longitude}"
+
+        var travelDuration = 0
+        var travelMode = ""
+        when(delivery.Vehicle)
+        {
+            1 -> travelMode = "bicycling"
+            2 or 3 or 4 -> travelMode = "driving"
+        }
+
+        // Location on opening screen (won't be saved):
+        locationHelper.getLastLocation { location -> run {
+            val startLocation = "${location.latitude},${location.longitude}"
+
+            val toWarehouseDistanceCall = service.getDistance(startLocation, warehouseDestination, apiKey, travelMode)
+            toWarehouseDistanceCall.enqueue(object: Callback<GoogleDistance> {
+                override fun onResponse(call: Call<GoogleDistance>, response: Response<GoogleDistance>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val result = response.body()
+                        val distanceInformation = result!!.rows.get(0).elements.get(0)
+                        val toWarehouseDistance = distanceInformation.distance.text.removeLetters()
+                        val toWarehouseDuration = distanceInformation.duration.text.removeLetters()
+                        travelDuration += toWarehouseDuration.toInt()
+                        lbl_to_warehouse_kilometers.text = toWarehouseDistance
+                        lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                    }
+                }
+                override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {
+                    Log.e("NEW_ASSIGNMENT", "Retrieving distance failed for current - warehouse")
+                }
+            })
+
+            val toClientDistanceCall = service.getDistance(warehouseDestination, clientDestination, apiKey, travelMode)
+            toClientDistanceCall.enqueue(object: Callback<GoogleDistance> {
+                override fun onResponse(call: Call<GoogleDistance>, response: Response<GoogleDistance>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val result = response.body()
+                        val distanceInformation = result!!.rows.get(0).elements.get(0)
+                        val toClientDistance = distanceInformation.distance.text.removeLetters()
+                        val toClientDuration = distanceInformation.duration.text.removeLetters()
+                        travelDuration += toClientDuration.toInt()
+
+                        lbl_to_client_kilometers.text = toClientDistance
+                        lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                    }
+                }
+                override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {
+                    Log.e("NEW_ASSIGNMENT", "Retrieving distance failed for warehouse - customer")
+                }
+            })
         } }
     }
 }

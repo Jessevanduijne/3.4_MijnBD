@@ -15,4 +15,12 @@ public interface GoogleService {
         @Query("key") key: String,
         @Query("travelmode") travelmode: String
     ): Call<GoogleDirections>
+
+    @GET("maps/api/distancematrix/json")
+    fun getDistance(
+        @Query("origins") origin: String,
+        @Query("destinations") destination: String,
+        @Query("key") key: String,
+        @Query("mode") travelmode: String
+    ): Call<GoogleDistance>
 }
