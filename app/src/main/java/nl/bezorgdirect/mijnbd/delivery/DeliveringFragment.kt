@@ -21,11 +21,12 @@ import kotlinx.android.synthetic.main.fragment_delivering.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
-import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
-import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
+import nl.bezorgdirect.mijnbd.helpers.*
 
 class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
 
@@ -40,22 +41,31 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout()
-        setOnSlideListener()
+        setListeners()
         hideSpinner(view)
     }
 
-    private fun setOnSlideListener(){
+    private fun setListeners(){
         btn_delivering_completed.onSlideCompleteListener = object: SlideToActView.OnSlideCompleteListener {
             override fun onSlideComplete(slider: SlideToActView) {
+                canReceiveNotification = true
                 showSpinner(view!!)
                 updateDeliveryStatus()
             }
         }
+
+        btn_cancel_delivery.setOnClickListener {
+            val fragment = CancelAssignmentFragment(delivery!!, true)
+            replaceFragment(R.id.delivery_fragment, fragment)
+        }
     }
 
     private fun setLayout(){
-        lbl_delivering_address.text = delivery!!.Warehouse.Address!!.substringBefore(',') // cut zip code off
-        lbl_delivering_zip.text = (delivery!!.Warehouse.PostalCode + " " + delivery!!.Warehouse.Place)
+        lbl_delivering_address.text = delivery!!.Customer.Address!!.substringBefore(',') // cut zip code off
+        lbl_delivering_zip.text = (delivery!!.Customer.PostalCode + " " + delivery!!.Warehouse.Place)
+        btn_delivering_completed.text = getString(R.string.lbl_delivery_delivered)
+        lbl_assignment.text = getString(R.string.lbl_assignment_client)
+        img_delivering_destination.setImageResource(R.drawable.ic_house_w)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -64,10 +74,10 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = LatLng(delivery!!.Current.Latitude!!, delivery!!.Current.Longitude!!)
-        val latLngDestination = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Your position"))
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.Address))
+        val latLngOrigin = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
+        val latLngDestination = LatLng(delivery!!.Customer.Latitude!!.toDouble(), delivery!!.Customer.Longitude!!.toDouble())
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Current"))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Customer.Address))
         this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 16.5f))
     }
 
@@ -75,14 +85,16 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Current.Latitude.toString() + "," + delivery!!.Current.Longitude.toString()
-        val endLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val startLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val endLatLong = delivery!!.Customer.Latitude.toString() + "," + delivery!!.Customer.Longitude.toString()
 
         var travelmode = ""
         when(delivery!!.Vehicle)
         {
-            1 or 2 -> travelmode = "cycling" // bike / scooter
-            3 or 4 -> travelmode = "driving" // motor / car
+            1 -> travelmode = "cycling" // bike
+            2 -> travelmode = "cycling" // scooter
+            3 -> travelmode = "driving" // motor
+            4 -> travelmode = "driving" // car
         }
 
         val apiKey = getString(R.string.google_maps_key)
@@ -116,16 +128,16 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     }
 
     private fun updateDeliveryStatus(){
-
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(3, delivery!!.Warehouse.Latitude!!, delivery!!.Warehouse.Longitude!!) // status 3 = onderweg
+        val updateStatusBody = UpdateStatusParams(4, delivery!!.Customer.Latitude!!, delivery!!.Customer.Longitude!!) // status 4 = afgeleverd
 
         apiService.deliverystatusPatch(decryptedToken, delivery!!.Id!!, updateStatusBody)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
                         val updatedAssignment = response.body()!!
-                        val fragment = ToClientFragment(updatedAssignment)
+
+                        val fragment = AssignmentFinishedFragment(updatedAssignment)
                         replaceFragment(R.id.delivery_fragment, fragment)
                     }
                     else Log.e("DELIVERING", "Updating delivery status response unsuccessful")

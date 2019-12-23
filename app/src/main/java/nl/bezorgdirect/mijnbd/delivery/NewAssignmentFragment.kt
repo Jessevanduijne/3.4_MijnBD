@@ -1,21 +1,16 @@
 package nl.bezorgdirect.mijnbd.delivery
 
 import android.annotation.SuppressLint
-import android.app.Notification
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
-import kotlinx.android.synthetic.main.spinner.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.*
@@ -28,13 +23,12 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
-import kotlin.time.Duration
-import kotlin.time.ExperimentalTime
 
 
 class NewAssignmentFragment : Fragment() {
 
     private val apiService = getApiService()
+    private var timer: CountDownTimer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getNotificationId { notification -> run {
@@ -161,7 +155,7 @@ class NewAssignmentFragment : Fragment() {
         val decryptedToken = getDecryptedToken(this.activity!!)
         val locationHelper = LocationHelper(this.activity!!)
 
-        // Location on time of acceping assignment:
+        // Location on time of accepting assignment:
         locationHelper.getLastLocation { location -> run {
             val updateStatusBody = UpdateStatusParams(2, location.latitude, location.longitude) // status 2 = bevestigd
 
@@ -171,7 +165,8 @@ class NewAssignmentFragment : Fragment() {
                         if(response.isSuccessful && response.body() != null) {
                             val updatedAssignment = response.body()!!
 
-                            val fragment = DeliveringFragment(updatedAssignment)
+                            timer!!.cancel()
+                            val fragment = RetrievingFragment(updatedAssignment)
                             replaceFragment(R.id.delivery_fragment, fragment)
                         }
                         else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
@@ -251,11 +246,11 @@ class NewAssignmentFragment : Fragment() {
         val maxResponseTimeMilliSec = 10 * 60 * 1000
         val minute = 60 * 1000
 
-        val timer = object: CountDownTimer(diffInMilliSec, 1000) {
+        timer = object: CountDownTimer(diffInMilliSec, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val minutesLeft = millisUntilFinished / 1000 / 60
                 val secondsLeft = (millisUntilFinished / 1000) - (minutesLeft * 60)
-                val percentageTimeLeft = ((diffInMilliSec.toFloat() / maxResponseTimeMilliSec.toFloat()) * 100)
+                val percentageTimeLeft = (100 - ((millisUntilFinished.toFloat() / maxResponseTimeMilliSec.toFloat()) * 100))
 
                 lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
                 lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
@@ -270,6 +265,6 @@ class NewAssignmentFragment : Fragment() {
                 confirmAssignment(false, notification.Id!!, delivery)
             }
         }
-        timer.start()
+        timer!!.start()
     }
 }

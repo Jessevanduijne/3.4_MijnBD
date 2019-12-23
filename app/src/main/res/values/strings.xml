@@ -5,10 +5,12 @@
     <string name="lbl_deliveries">Bezorgingen</string>
     <string name="lbl_history">Historie</string>
     <string name="lbl_preferences">Mijn B.D.</string>
+
     <!-- vehicles: -->
     <string name="V1">Fiets</string>
     <string name="V2_3">Motor</string>
     <string name="V4">Auto</string>
+
     <!-- General -->
     <string name="lbl_seconds_short">sec.</string>
     <string name="lbl_minutes_short">min.</string>
@@ -16,9 +18,11 @@
     <string name="lbl_edit">wijzig</string>
     <string name="lbl_distance">Afstand</string>
     <string name="lbl_euro">€</string>
+
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
     <string name="E401">Oops permission denied.</string>
+
     <!-- Dummies: -->
     <string name="dummy_time">00:00</string>
     <string name="dummy_minutes">00</string>
@@ -35,8 +39,8 @@
     <string name="username">E-mail</string>
     <string name="password">Wachtwoord</string>
     <string name="login">Login</string>
-    <string name="nocreds">Vul uw E-mail adres en wacthwoord in.</string>
-    <string name="wrongcreds">Onjuist E-mail adres of wachtwoord.</string>
+    <string name="nocreds">Vul uw E-mailadres en wachtwoord in.</string>
+    <string name="wrongcreds">Onjuist E-mailadres of wachtwoord.</string>
 
     <!-- Bezorgingen: -->
     <!-- Incoming: -->
@@ -59,6 +63,14 @@
     <string name="lbl_assignment_client">Bezorg de bestelling</string>
     <string name="lbl_delivery_delivered">Bestelling afgeleverd</string>
 
+    <!-- Cancel: -->
+    <string name="lbl_cancel_reason">Wat is de reden voor de annulering?</string>
+    <string name="lbl_cancel_example">Bijvoorbeeld: voertuig defect</string>
+    <string name="lbl_cancel_example_optional">Bijvoorbeeld: voertuig defect (optioneel)</string>
+    <string name="lbl_cancel_return_question">Ik ben in staat om de bezorging terug te brengen naar het magazijn</string>
+    <string name="lbl_cancel_no_return">MijnBD neemt zo spoedig mogelijk contact met u op</string>
+    <string name="lbl_send_button">Verstuur</string>
+
     <!-- Delivery successful screen: -->
     <string name="title_success">Succes</string>
     <string name="lbl_delivery_successful">Succesvol bezorgd</string>
@@ -68,6 +80,7 @@
     <string name="lbl_month">maand</string>
     <string name="lbl_check_details">Bekijk details</string>
     <string name="lbl_new_assignment">Nieuwe opdracht</string>
+    <string name="lbl_delivery_cancelled">Bezorging geannuleerd</string>
 
     <!-- MijnBD Overview: -->
     <string name="lbl_mybdpersonalia">Mijn Bezorg.Direct</string>
@@ -126,12 +139,6 @@
     <string name="lbl_radkm1">0 KM</string>
     <string name="lbl_radkm2">30 KM</string>
     <string name="lbl_radiustext">Radius vanaf huisadres: </string>
-
-
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
 
     <!-- Notifications -->
     <string name="lbl_channel_name">mijnbd_notification_channel</string>

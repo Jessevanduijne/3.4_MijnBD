@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    TODO: Store somewhere safe-->
+    <!--    TODO: Store somewhere safe-->
     <string name="google_maps_key">AIzaSyDXcZ1kNGmIoqILUeTlSlW_Ljz_nSlPD18</string>
 
     <string name="location_permission_ID">42</string>
+
+    <string name="warehouse_phone_number">0612345678</string>
 </resources>
