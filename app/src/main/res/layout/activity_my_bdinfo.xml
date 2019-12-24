@@ -23,24 +23,35 @@
                 android:gravity="center_horizontal"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rounded_gray_section"
-                android:orientation="horizontal"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
                 android:padding="10dp">
 
                 <ImageView
                     android:id="@+id/img_profile"
                     android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:src="@drawable/ic_logo_y" />
+                <ImageButton
+                    android:id="@+id/btn_edit_avatar"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    tools:srcCompat="@drawable/ic_logo_y"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="150dp"
-                    android:maxHeight="150dp"/>
-            </LinearLayout>
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_edit_y_24dp" />
 
+            </LinearLayout>
+        </RelativeLayout>
             <TextView
                 android:id="@+id/lbl_name"
                 android:layout_width="match_parent"

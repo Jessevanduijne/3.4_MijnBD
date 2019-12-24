@@ -15,16 +15,16 @@ interface ApiService {
 
     /************************availablities******************************************/
     @POST("availabilities") //Availabilities will be pushed to authenticated Deliverer's Availabilities array
-    fun availablitiesPost(@Header("Authorization") auth: String, @Body availabilityPost: ArrayList<AvailabilityPost>): Call<ResponseBody>
+    fun availablitiesPost(@Header("Authorization") auth: String, @Body availabilityPost: ArrayList<AddAvailabilityParams>): Call<ArrayList<Availability>>
 
     @GET("availabilities") //List Availabilities of authenticated Deliverer
     fun availablitiesGet(@Header("Authorization") auth: String): Call<ArrayList<Availability>>
 
     @PUT("availabilities") //Update Availabilities of authenticated Deliverer
-    fun availablitiesPut(@Header("Authorization") @Body availability: Availability): Call<Availability>
+    fun availablitiesPut(@Header("Authorization") auth: String, @Body availability: ArrayList<Availability>): Call<ArrayList<Availability>>
 
     @DELETE("availabilities/{id}") //Delete Availability with {Id} of authenticated Deliverer
-    fun availablitiesDelete(@Path("id") id: String, @Header("x-authtoken") auth: String): Call<ResponseBody>
+    fun availablitiesDelete(@Path("id") id: String, @Header("Authorization") auth: String): Call<ResponseBody>
 
     /************************Deliverers******************************************/
     @GET("me") //Read authenticated Deliverer

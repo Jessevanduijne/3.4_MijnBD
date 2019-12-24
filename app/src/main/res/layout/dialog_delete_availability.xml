@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:textColor="@color/colorPrimaryDark"
+    android:background="@color/darkGray"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Weet u zeker dat u dit wilt verwijderen?"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:textAlignment="center"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:gravity="center">
+            <Button
+                android:id="@+id/btn_confirmDeleteAvailability"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:text="Confirm"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginEnd="10dp"/>
+            <Button
+                android:id="@+id/btn_closeDeleteAvailability"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:background="@color/colorPrimary"
+                android:clickable="true"
+                android:text="Cancel"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -3,6 +3,7 @@ package nl.bezorgdirect.mijnbd.mijnBD
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
@@ -35,6 +36,7 @@ class MyBDActivity : Fragment() {
 
     var email: TextView? = null
     var vehicle: TextView? = null
+    var img_profile: ImageView? = null
     var cont: Context? = null
 
     var list_availability_day  :LinearLayout? = null
@@ -65,7 +67,7 @@ class MyBDActivity : Fragment() {
         val btn_availability: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_availability)
         val btn_meansoftransport: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_meansoftransport)
 
-
+        img_profile = root.findViewById(nl.bezorgdirect.mijnbd.R.id.img_profile)
 
         //change date format to show day of week,
         /*
@@ -90,12 +92,22 @@ class MyBDActivity : Fragment() {
         btn_meansoftransport.setOnClickListener {
             gotoMeansoftransport(cont!!)
         }
+        setAvatar()
         getAvailabilities()
         getDeliverer( root)
 
         return root
     }
-
+    fun setAvatar()
+    {
+        val sharedPrefs = cont!!.getSharedPreferences("mybd", Context.MODE_PRIVATE)
+        val avataruri = sharedPrefs.getString("avatar", "")
+        if(avataruri != "")
+        {
+            val uri = Uri.parse((avataruri))
+            img_profile!!.setImageURI(uri)
+        }
+    }
     private fun getDeliverer(root: View){
 
         val service = getApiService()
@@ -205,44 +217,63 @@ class MyBDActivity : Fragment() {
         val week = getWeek()
 
         for (day in week) {
-            val lbl_day  = TextView(cont)
-            val lbl_time = TextView(cont)
-            val lbl_type = TextView(cont)
-
-            lbl_day.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-            lbl_time.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-            lbl_type.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-
-            lbl_day.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
-            lbl_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
-            lbl_type.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
 
             var found = false
             for(availability in availabilities)
             {
                 if(availability.Date == day)
                 {
+                    val lbl_day  = TextView(cont)
+                    val lbl_time = TextView(cont)
+                    val lbl_type = TextView(cont)
+
+                    lbl_day.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                    lbl_time.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                    lbl_type.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+
+                    lbl_day.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+                    lbl_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+                    lbl_type.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+
                     val dayFormat = SimpleDateFormat("EEE")
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd")
                     val availabilityDay: Date = inputFormat.parse(availability.Date)
+
                     lbl_day.text = dayFormat.format(availabilityDay)
                     lbl_time.text = availability.StartTime + "-" + availability.EndTime
                     lbl_type.text = "Beschikbaar"
                     found = true
+                    list_availability_day!!.addView(lbl_day)
+                    list_availability_time!!.addView(lbl_time)
+                    list_availability_type!!.addView(lbl_type)
                 }
             }
             if(!found)
             {
+                val lbl_day  = TextView(cont)
+                val lbl_time = TextView(cont)
+                val lbl_type = TextView(cont)
+
+                lbl_day.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                lbl_time.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                lbl_type.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+
+                lbl_day.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+                lbl_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+                lbl_type.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
+
                 val dayFormat = SimpleDateFormat("EEE")
                 val inputFormat = SimpleDateFormat("yyyy-MM-dd")
                 val availabilityDay: Date = inputFormat.parse(day)
+
                 lbl_day.text = dayFormat.format(availabilityDay)
                 lbl_time.text = "00:00 - 00:00"
                 lbl_type.text = "Onbeschikbaar"
+                list_availability_day!!.addView(lbl_day)
+                list_availability_time!!.addView(lbl_time)
+                list_availability_type!!.addView(lbl_type)
             }
-            list_availability_day!!.addView(lbl_day)
-            list_availability_time!!.addView(lbl_time)
-            list_availability_type!!.addView(lbl_type)
+
         }
     }
 
@@ -256,7 +287,7 @@ class MyBDActivity : Fragment() {
         for (i in 0..6)
         {
             val day = Date(today.time + (1000 * 60 * 60 * 24) * i)
-            week.add(fromatter.format(day))
+            week.add(fromatter.format(day)+"T00:00:00")
         }
         return week
     }
@@ -300,6 +331,7 @@ class MyBDActivity : Fragment() {
                 email!!.text = data!!.getStringExtra("email")
                 user.emailAddress = data!!.getStringExtra("email")
                 user.phoneNumber = data!!.getStringExtra("phonenumber")
+                setAvatar()
         }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result

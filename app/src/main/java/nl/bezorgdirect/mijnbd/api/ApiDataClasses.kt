@@ -8,7 +8,7 @@ data class Location (val Id: String?, val Latitude: Double?, val Longitude: Doub
 data class User (val id: String?, var emailAddress: String?, val token: String?, var phoneNumber: String?,
                           val home: Location, val dateOfBirth: String?, var range: Int?, var vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
 
-data class Availability (val Id: String?, val DelivererId: String?, val Date:  String?, val StartTime: String?, val EndTime: String?)
+data class Availability (val Id: String?, val DelivererId: String?, var Date:  String?, var StartTime: String?, var EndTime: String?)
 
 data class BDNotification (val Id: String?, val DelivererId: String?, val DeliveryId: String?,val CreatedAt: String?, val AcceptedAt: String?,
                            val RefusedAt: String?, val ExpiredAt: String?, val Status: Int?, val StatusDisplayName: String?)
@@ -21,5 +21,4 @@ data class Delivery (val Id: String?, val DelivererId: String?, val CustomerPhon
                      val Customer: Location, val Current: Location, val VehicleDisplayName: String)
 
 
-data class AvailabilityPost (val date: String?, val startTime: String?, val endTime: String?)
 

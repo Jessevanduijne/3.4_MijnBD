@@ -10,3 +10,4 @@ data class UpdateStatusParams(val status: Int, val latitude: Double, val longitu
 
 data class UpdateUserParams (val emailAddress: String?, val phoneNumber: String?, val dateOfBirth: String?, val range: Int?, val vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
 
+data class AddAvailabilityParams (val date: String?, val startTime: String?, val endTime: String?)
