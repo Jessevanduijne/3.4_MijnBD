@@ -10,16 +10,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.api.LoginParams
 import nl.bezorgdirect.mijnbd.api.User
+import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
+import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
+import nl.bezorgdirect.mijnbd.helpers.getApiService
+import nl.bezorgdirect.mijnbd.services.NotificationService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
-import nl.bezorgdirect.mijnbd.helpers.getApiService
-import nl.bezorgdirect.mijnbd.services.NotificationService
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,11 +33,9 @@ class LoginActivity : AppCompatActivity() {
 
         if(Key != null)
         {
-            val encryptedUsr = sharedPref.getString("U", "")
-            val encryptedPass = sharedPref.getString("P", "")
             val encryptedToken = sharedPref.getString("T", "")
 
-            if(encryptedUsr != "" && encryptedPass != "" && encryptedToken != "")
+            if(encryptedToken != "")
             {
                 goToApp(this)
             }
@@ -93,12 +91,7 @@ class LoginActivity : AppCompatActivity() {
                     val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
 
                     // Encrypt message with the key, using public key
-                    val encryptedPass = cipherWrapper.encrypt(password, Key?.public)
-                    val encryptedUsername = cipherWrapper.encrypt(username, Key?.public)
                     val encryptedToken = cipherWrapper.encrypt(values.token!!, Key?.public)
-
-                    editpref.putString("U", encryptedUsername)
-                    editpref.putString("P", encryptedPass)
                     editpref.putString("T", encryptedToken)
                     editpref.commit()
 

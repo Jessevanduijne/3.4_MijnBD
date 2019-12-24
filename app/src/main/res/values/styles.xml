@@ -13,6 +13,11 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="myBD.NumberPicker" parent="AppThemeNoBar">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
 <!--    <style name="AppTheme.CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">-->
 <!--        <item name="titleTextStyle">@style/AppTheme.CustomActionBar.TitleTextStyle</item>-->
