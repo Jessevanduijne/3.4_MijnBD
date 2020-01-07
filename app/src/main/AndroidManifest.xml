@@ -19,13 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".delivery.AssignmentActivity" />
-        <activity android:name=".mijnBD.MyBDAvailability"/>
-        <activity android:name=".history.MyBDHistoryDetails"/>
-        <activity android:name=".history.MyBDHistory" />
-        <activity android:name=".mijnBD.MyBDMoS" />
-        <activity android:name=".mijnBD.MyBDInfo" />
-        <activity android:name=".mijnBD.MyBDActivity" />
+        <activity android:name=".delivery.AssignmentActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".mijnBD.MyBDAvailability"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".history.MyBDHistoryDetails"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".history.MyBDHistory"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".mijnBD.MyBDMoS"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".mijnBD.MyBDInfo"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".mijnBD.MyBDActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait">
