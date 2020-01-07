@@ -1,6 +1,8 @@
 package nl.bezorgdirect.mijnbd.delivery
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -58,6 +60,12 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
             val fragment = CancelAssignmentFragment(delivery!!, true)
             replaceFragment(R.id.delivery_fragment, fragment)
         }
+
+        btn_call_warehouse.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${getString(R.string.warehouse_phone_number)}")
+            startActivity(intent)
+        }
     }
 
     private fun setLayout(){
@@ -78,7 +86,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val latLngDestination = LatLng(delivery!!.Customer.Latitude!!.toDouble(), delivery!!.Customer.Longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Current"))
         this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Customer.Address))
-        this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 16.5f))
+        this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12.5f))
     }
 
     private fun getRoute(){

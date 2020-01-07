@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ncorti.slidetoact.SlideToActView
 import kotlinx.android.synthetic.main.fragment_cancel_assignment.*
@@ -29,11 +30,13 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
         setListeners()
         setLayout()
         hideSpinner(view)
+        this.activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     private fun setLayout(){
-        if(orderPickedUp) {
-            cb_driver_can_return.visibility = View.VISIBLE
+        if(!orderPickedUp) {
+            cb_driver_can_return.visibility = View.GONE
+            cb_driver_can_return_text.visibility = View.GONE
         }
     }
 
@@ -64,15 +67,20 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
                         if(response.isSuccessful && response.body() != null) {
                             val updatedAssignment = response.body()!!
 
-                            if(cb_driver_can_return.isChecked) {
-                                // Show screen with route
+                            if(!cb_driver_can_return.isChecked) {
+                                val fragment = CancelToWarehouseFragment(updatedAssignment)
+                                replaceFragment(R.id.delivery_fragment, fragment)
                             }
                             else {
-                                // Show screen with 'je wordt gebeld'
-                            }
+                                Toast.makeText(
+                                    context,
+                                    resources.getString(R.string.lbl_cancel_no_return),
+                                    Toast.LENGTH_LONG
+                                ).show()
 
-                            val fragment = AssignmentFinishedFragment(updatedAssignment)
-                            replaceFragment(R.id.delivery_fragment, fragment)
+                                val fragment = AssignmentFinishedFragment(updatedAssignment)
+                                replaceFragment(R.id.delivery_fragment, fragment)
+                            }
                         }
                         else Log.e("CANCEL_ASSIGNMENT", "Updating delivery status response unsuccessful")
                     }

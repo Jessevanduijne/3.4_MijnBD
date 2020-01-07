@@ -256,8 +256,10 @@ class NewAssignmentFragment : Fragment() {
                 val secondsLeft = (millisUntilFinished / 1000) - (minutesLeft * 60)
                 val percentageTimeLeft = (100 - ((millisUntilFinished.toFloat() / maxResponseTimeMilliSec.toFloat()) * 100))
 
-                lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
-                lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
+                if(lbl_new_assignment_minutes_to_accept != null) {
+                    lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
+                    lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
+                }
 
                 if(percentageTimeLeft < minute) {
                     pgb_decision_timer.progress = Color.RED
