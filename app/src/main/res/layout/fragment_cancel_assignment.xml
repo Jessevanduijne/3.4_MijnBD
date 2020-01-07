@@ -41,8 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
-            android:visibility="gone">
+            android:layout_marginTop="20dp">
             <CheckBox
                 android:id="@+id/cb_driver_can_return"
                 android:layout_width="wrap_content"
@@ -52,6 +51,7 @@
                 android:background="@drawable/rounded_white_input"/>
 
             <TextView
+                android:id="@+id/cb_driver_can_return_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lbl_cancel_return_question"

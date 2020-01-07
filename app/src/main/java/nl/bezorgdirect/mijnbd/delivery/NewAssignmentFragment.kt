@@ -9,8 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.*
@@ -40,6 +42,8 @@ class NewAssignmentFragment : Fragment() {
                 }
             }
         }
+        val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
+        custom_toolbar_title.text = getString(R.string.title_assignment)
         return inflater.inflate(R.layout.fragment_new_delivery, container, false)
     }
 
@@ -252,8 +256,10 @@ class NewAssignmentFragment : Fragment() {
                 val secondsLeft = (millisUntilFinished / 1000) - (minutesLeft * 60)
                 val percentageTimeLeft = (100 - ((millisUntilFinished.toFloat() / maxResponseTimeMilliSec.toFloat()) * 100))
 
-                lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
-                lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
+                if(lbl_new_assignment_minutes_to_accept != null) {
+                    lbl_new_assignment_minutes_to_accept.text = minutesLeft.toString()
+                    lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
+                }
 
                 if(percentageTimeLeft < minute) {
                     pgb_decision_timer.progress = Color.RED
