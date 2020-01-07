@@ -18,6 +18,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.app.NotificationManager
 import android.content.Context
+import nl.bezorgdirect.mijnbd.R
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -30,7 +31,6 @@ class AssignmentActivity : AppCompatActivity() {
 
         custom_toolbar_title.text = getString(string.title_assignment)
         setSupportActionBar(custom_toolbar)
-        setBottomNav()
         setFragment() // Sets the initial state
 
       //  Handler().postDelayed({
@@ -62,10 +62,12 @@ class AssignmentActivity : AppCompatActivity() {
                         if(canReceiveNotification) {
                             val noAssignmentFragment = NoAssignmentFragment()
                             replaceFragment(id.delivery_fragment, noAssignmentFragment)
+                            setBottomNav()
                         }
                         else {
                             val newAssignmentFragment = NewAssignmentFragment()
                             replaceFragment(id.delivery_fragment, newAssignmentFragment)
+                            setBottomNav()
                         }
                     }
                     hideSpinner(view)
@@ -75,6 +77,7 @@ class AssignmentActivity : AppCompatActivity() {
                     val noAssignmentFragment = NoAssignmentFragment()
                     replaceFragment(id.delivery_fragment, noAssignmentFragment)
                     hideSpinner(view)
+                    setBottomNav()
                 }
             })
     }
