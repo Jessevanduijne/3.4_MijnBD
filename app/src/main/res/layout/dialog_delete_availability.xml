@@ -4,7 +4,9 @@
     android:textColor="@color/colorPrimaryDark"
     android:background="@color/darkGray"
     android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,4 +47,5 @@
                 android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
+    </ScrollView>
 </FrameLayout>
