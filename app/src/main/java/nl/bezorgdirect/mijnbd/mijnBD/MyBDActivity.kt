@@ -204,6 +204,7 @@ class MyBDActivity : Fragment() {
                 else if (response.code() == 204 || response.code() == 400) {
                     fillAvailability(ArrayList())
                     busy--
+                    doneLoading()
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -224,6 +225,7 @@ class MyBDActivity : Fragment() {
                 {
                     err++
                     busy--
+                    doneLoading()
                 }
             }
 
@@ -388,7 +390,6 @@ class MyBDActivity : Fragment() {
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        println(requestCode)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 email!!.text = data!!.getStringExtra("email")
@@ -405,7 +406,6 @@ class MyBDActivity : Fragment() {
             if (resultCode == Activity.RESULT_OK) {
 
                 val result = data!!.getIntExtra("result", 0)
-                println(result)
                 if(result == 1)
                 {
                     getAvailabilities()
