@@ -11,6 +11,7 @@
     <include layout="@layout/spinner"/>
 
     <TextView
+        android:id="@+id/lbl_status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/lbl_delivery_successful"

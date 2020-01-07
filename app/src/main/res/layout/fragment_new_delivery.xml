@@ -351,11 +351,11 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="370dp"
             android:layout_height="5dp"
-            android:id="@+id/progress"
+            android:id="@+id/pgb_decision_timer"
             android:layout_gravity="center_horizontal"
             android:max="100"
-            android:progress="10"
-            android:progressDrawable="@drawable/progressbar_time_progress"
+            android:background="@drawable/rounded_gray_section"
+            android:progressTint="@color/colorPrimary"
             android:layout_marginTop="5dp"/>
 
         <LinearLayout

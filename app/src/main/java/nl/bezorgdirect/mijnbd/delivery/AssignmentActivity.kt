@@ -16,11 +16,8 @@ import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.content.Context.NOTIFICATION_SERVICE
-import androidx.core.content.ContextCompat.getSystemService
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Handler
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -57,7 +54,7 @@ class AssignmentActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
                         val delivery = response.body()
-                        val deliveringFragment = DeliveringFragment(delivery)
+                        val deliveringFragment = RetrievingFragment(delivery)
                         replaceFragment(id.delivery_fragment, deliveringFragment)
                         canReceiveNotification = false
                     }

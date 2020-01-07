@@ -8,4 +8,5 @@
     <color name="lightGray">#686868</color>
     <color name="red">#FF0000</color>
     <color name="lightgreen">#CAF982</color>
+    <color name="light_red">#ff969f</color>
 </resources>
