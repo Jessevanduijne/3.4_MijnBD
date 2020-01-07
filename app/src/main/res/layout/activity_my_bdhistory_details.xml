@@ -86,14 +86,17 @@
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent">
+
                 <ImageView
+                    android:id="@+id/img_transport"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_loading_56dp"
+                    android:layout_marginEnd="20dp"
                     android:adjustViewBounds="true"
                     android:maxWidth="56dp"
-                    android:maxHeight="56dp"/>
+                    android:maxHeight="56dp"
+                    android:src="@drawable/ic_loading_56dp" />
             </RelativeLayout>
         </LinearLayout>
         <LinearLayout
@@ -190,6 +193,7 @@
                     android:id="@+id/lbl_warehouse_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="235dp"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
@@ -269,6 +273,7 @@
                     android:id="@+id/lbl_customer_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxWidth="235dp"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 

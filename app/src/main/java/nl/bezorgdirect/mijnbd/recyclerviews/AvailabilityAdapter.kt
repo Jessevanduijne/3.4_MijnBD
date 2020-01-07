@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adapter<AvailabilityAdapter.MyViewHolder>() {
+class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adapter<AvailabilityAdapter.MyViewHolder>() {
 
     var cont: Context? = null
 
@@ -183,7 +183,7 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
             params.StartTime = "$fromHour:$fromMin"
             params.EndTime = "$toHour:$toMin"
 
-            editAvailability(params, listId)
+            updateAvailability(params, listId)
             dialog.dismiss()
         }
         val btn_cancel = dialog .findViewById(R.id.btn_closeAddAvailability) as Button
@@ -250,7 +250,7 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
 
         })
     }
-    fun editAvailability(availability: Availability, listId: Int)
+    fun updateAvailability(availability: Availability, listId: Int)
     {
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
@@ -262,7 +262,6 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
                 call: Call<ArrayList<Availability>>,
                 response: Response<ArrayList<Availability>>
             ) {
-                println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
                         cont!!,
@@ -279,6 +278,7 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     list[listId] = values[0]
+                    sortAvailabilities()
                     notifyDataSetChanged()
                 }
             }
@@ -293,6 +293,11 @@ class AvailabilityAdapter(val list: ArrayList<Availability>) : RecyclerView.Adap
             }
 
         })
+    }
+
+    fun sortAvailabilities()
+    {
+        list = ArrayList(list.sortedWith(compareBy({it.Date}, {it.StartTime})))
     }
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_my_bdhistory_details.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.R
@@ -23,8 +24,8 @@ class MyBDHistoryDetails : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         history_arrow.bringToFront()
-
-        lbl_status.text = intent.getStringExtra("statusDisplayName")
+        setVehicle()
+        setStatus()
         lbl_date.text = getDate(intent.getStringExtra("customerDeliveredAt"))
         lbl_time.text = getFromTo(intent.getStringExtra("customerDeliveredAt"), intent.getStringExtra("timeAccepted"))
         lbl_total_reward.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
@@ -43,7 +44,6 @@ class MyBDHistoryDetails : AppCompatActivity() {
 
         lbl_fail_reason.text = "none"
         lbl_reward_value.text = roundFloat(intent.getFloatExtra("price", -1.0f))
-        lbl_reward_type.text = "Auto levering"
         lbl_tip_value.text = roundFloat(intent.getFloatExtra("tip", -1.0f))
 
         lbl_total_reward_value.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
@@ -55,6 +55,41 @@ class MyBDHistoryDetails : AppCompatActivity() {
 
     }
 
+    fun setStatus()
+    {
+        when(intent.getIntExtra("status", -1))
+        {
+            0 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.red))
+            1 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            2 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            3 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+            4 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.lightgreen))
+        }
+        lbl_status.text = intent.getStringExtra("statusDisplayName")
+    }
+    fun setVehicle()
+    {
+        val vehicle = intent.getIntExtra("vehicle", 0)
+        when(vehicle)
+        {
+            1 -> {
+                img_transport.setImageResource(R.drawable.ic_bike_y)
+                lbl_reward_type.text = "Fiets levering"
+            }
+            2 -> {
+                img_transport.setImageResource(R.drawable.ic_motor_y)
+                lbl_reward_type.text = "Motor/scooter levering"
+            }
+            3 -> {
+                img_transport.setImageResource(R.drawable.ic_motor_y)
+                lbl_reward_type.text = "Motor/scooter levering"
+            }
+            4 -> {
+                img_transport.setImageResource(R.drawable.ic_car_y)
+                lbl_reward_type.text = "Auto levering"
+            }
+        }
+    }
     fun checkNullInt(input: Int?) :String
     {
         var output = ""

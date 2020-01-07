@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.api.Location
 import nl.bezorgdirect.mijnbd.api.User
@@ -38,6 +39,10 @@ class MyBDActivity : Fragment() {
     var vehicle: TextView? = null
     var img_profile: ImageView? = null
     var cont: Context? = null
+    var root: View? = null
+
+    var err = 0
+    var busy = 0
 
     var list_availability_day  :LinearLayout? = null
     var list_availability_time :LinearLayout? = null
@@ -55,7 +60,7 @@ class MyBDActivity : Fragment() {
             val custom_toolbar_title: TextView = activity!!.findViewById(nl.bezorgdirect.mijnbd.R.id.custom_toolbar_title)
             custom_toolbar_title.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_mybdpersonalia)
         }
-
+        this.root = root
         email = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
         vehicle = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
         list_availability_day = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_day)
@@ -66,27 +71,21 @@ class MyBDActivity : Fragment() {
         val btn_info: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_info)
         val btn_availability: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_availability)
         val btn_meansoftransport: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_meansoftransport)
+        val btn_retry_mybd: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_retry_mybd)
+
+        btn_retry_mybd.setOnClickListener{
+            val myBD= MyBDActivity()
+            this.fragmentManager!!.beginTransaction().replace(R.id.delivery_fragment, myBD).commit()
+        }
 
         img_profile = root.findViewById(nl.bezorgdirect.mijnbd.R.id.img_profile)
-
-        //change date format to show day of week,
-        /*
-        val lbl_monday_var: TextView = root.findViewById(R.id.lbl_monday_var)
-
-        val outputFormat = SimpleDateFormat("EEE")
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val start = "2019-12-06T15:16:25.84Z"
-        val starttime: Date = inputFormat.parse(start)
-        val formattedstart: String = outputFormat.format(starttime)
-        lbl_monday_var.text = formattedstart */
 
         btn_info.setOnClickListener{
             gotoInfo(cont!!)
         }
 
         btn_availability.setOnClickListener {
-            val intent : Intent = Intent(cont, MyBDAvailability::class.java)
-            startActivity(intent)
+            gotoAvailability(cont!!)
         }
 
         btn_meansoftransport.setOnClickListener {
@@ -94,7 +93,7 @@ class MyBDActivity : Fragment() {
         }
         setAvatar()
         getAvailabilities()
-        getDeliverer( root)
+        getDeliverer()
 
         return root
     }
@@ -108,8 +107,9 @@ class MyBDActivity : Fragment() {
             img_profile!!.setImageURI(uri)
         }
     }
-    private fun getDeliverer(root: View){
-
+    private fun getDeliverer(){
+        startLoading()
+        busy++
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
 
@@ -121,45 +121,58 @@ class MyBDActivity : Fragment() {
                 println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
-                        context,
+                        cont!!,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
-                    doneLoading(root)
+                    err++
+                    busy--
+                    doneLoading()
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
-                        context,
+                        cont!!,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
-                    doneLoading(root)
+                    err++
+                    busy--
+                    doneLoading()
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     user = values
                     println("vals")
                     println(values)
-                    val lbl_name: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
-                    val lbl_vehicle: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
-                    val lbl_pd: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
-                    val lbl_total_earnings: TextView = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payouttotalvar)
+                    val lbl_name: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
+                    val lbl_vehicle: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
+                    val lbl_pd: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
+                    val lbl_total_earnings: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payouttotalvar)
                     lbl_vehicle.text = values.vehicleDisplayName
                     lbl_name.text = values.emailAddress?.substringBefore(delimiter= '@', missingDelimiterValue = values.emailAddress!!)
                     val fare = values.fare
                     lbl_pd.text = "$fare"
-                    val total = values.totalEarnings
-                    lbl_total_earnings.text = "$total"
-                    doneLoading(root)
+                    var total = values.totalEarnings
+                    if(total == null)
+                    {
+                        lbl_total_earnings.text = "?"
+                    }
+                    else {
+                        lbl_total_earnings.text = "$total"
+                    }
+                    busy--
+                    doneLoading()
                 }
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
-                    context, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
+                    cont!!, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
-                doneLoading(root)
+                err++
+                busy--
+                doneLoading()
                 return
             }
 
@@ -167,7 +180,8 @@ class MyBDActivity : Fragment() {
     }
 
     private fun getAvailabilities(){
-
+        startLoading()
+        busy++
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
 
@@ -179,33 +193,44 @@ class MyBDActivity : Fragment() {
                 println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
-                        context,
+                        cont!!,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    err++
+                    busy--
+                    doneLoading()
                 }
                 else if (response.code() == 204) {
                     fillAvailability(ArrayList())
+                    busy--
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
-                        context,
+                        cont!!,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    err++
+                    busy--
+                    doneLoading()
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     fillAvailability(values)
-
+                    busy--
+                    doneLoading()
                 }
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
-                    context, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
+                    cont!!, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
+                err++
+                busy--
+                doneLoading()
                 return
             }
 
@@ -214,15 +239,21 @@ class MyBDActivity : Fragment() {
 
     fun fillAvailability(availabilities: ArrayList<Availability>)
     {
-        val week = getWeek()
 
+        list_availability_day!!.removeAllViews()
+        list_availability_time!!.removeAllViews()
+        list_availability_type!!.removeAllViews()
+        val week = getWeek()
+        var count = 0
         for (day in week) {
 
-            var found = false
+            count = 0
             for(availability in availabilities)
             {
                 if(availability.Date == day)
                 {
+
+                    count++
                     val lbl_day  = TextView(cont)
                     val lbl_time = TextView(cont)
                     val lbl_type = TextView(cont)
@@ -238,17 +269,18 @@ class MyBDActivity : Fragment() {
                     val dayFormat = SimpleDateFormat("EEE")
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd")
                     val availabilityDay: Date = inputFormat.parse(availability.Date)
-
-                    lbl_day.text = dayFormat.format(availabilityDay)
-                    lbl_time.text = availability.StartTime + "-" + availability.EndTime
+                    if(count == 1) {
+                        lbl_day.text = dayFormat.format(availabilityDay)
+                    }
+                    lbl_time.text = availability.StartTime!!.take(5) + " - " + availability.EndTime!!.take(5)
                     lbl_type.text = "Beschikbaar"
-                    found = true
+
                     list_availability_day!!.addView(lbl_day)
                     list_availability_time!!.addView(lbl_time)
                     list_availability_type!!.addView(lbl_type)
                 }
             }
-            if(!found)
+            if(count == 0)
             {
                 val lbl_day  = TextView(cont)
                 val lbl_time = TextView(cont)
@@ -299,6 +331,11 @@ class MyBDActivity : Fragment() {
         putObjects(intent)
         startActivityForResult(intent, 1)
     }
+    fun gotoAvailability(context: Context)
+    {
+        val intent : Intent = Intent(context, MyBDAvailability::class.java)
+        startActivityForResult(intent, 2)
+    }
     fun gotoMeansoftransport(context: Context)
     {
         val intent : Intent = Intent(context, MyBDMoS::class.java)
@@ -316,16 +353,37 @@ class MyBDActivity : Fragment() {
         intent.putExtra("fare",user.fare)
         intent.putExtra("totalearnings",user.totalEarnings)
     }
-    fun doneLoading(root: View)
+    fun doneLoading()
     {
-        val content: LinearLayout = root.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
-        val loadingSpinner: ProgressBar = root.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
-        content.visibility = View.VISIBLE
-        loadingSpinner.visibility = View.GONE
+        println("b: $busy e: $err")
+        if(busy == 0) {
+            val content: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
+            val error: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_error)
+            val loadingSpinner: ProgressBar = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
+            if(err == 0) {
+                content.visibility = View.VISIBLE
+                error.visibility = View.GONE
+            }
+            else
+            {
+                content.visibility = View.GONE
+                error.visibility = View.VISIBLE
+            }
+            loadingSpinner.visibility = View.GONE
+        }
+    }
+    fun startLoading()
+    {
+        if(busy == 0) {
+            val content: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
+            val loadingSpinner: ProgressBar = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
+            content.visibility = View.GONE
+            loadingSpinner.visibility = View.VISIBLE
+        }
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
+        println(requestCode)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 email!!.text = data!!.getStringExtra("email")
@@ -340,8 +398,13 @@ class MyBDActivity : Fragment() {
          else if(requestCode == 2)
         {
             if (resultCode == Activity.RESULT_OK) {
-                val result = data!!.getStringExtra("result")
 
+                val result = data!!.getIntExtra("result", 0)
+                println(result)
+                if(result == 1)
+                {
+                    getAvailabilities()
+                }
             }
             else if (resultCode == Activity.RESULT_CANCELED) {
                  //Write your code if there's no result

@@ -1,21 +1,23 @@
 package nl.bezorgdirect.mijnbd.mijnBD
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.Button
 import android.widget.NumberPicker
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_my_bdavailability.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.AddAvailabilityParams
 import nl.bezorgdirect.mijnbd.api.Availability
@@ -34,8 +36,10 @@ private lateinit var linearLayoutManager: LinearLayoutManager
 
 class MyBDAvailability : AppCompatActivity() {
 
-    private var availabilities = ArrayList<Availability>()
+    private var availabilities: ArrayList<Availability> = ArrayList()
     private var cont :Context? = null
+    private var changed : Int = 1
+    private var activeCall = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,9 @@ class MyBDAvailability : AppCompatActivity() {
 
         val custom_toolbar_title: TextView = this.findViewById(R.id.custom_toolbar_title)
         custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
+        setSupportActionBar(custom_toolbar)
+        val actionBar = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         cont = this
         addAvailabilityLayout.visibility = View.GONE
@@ -67,12 +74,30 @@ class MyBDAvailability : AppCompatActivity() {
         list_availabilities.layoutManager = linearLayoutManager
         list_availabilities.adapter = listitems
 
+        swp_availability.setColorSchemeResources(
+            R.color.colorPrimaryDark
+        )
+
+        swp_availability.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+
+        swp_availability.setOnRefreshListener {
+            if(!activeCall) {
+                getAvailabilities(this)
+            }
+            else
+            {
+                swp_availability.isRefreshing = false
+            }
+        }
+
         getAvailabilities(applicationContext)
 
 
     }
 
     private fun getAvailabilities(context: Context){
+
+        activeCall = true
         var list_availabilities: RecyclerView = findViewById(R.id.AvailabilityRecyclerView)
 
         val service = getApiService()
@@ -90,6 +115,8 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    swp_availability.isRefreshing = false
+                    activeCall = false
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -97,6 +124,8 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    swp_availability.isRefreshing = false
+                    activeCall = false
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     println(values)
@@ -105,11 +134,19 @@ class MyBDAvailability : AppCompatActivity() {
                         if(values[0] != null)
                         {
                             availabilities = values
+                            sortAvailabilities()
                             list_availabilities.adapter = AvailabilityAdapter(availabilities)
                         }
                     }
+                    swp_availability.isRefreshing = false
+                    activeCall = false
                     //list_availabilities.adapter?.notifyDataSetChanged()
                 }
+                else{
+                    swp_availability.isRefreshing = false
+                    activeCall = false
+                }
+
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
@@ -118,6 +155,8 @@ class MyBDAvailability : AppCompatActivity() {
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
+                swp_availability.isRefreshing = false
+                activeCall = false
                 return
             }
 
@@ -150,8 +189,10 @@ class MyBDAvailability : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 } else if (response.isSuccessful && response.body() != null) {
+                    changed = 1
                     val values = response.body()!!
                     availabilities.addAll(values)
+                    sortAvailabilities()
                     Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     list_availabilities.adapter!!.notifyDataSetChanged()
                 }
@@ -168,7 +209,10 @@ class MyBDAvailability : AppCompatActivity() {
 
         })
     }
-
+    fun sortAvailabilities()
+    {
+        availabilities = ArrayList(availabilities.sortedWith(compareBy({it.Date}, {it.StartTime})))
+    }
     fun addDialog()
     {
         val dialog = Dialog(this)
@@ -204,10 +248,49 @@ class MyBDAvailability : AppCompatActivity() {
 
         dayPicker.minValue = 0
         dayPicker.maxValue = dates.size-1
-        println(dates.size)
+
+        toHourPicker.setOnValueChangedListener{ _, _, newVal ->
+
+            val availableHours = hours.slice(fromHourPicker.minValue..newVal)
+
+            fromHourPicker.displayedValues = null
+            fromHourPicker.maxValue = newVal
+            fromHourPicker.displayedValues = availableHours.toTypedArray()
+
+
+            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        fromHourPicker.setOnValueChangedListener{ _, _, newVal ->
+            val availableHours = hours.slice(newVal..toHourPicker.maxValue)
+            toHourPicker.displayedValues = null
+            toHourPicker.minValue = newVal
+            toHourPicker.displayedValues = availableHours.toTypedArray()
+
+            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        fromMinPicker.setOnValueChangedListener{ _, _, newVal ->
+
+            val availableMins = mins.slice(newVal..toMinPicker.maxValue)
+            toMinPicker.displayedValues = null
+            toMinPicker.minValue = newVal
+            toMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        toMinPicker.setOnValueChangedListener{ _, _, newVal ->
+            println("toMinPicker $newVal")
+            val availableMins = mins.slice(fromHourPicker.minValue..newVal)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+
         val dateArray = arrayOfNulls<String>(dates.size)
         dayPicker.displayedValues = dates.toArray(dateArray)
-
 
         val btn_confirm = dialog .findViewById(R.id.btn_confirmAvailability) as Button
         btn_confirm.setOnClickListener {
@@ -223,11 +306,19 @@ class MyBDAvailability : AppCompatActivity() {
 
             val fullDate: Date = inputFormat.parse(dates[dayPicker.value])
             val date = outputFormat.format(fullDate)
-            dialog.dismiss()
+            if("$fromHour:$fromMin" != "$toHour:$toMin") {
+                dialog.dismiss()
 
-            params.add(AddAvailabilityParams(date, "$fromHour:$fromMin", "$toHour:$toMin"))
-            postAvailabilities(cont!!, params)
-
+                params.add(AddAvailabilityParams(date, "$fromHour:$fromMin", "$toHour:$toMin"))
+                postAvailabilities(cont!!, params)
+            }
+            else
+            {
+                Toast.makeText(
+                    this, "Start en eind tijd mogen niet hetzelfde zijn.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
 
         }
         val btn_cancel = dialog .findViewById(R.id.btn_closeAddAvailability) as Button
@@ -250,6 +341,23 @@ class MyBDAvailability : AppCompatActivity() {
             dates.add(fromatter.format(day))
         }
         return dates
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> {
+                val returnIntent = Intent()
+                returnIntent.putExtra("result", changed)
+                setResult(Activity.RESULT_OK, returnIntent)
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        return true
     }
 
 }

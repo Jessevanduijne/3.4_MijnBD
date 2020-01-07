@@ -2,28 +2,24 @@ package nl.bezorgdirect.mijnbd.history
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import kotlinx.android.synthetic.main.activity_my_bdhistory.*
-import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
-import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
 import nl.bezorgdirect.mijnbd.R
-import nl.bezorgdirect.mijnbd.recyclerviews.HistoryAdapter
-import nl.bezorgdirect.mijnbd.recyclerviews.HistoryListener
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.getApiService
+import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.recyclerviews.HistoryAdapter
+import nl.bezorgdirect.mijnbd.recyclerviews.HistoryListener
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -85,6 +81,13 @@ class MyBDHistory : Fragment() {
         var listitems = HistoryAdapter(deliveries, clickHistory)
         val list_historie: RecyclerView = root.findViewById(R.id.list_historie)
         val swp_historie: SwipeRefreshLayout = root.findViewById(R.id.swp_historie)
+        val btn_retry_history: Button = root.findViewById(R.id.btn_retry_history)
+
+        btn_retry_history.setOnClickListener{
+            println("kaka")
+            val myBDHistory = MyBDHistory()
+            this.fragmentManager!!.beginTransaction().replace(R.id.delivery_fragment, myBDHistory).commit()
+        }
 
         list_historie.layoutManager = verticalList
         list_historie.adapter = listitems
@@ -111,6 +114,9 @@ class MyBDHistory : Fragment() {
 
     private fun getDeliveries(context: Context, root: View)
     {
+        val history_error: LinearLayout = root.findViewById(R.id.history_error)
+        val history_empty: LinearLayout = root.findViewById(R.id.history_empty)
+        val history_content: LinearLayout = root.findViewById(R.id.history_content)
         val list_historie: RecyclerView = root.findViewById(R.id.list_historie)
         val swp_historie: SwipeRefreshLayout = root.findViewById(R.id.swp_historie)
         val loadingSpinner: ProgressBar = root.findViewById(R.id.loadingSpinner)
@@ -122,52 +128,28 @@ class MyBDHistory : Fragment() {
         }
 
         val service = getApiService()
-        val sharedPref: SharedPreferences = context.getSharedPreferences("mybd", Context.MODE_PRIVATE)
-        val encryptedToken = sharedPref.getString("T", "")
-
-        val keyStoreWrapper = KeyStoreWrapper(context, "mybd")
-        val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
-        var token = ""
-        if(encryptedToken != "" && Key != null)
-        {
-            val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
-            token = cipherWrapper.decrypt(encryptedToken!!, Key?.private)
-        }
-        else
-        {
-            setLoadingDone()
-            return
-        }
+        val decryptedToken = getDecryptedToken(context)
 
         activeCall = true
-        service.deliveriesGet(auth = token).enqueue(object : Callback<ArrayList<Delivery>> {
+        service.deliveriesGet(auth = decryptedToken).enqueue(object : Callback<ArrayList<Delivery>> {
             override fun onResponse(
                 call: Call<ArrayList<Delivery>>,
                 response: Response<ArrayList<Delivery>>
             ) {
                 println(response)
                 if (response.code() == 500) {
-                    Toast.makeText(
-                        context,
-                        resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    history_error.visibility = View.VISIBLE
+                    history_content.visibility = View.GONE
                     setLoadingDone()
                 }
                 else if (response.code() == 401) {
-                    Toast.makeText(
-                        context,
-                        resources.getString(R.string.E401),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    history_error.visibility = View.VISIBLE
+                    history_content.visibility = View.GONE
                     setLoadingDone()
 
                 } else if (response.code() == 204) {
-                    Toast.makeText(
-                        context,
-                        resources.getString(nl.bezorgdirect.mijnbd.R.string.nodeliveries),
-                        Toast.LENGTH_LONG
-                    ).show()
+                    history_empty.visibility = View.VISIBLE
+                    history_content.visibility = View.GONE
                     setLoadingDone()
 
                 }else if (response.isSuccessful && response.body() != null) {
@@ -176,12 +158,17 @@ class MyBDHistory : Fragment() {
 
                     println(deliveries[0].CurrentId)
                     println(list_historie.adapter)
+                    history_empty.visibility = View.GONE
+                    history_error.visibility = View.GONE
+                    history_content.visibility = View.VISIBLE
 
                     list_historie.adapter = HistoryAdapter(deliveries, clickHistory)
                     setLoadingDone()
                 }
                 else
                 {
+                    history_error.visibility = View.VISIBLE
+                    history_content.visibility = View.GONE
                     setLoadingDone()
                 }
             }
@@ -192,6 +179,7 @@ class MyBDHistory : Fragment() {
                     context, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
+                history_error.visibility = View.VISIBLE
                 setLoadingDone()
                 return
             }
