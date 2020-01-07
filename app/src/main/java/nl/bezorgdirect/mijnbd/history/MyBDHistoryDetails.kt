@@ -3,6 +3,7 @@ package nl.bezorgdirect.mijnbd.history
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_my_bdhistory_details.*
@@ -29,29 +30,29 @@ class MyBDHistoryDetails : AppCompatActivity() {
         lbl_date.text = getDate(intent.getStringExtra("customerDeliveredAt"))
         lbl_time.text = getFromTo(intent.getStringExtra("customerDeliveredAt"), intent.getStringExtra("timeAccepted"))
         lbl_total_reward.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
-        lbl_total_distance.text = getTotalDistance(intent.getIntExtra("customerDistance", -1), intent.getIntExtra("warehouseDistance", -1))
+        lbl_total_distance.text = getTotalDistance(intent.getFloatExtra("customerDistance", 0.0f), intent.getFloatExtra("warehouseDistance", 0.0f))
 
         lbl_ready_warehouse_time.text = getTime(intent.getStringExtra("wareHouseReady"))
         lbl_accepted_time.text = getTime(intent.getStringExtra("timeAccepted"))
 
         lbl_warehouse_address.text = checkNullString(intent.getStringExtra("warehouseAddress"))
         lbl_warehouse_pickup_time.text = getTime(intent.getStringExtra("warehousePickUp"))
-        lbl_warehouse_distance_value.text = checkNullInt(intent.getIntExtra("warehouseDistance", -1))
+        lbl_warehouse_distance_value.text = roundFloat(intent.getFloatExtra("warehouseDistance", -1.0f))
 
         lbl_customer_address.text = checkNullString(intent.getStringExtra("customerAddress"))
         lbl_customer_delivery_time.text = getTime(intent.getStringExtra("customerDeliveredAt"))
-        lbl_customer_distance_value.text = checkNullInt(intent.getIntExtra("customerDistance", -1))
+        lbl_customer_distance_value.text = roundFloat(intent.getFloatExtra("customerDistance", -1.0f))
 
         lbl_fail_reason.text = "none"
         lbl_reward_value.text = roundFloat(intent.getFloatExtra("price", -1.0f))
         lbl_tip_value.text = roundFloat(intent.getFloatExtra("tip", -1.0f))
+        if("?" == roundFloat(intent.getFloatExtra("tip", -1.0f)))
+        {
+            lbl_tip_value.visibility = View.GONE
+            lbl_tip_text.visibility = View.GONE
+        }
 
         lbl_total_reward_value.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
-       /* var delivery : Delivery? =  intent.getParcelableExtra("delivery")
-        if(delivery !=  null)
-        {
-            print(delivery)
-        }*/
 
     }
 
@@ -66,6 +67,7 @@ class MyBDHistoryDetails : AppCompatActivity() {
             4 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.lightgreen))
         }
         lbl_status.text = intent.getStringExtra("statusDisplayName")
+        lbl_customer_status.text = intent.getStringExtra("statusDisplayName")
     }
     fun setVehicle()
     {
@@ -151,18 +153,13 @@ class MyBDHistoryDetails : AppCompatActivity() {
 
         return output
     }
-    fun getTotalDistance(warehouse: Int, customer: Int): String
+    fun getTotalDistance(warehouse: Float, customer: Float): String
     {
         var output = ""
-        if(warehouse == -1 || customer == -1)
-        {
-            output = "?"
-        }
-        else
-        {
-            var total = warehouse+customer
-            output = "$total km."
-        }
+
+        var total = roundFloat(warehouse+customer)
+        output = "$total km."
+
         return output
     }
     fun roundFloat(input : Float) : String
@@ -177,13 +174,22 @@ class MyBDHistoryDetails : AppCompatActivity() {
     fun getTotalReward(price: Float, tip: Float): String
     {
         var output = ""
-        if(price == -1.0f || tip == -1.0f)
+
+        if(price == -1.0f)
         {
             output = "?"
         }
         else
         {
-            val total = price+tip
+            var total = 0.0f
+            if(tip == -1.0f)
+            {
+                total = price
+            }
+            else
+            {
+                total = price + tip
+            }
             val totalstring = roundFloat(total)
             output = "€$totalstring"
         }

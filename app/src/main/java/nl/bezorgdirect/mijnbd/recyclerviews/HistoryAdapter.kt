@@ -32,9 +32,9 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         val item = list[position]
         val outputFormat = SimpleDateFormat("HH:mm")
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        val start = "2019-12-06T15:16:25.84Z" //needs to be added to api so now dummy value
-        if(item.DeliveredAt != null && start != null) {
-            val starttime: Date = inputFormat.parse(start)
+
+        if(item.DeliveredAt != null && item.WarehousePickUpAt != null) {
+            val starttime: Date = inputFormat.parse(item.WarehousePickUpAt)//acceptedAt wharhouse pickup for now
             val endtime: Date = inputFormat.parse(item.DeliveredAt)
             println("$starttime||$endtime")
             println(starttime.time)
@@ -45,12 +45,17 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             val hours = minutes / 60
             minutes -= hours * 60
 
+            println("min: $minutes hours: $hours")
             var traveltime = ""
             if (hours > 0) {
                 traveltime += "$hours u. "
             }
             if (minutes > 0) {
                 traveltime += "$minutes min."
+            }
+            if(minutes <= 0 && hours <= 0)
+            {
+                traveltime = "0 min."
             }
             holder.travel.text = traveltime
 
@@ -86,8 +91,8 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
 
 
         println(item)
-        if(item.CustomerDistanceInKilometers != null && item.WarehouseDistaceInKilometers != null) {
-            var distance = item.CustomerDistanceInKilometers!! + item.WarehouseDistaceInKilometers!!
+        if(item.CustomerDistanceInKilometers != null && item.WarehouseDistanceInKilometers != null) {
+            var distance = item.CustomerDistanceInKilometers!! + item.WarehouseDistanceInKilometers!!
             distance = round(distance * 100) / 100
             holder.distance.text = "$distance km."
         }

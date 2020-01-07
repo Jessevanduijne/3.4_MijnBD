@@ -178,6 +178,7 @@
                         android:inputType="textEmailAddress"
                         android:padding="5dp"
                         android:textColor="@color/white"
+                        android:textCursorDrawable="@null"
                         android:textSize="20sp" />
 
                     <ImageButton
@@ -218,6 +219,7 @@
                         android:inputType="phone"
                         android:padding="5dp"
                         android:textColor="@color/white"
+                        android:textCursorDrawable="@null"
                         android:textSize="20sp" />
 
                     <ImageButton

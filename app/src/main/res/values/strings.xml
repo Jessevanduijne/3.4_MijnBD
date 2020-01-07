@@ -16,7 +16,7 @@
     <string name="lbl_minutes_short">min.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
-    <string name="lbl_distance">Afstand</string>
+    <string name="lbl_distance">km. Afstand</string>
     <string name="lbl_euro">€</string>
 
     <!-- Error -->

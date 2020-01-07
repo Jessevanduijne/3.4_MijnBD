@@ -5,14 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark">
 
-    <ProgressBar
-        android:id="@+id/loadingSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:indeterminateTint="@color/colorPrimary"
-        android:visibility="gone"
-        />
+    <include layout="@layout/spinner"/>
     <LinearLayout
         android:id="@+id/history_empty"
         android:layout_width="match_parent"

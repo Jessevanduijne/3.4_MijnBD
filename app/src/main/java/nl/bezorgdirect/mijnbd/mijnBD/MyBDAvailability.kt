@@ -23,6 +23,8 @@ import nl.bezorgdirect.mijnbd.api.AddAvailabilityParams
 import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.hideSpinner
+import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import nl.bezorgdirect.mijnbd.recyclerviews.AvailabilityAdapter
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,6 +53,7 @@ class MyBDAvailability : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
+
         cont = this
         addAvailabilityLayout.visibility = View.GONE
 
@@ -58,14 +61,11 @@ class MyBDAvailability : AppCompatActivity() {
         var list_availabilities: RecyclerView = findViewById(R.id.AvailabilityRecyclerView)
 
         val btn_addAvailability: FloatingActionButton = findViewById(R.id.btn_addAvailability)
-        val btn_cancel: Button = findViewById(R.id.btn_cancel)
-        val btn_submit: Button = findViewById(R.id.btn_submit)
         val lbl_error: TextView = findViewById(R.id.lbl_error)
 
         lbl_error.visibility = View.GONE
 
         btn_addAvailability.setOnClickListener{
-            //addAvailabilityLayout.visibility = View.VISIBLE
             addDialog()
         }
 
@@ -99,6 +99,11 @@ class MyBDAvailability : AppCompatActivity() {
 
         activeCall = true
         var list_availabilities: RecyclerView = findViewById(R.id.AvailabilityRecyclerView)
+        val root : View = this.findViewById(android.R.id.content)
+        if(!swp_availability.isRefreshing)
+        {
+            showSpinner(root)
+        }
 
         val service = getApiService()
         val decryptedToken = getDecryptedToken(this)
@@ -116,6 +121,7 @@ class MyBDAvailability : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                     swp_availability.isRefreshing = false
+                    hideSpinner(root)
                     activeCall = false
                 }
                 else if (response.code() == 401) {
@@ -125,6 +131,7 @@ class MyBDAvailability : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                     swp_availability.isRefreshing = false
+                    hideSpinner(root)
                     activeCall = false
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
@@ -139,11 +146,13 @@ class MyBDAvailability : AppCompatActivity() {
                         }
                     }
                     swp_availability.isRefreshing = false
+                    hideSpinner(root)
                     activeCall = false
                     //list_availabilities.adapter?.notifyDataSetChanged()
                 }
                 else{
                     swp_availability.isRefreshing = false
+                    hideSpinner(root)
                     activeCall = false
                 }
 
@@ -156,6 +165,7 @@ class MyBDAvailability : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
                 swp_availability.isRefreshing = false
+                hideSpinner(root)
                 activeCall = false
                 return
             }
@@ -165,6 +175,9 @@ class MyBDAvailability : AppCompatActivity() {
 
     private fun postAvailabilities(context: Context, params: ArrayList<AddAvailabilityParams>){
         var list_availabilities: RecyclerView = findViewById(R.id.AvailabilityRecyclerView)
+
+        val root : View = this.findViewById(android.R.id.content)
+        showSpinner(root)
 
         val service = getApiService()
         val decryptedToken = getDecryptedToken(this)
@@ -181,6 +194,7 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root)
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -188,6 +202,7 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root)
                 } else if (response.isSuccessful && response.body() != null) {
                     changed = 1
                     val values = response.body()!!
@@ -195,6 +210,7 @@ class MyBDAvailability : AppCompatActivity() {
                     sortAvailabilities()
                     Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     list_availabilities.adapter!!.notifyDataSetChanged()
+                    hideSpinner(root)
                 }
             }
 
@@ -204,6 +220,7 @@ class MyBDAvailability : AppCompatActivity() {
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
+                hideSpinner(root)
                 return
             }
 

@@ -19,6 +19,8 @@ import nl.bezorgdirect.mijnbd.api.Location
 import nl.bezorgdirect.mijnbd.api.User
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.hideSpinner
+import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,12 +63,15 @@ class MyBDActivity : Fragment() {
             custom_toolbar_title.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_mybdpersonalia)
         }
         this.root = root
+
+        cont = root.context
+
         email = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
         vehicle = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
         list_availability_day = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_day)
         list_availability_time = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_time)
         list_availability_type = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_type)
-        cont = root.context
+
 
         val btn_info: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_info)
         val btn_availability: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_availability)
@@ -366,7 +371,6 @@ class MyBDActivity : Fragment() {
         if(busy == 0) {
             val content: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
             val error: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_error)
-            val loadingSpinner: ProgressBar = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
             if(err == 0) {
                 content.visibility = View.VISIBLE
                 error.visibility = View.GONE
@@ -376,23 +380,22 @@ class MyBDActivity : Fragment() {
                 content.visibility = View.GONE
                 error.visibility = View.VISIBLE
             }
-            loadingSpinner.visibility = View.GONE
+            hideSpinner(root!!)
         }
     }
     fun startLoading()
     {
         if(busy == 0) {
-            val content: LinearLayout = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.mybd_content)
-            val loadingSpinner: ProgressBar = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.loadingSpinner)
+            val content: LinearLayout = root!!.findViewById(R.id.mybd_content)
             content.visibility = View.GONE
-            loadingSpinner.visibility = View.VISIBLE
+            showSpinner(root!!)
         }
     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                email!!.text = data!!.getStringExtra("email")
+                email!!.text = data!!.getStringExtra("email").substringBefore(delimiter= '@', missingDelimiterValue = data!!.getStringExtra("email")!!)
                 user.emailAddress = data!!.getStringExtra("email")
                 user.phoneNumber = data!!.getStringExtra("phonenumber")
                 setAvatar()

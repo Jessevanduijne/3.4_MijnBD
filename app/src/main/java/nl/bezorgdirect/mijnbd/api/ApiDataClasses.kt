@@ -15,7 +15,7 @@ data class BDNotification (val Id: String?, val DelivererId: String?, val Delive
 
 
 data class Delivery (val Id: String?, val DelivererId: String?, val CustomerPhoneNumber: String?, val DueDate: String?, val Vehicle: Int?, val StartedAtId: String?,
-                     val WarehouseDistaceInKilometers: Float?, val WarehouseETA: String?, val WarehousePickUpAt:  String?, val CustomerDistanceInKilometers: Float?,
+                     val WarehouseDistanceInKilometers: Float?, val WarehouseETA: String?, val WarehousePickUpAt:  String?, val CustomerDistanceInKilometers: Float?,
                      val CustomerETA: String?, val CustomerId: String?, val CurrentId: String?, val DeliveredAt: String?, val Price: Float?, val tip: Float?,
                      val PaymentMethod: Int?, val PaymenMethodDisplayName: String?, val Status: Int?, val StatusDisplayName: String?, val Warehouse: Location,
                      val Customer: Location, val Current: Location, val VehicleDisplayName: String)

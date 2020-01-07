@@ -10,11 +10,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_assignment_finished.*
-import nl.bezorgdirect.mijnbd.history.MyBDHistoryDetails
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.hideSpinner
 import nl.bezorgdirect.mijnbd.helpers.replaceFragment
+import nl.bezorgdirect.mijnbd.history.MyBDHistoryDetails
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -75,7 +75,7 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
 
             //warehouse
             intent.putExtra("warehouseAddress", d.Warehouse.Address)
-            intent.putExtra("warehouseDistance", d.WarehouseDistaceInKilometers)
+            intent.putExtra("warehouseDistance", d.WarehouseDistanceInKilometers)
             intent.putExtra("warehousePickUp", d.WarehousePickUpAt)
             //customer
             intent.putExtra("customerAddress", d.Customer.Address)

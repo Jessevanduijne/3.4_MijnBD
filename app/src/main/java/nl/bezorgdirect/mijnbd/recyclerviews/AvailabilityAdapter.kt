@@ -122,10 +122,12 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val fromParts = params.StartTime!!.split(":")
         val toParts = params.EndTime!!.split(":")
 
+        println(fromParts)
+        println(toParts)
         val fromHourIndex = hours.indexOf(fromParts[0])
-        val fromMinIndex = hours.indexOf(fromParts[1])
+        val fromMinIndex = mins.indexOf(fromParts[1])
         val toHourIndex = hours.indexOf(toParts[0])
-        val toMinIndex = hours.indexOf(toParts[1])
+        val toMinIndex = mins.indexOf(toParts[1])
 
 
         fromHourPicker.minValue = 0
@@ -222,8 +224,17 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
             params.StartTime = "$fromHour:$fromMin"
             params.EndTime = "$toHour:$toMin"
 
-            updateAvailability(params, listId)
-            dialog.dismiss()
+            if("$fromHour:$fromMin" != "$toHour:$toMin") {
+                dialog.dismiss()
+                updateAvailability(params, listId)
+            }
+            else
+            {
+                Toast.makeText(
+                    cont, "Start en eind tijd mogen niet hetzelfde zijn.",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
         val btn_cancel = dialog .findViewById(R.id.btn_closeAddAvailability) as Button
         btn_cancel.setOnClickListener {

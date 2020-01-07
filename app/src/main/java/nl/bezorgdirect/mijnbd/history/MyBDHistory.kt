@@ -7,17 +7,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import kotlinx.android.synthetic.main.activity_my_bdhistory.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.hideSpinner
+import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import nl.bezorgdirect.mijnbd.recyclerviews.HistoryAdapter
 import nl.bezorgdirect.mijnbd.recyclerviews.HistoryListener
 import retrofit2.Call
@@ -36,9 +40,11 @@ class MyBDHistory : Fragment() {
             val intent = Intent(activity, MyBDHistoryDetails::class.java)
             println("Pos "+position)
             println(deliveries[position])
+            //accepted
+            intent.putExtra("timeAccepted",deliveries[position].WarehousePickUpAt)//needs to be added to api warhouse pickup for now
             //warehouse
             intent.putExtra("warehouseAddress",deliveries[position].Warehouse.Address)
-            intent.putExtra("warehouseDistance",deliveries[position].WarehouseDistaceInKilometers)
+            intent.putExtra("warehouseDistance",deliveries[position].WarehouseDistanceInKilometers)
             intent.putExtra("warehousePickUp",deliveries[position].WarehousePickUpAt)
             //customer
             intent.putExtra("customerAddress",deliveries[position].Customer.Address)
@@ -119,12 +125,10 @@ class MyBDHistory : Fragment() {
         val history_content: LinearLayout = root.findViewById(R.id.history_content)
         val list_historie: RecyclerView = root.findViewById(R.id.list_historie)
         val swp_historie: SwipeRefreshLayout = root.findViewById(R.id.swp_historie)
-        val loadingSpinner: ProgressBar = root.findViewById(R.id.loadingSpinner)
 
         if(!swp_historie.isRefreshing)
         {
-            loadingSpinner.bringToFront()
-            loadingSpinner.visibility = View.VISIBLE
+            showSpinner(root)
         }
 
         val service = getApiService()
@@ -140,17 +144,17 @@ class MyBDHistory : Fragment() {
                 if (response.code() == 500) {
                     history_error.visibility = View.VISIBLE
                     history_content.visibility = View.GONE
-                    setLoadingDone()
+                    setLoadingDone(root)
                 }
                 else if (response.code() == 401) {
                     history_error.visibility = View.VISIBLE
                     history_content.visibility = View.GONE
-                    setLoadingDone()
+                    setLoadingDone(root)
 
                 } else if (response.code() == 204) {
                     history_empty.visibility = View.VISIBLE
                     history_content.visibility = View.GONE
-                    setLoadingDone()
+                    setLoadingDone(root)
 
                 }else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
@@ -163,13 +167,13 @@ class MyBDHistory : Fragment() {
                     history_content.visibility = View.VISIBLE
 
                     list_historie.adapter = HistoryAdapter(deliveries, clickHistory)
-                    setLoadingDone()
+                    setLoadingDone(root)
                 }
                 else
                 {
                     history_error.visibility = View.VISIBLE
                     history_content.visibility = View.GONE
-                    setLoadingDone()
+                    setLoadingDone(root)
                 }
             }
 
@@ -180,16 +184,17 @@ class MyBDHistory : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
                 history_error.visibility = View.VISIBLE
-                setLoadingDone()
+                setLoadingDone(root)
                 return
             }
 
         })
 
     }
-    fun setLoadingDone()
+    fun setLoadingDone(root: View)
     {
-        loadingSpinner.visibility = View.GONE
+        hideSpinner(root)
+        val swp_historie: SwipeRefreshLayout = root.findViewById(R.id.swp_historie)
         swp_historie.isRefreshing = false
         activeCall = false
     }

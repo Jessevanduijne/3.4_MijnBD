@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -80,13 +81,22 @@ class MyBDInfo : AppCompatActivity() {
         btn_edit_email.setOnClickListener {
             if(txt_email.isEnabled)
             {
-                txt_email.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-                txt_email.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-                email = txt_email.text.toString()
-                update()
-                btn_edit_email.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
-                txt_email.isEnabled = false
-            }
+                if(isEmailValid(txt_email.text.toString())) {
+                    txt_email.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+                    txt_email.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+                    email = txt_email.text.toString()
+                    update()
+                    btn_edit_email.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
+                    txt_email.isEnabled = false
+                }
+                else
+                {
+                    Toast.makeText(
+                        applicationContext, "Geen valide Email-adres",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+        }
             else
             {
                 txt_email.background = ContextCompat.getDrawable(applicationContext,
@@ -94,18 +104,31 @@ class MyBDInfo : AppCompatActivity() {
                 txt_email.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
                 btn_edit_email.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_save_black_24dp)
                 txt_email.isEnabled = true
+                txt_email.requestFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm!!.showSoftInput(txt_email, InputMethodManager.SHOW_IMPLICIT)
+                txt_email.setSelection(txt_email.text.length)
             }
         }
 
         btn_edit_phonenumber.setOnClickListener {
             if(txt_phonenumber.isEnabled)
             {
-                txt_phonenumber.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-                txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-                phonenumber = txt_phonenumber.text.toString()
-                update()
-                btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
-                txt_phonenumber.isEnabled = false
+                if(isPhonenumberValid(txt_phonenumber.text.toString())) {
+                    txt_phonenumber.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+                    txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+                    phonenumber = txt_phonenumber.text.toString()
+                    update()
+                    btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
+                    txt_phonenumber.isEnabled = false
+                }
+                else
+                {
+                    Toast.makeText(
+                        applicationContext, "Geen valide telefoonnummer",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
             else
             {
@@ -114,6 +137,11 @@ class MyBDInfo : AppCompatActivity() {
                 txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
                 btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_save_black_24dp)
                 txt_phonenumber.isEnabled = true
+                txt_phonenumber.requestFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm!!.showSoftInput(txt_phonenumber, InputMethodManager.SHOW_IMPLICIT)
+                txt_phonenumber.setSelection(txt_phonenumber.text.length)
+                txt_phonenumber.isCursorVisible=true
             }
         }
 
@@ -182,6 +210,16 @@ class MyBDInfo : AppCompatActivity() {
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }
+
+    fun isEmailValid(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+    fun isPhonenumberValid(phone: String): Boolean {
+
+        val pattern = Regex("^((\\+|00(\\s|\\s?\\-\\s?)?)31(\\s|\\s?\\-\\s?)?(\\(0\\)[\\-\\s]?)?|0)[1-9]((\\s|\\s?\\-\\s?)?[0-9])((\\s|\\s?-\\s?)?[0-9])((\\s|\\s?-\\s?)?[0-9])\\s?[0-9]\\s?[0-9]\\s?[0-9]\\s?[0-9]\\s?[0-9]\$")
+        return pattern.matches(phone)
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
