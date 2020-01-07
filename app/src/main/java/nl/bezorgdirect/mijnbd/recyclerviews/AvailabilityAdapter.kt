@@ -150,6 +150,45 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         toMinPicker.maxValue = mins.size-1
         toMinPicker.displayedValues = mins
         toMinPicker.value = toMinIndex
+        toHourPicker.setOnValueChangedListener{ _, _, newVal ->
+
+            val availableHours = hours.slice(fromHourPicker.minValue..newVal)
+
+            fromHourPicker.displayedValues = null
+            fromHourPicker.maxValue = newVal
+            fromHourPicker.displayedValues = availableHours.toTypedArray()
+
+
+            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        fromHourPicker.setOnValueChangedListener{ _, _, newVal ->
+            val availableHours = hours.slice(newVal..toHourPicker.maxValue)
+            toHourPicker.displayedValues = null
+            toHourPicker.minValue = newVal
+            toHourPicker.displayedValues = availableHours.toTypedArray()
+
+            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        fromMinPicker.setOnValueChangedListener{ _, _, newVal ->
+
+            val availableMins = mins.slice(newVal..toMinPicker.maxValue)
+            toMinPicker.displayedValues = null
+            toMinPicker.minValue = newVal
+            toMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        toMinPicker.setOnValueChangedListener{ _, _, newVal ->
+            println("toMinPicker $newVal")
+            val availableMins = mins.slice(fromHourPicker.minValue..newVal)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
 
         var dateString = params.Date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "")
         val dateParts = dateString.split("-")
