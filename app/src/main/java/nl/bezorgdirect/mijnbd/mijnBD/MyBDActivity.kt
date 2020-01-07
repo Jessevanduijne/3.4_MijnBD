@@ -201,7 +201,7 @@ class MyBDActivity : Fragment() {
                     busy--
                     doneLoading()
                 }
-                else if (response.code() == 204) {
+                else if (response.code() == 204 || response.code() == 400) {
                     fillAvailability(ArrayList())
                     busy--
                 }
@@ -219,6 +219,11 @@ class MyBDActivity : Fragment() {
                     fillAvailability(values)
                     busy--
                     doneLoading()
+                }
+                else
+                {
+                    err++
+                    busy--
                 }
             }
 
