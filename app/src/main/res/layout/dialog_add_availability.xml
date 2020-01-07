@@ -167,7 +167,7 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Confirm"
+                android:text="Bevestig"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"/>
@@ -177,7 +177,7 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Cancel"
+                android:text="Annuleer"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </LinearLayout>
