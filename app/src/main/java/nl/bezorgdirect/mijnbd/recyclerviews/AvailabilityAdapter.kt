@@ -16,6 +16,8 @@ import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Availability
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import nl.bezorgdirect.mijnbd.helpers.hideSpinner
+import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,10 +29,12 @@ import kotlin.collections.ArrayList
 class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adapter<AvailabilityAdapter.MyViewHolder>() {
 
     var cont: Context? = null
+    var root: View? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.availability_item, parent, false)
         cont = parent.context
+        root = parent.rootView
         return MyViewHolder(view)
     }
 
@@ -129,86 +133,41 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val toHourIndex = hours.indexOf(toParts[0])
         val toMinIndex = mins.indexOf(toParts[1])
 
+        initValsPicker(fromHourPicker, hours)
+        initValsPicker(toHourPicker, hours)
+        initValsPicker(fromMinPicker, mins)
+        initValsPicker(toMinPicker, mins)
 
-        fromHourPicker.minValue = 0
-        fromHourPicker.maxValue = hours.size-1
-        fromHourPicker.displayedValues = hours
+        toHourPicker.value = toHourIndex
         fromHourPicker.value = fromHourIndex
-
-
-        fromMinPicker.minValue = 0
-        fromMinPicker.maxValue = mins.size-1
-        fromMinPicker.displayedValues = mins
+        toMinPicker.value = toMinIndex
         fromMinPicker.value = fromMinIndex
 
-        toHourPicker.value = toHourIndex
-        toHourPicker.minValue = 0
-        toHourPicker.maxValue = hours.size-1
-        toHourPicker.displayedValues = hours
-        toHourPicker.value = toHourIndex
-
-
-        toMinPicker.minValue = 0
-        toMinPicker.maxValue = mins.size-1
-        toMinPicker.displayedValues = mins
-        toMinPicker.value = toMinIndex
-        toHourPicker.setOnValueChangedListener{ _, _, newVal ->
-
-            val availableHours = hours.slice(fromHourPicker.minValue..newVal)
-
-            fromHourPicker.displayedValues = null
-            fromHourPicker.maxValue = newVal
-            fromHourPicker.displayedValues = availableHours.toTypedArray()
-
-
-            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
-            fromMinPicker.displayedValues = null
-            fromMinPicker.maxValue = toMinPicker.value
-            fromMinPicker.displayedValues = availableMins.toTypedArray()
-        }
-        fromHourPicker.setOnValueChangedListener{ _, _, newVal ->
-            val availableHours = hours.slice(newVal..toHourPicker.maxValue)
-            toHourPicker.displayedValues = null
-            toHourPicker.minValue = newVal
-            toHourPicker.displayedValues = availableHours.toTypedArray()
-
-            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
-            fromMinPicker.displayedValues = null
-            fromMinPicker.maxValue = toMinPicker.value
-            fromMinPicker.displayedValues = availableMins.toTypedArray()
-        }
-        fromMinPicker.setOnValueChangedListener{ _, _, newVal ->
-
-            val availableMins = mins.slice(newVal..toMinPicker.maxValue)
-            toMinPicker.displayedValues = null
-            toMinPicker.minValue = newVal
-            toMinPicker.displayedValues = availableMins.toTypedArray()
-        }
-        toMinPicker.setOnValueChangedListener{ _, _, newVal ->
-            println("toMinPicker $newVal")
-            val availableMins = mins.slice(fromHourPicker.minValue..newVal)
-            fromMinPicker.displayedValues = null
-            fromMinPicker.maxValue = toMinPicker.value
-            fromMinPicker.displayedValues = availableMins.toTypedArray()
-        }
 
         var dateString = params.Date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "")
         val dateParts = dateString.split("-")
         dateString = dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0]
-
         val dateIndex = dates.indexOf(dateString)
         dayPicker.value = dateIndex
-        dayPicker.minValue = 0
-        dayPicker.maxValue = dates.size-1
-        println(dates.size)
-        val dateArray = arrayOfNulls<String>(dates.size)
-        dayPicker.displayedValues = dates.toArray(dateArray)
-        dayPicker.value = dateIndex
 
+        initValsPicker(dayPicker, dates.toTypedArray())
+
+        toHourPicker.setOnValueChangedListener{ _, _, newVal ->
+            toHourPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
+        }
+        fromHourPicker.setOnValueChangedListener{ _, _, newVal ->
+            fromHourPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
+        }
+        fromMinPicker.setOnValueChangedListener{ _, _, newVal ->
+            fromMinPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
+        }
+        toMinPicker.setOnValueChangedListener{ _, _, newVal ->
+            toMinPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
+        }
 
         val btn_confirm = dialog.findViewById(R.id.btn_confirmAvailability) as Button
         btn_confirm.setOnClickListener {
-
+            val updateParams = params
             val fromHour = hours[fromHourPicker.value]
             val fromMin = mins[fromMinPicker.value]
             val toHour = hours[toHourPicker.value]
@@ -220,13 +179,13 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
             val fullDate: Date = inputFormat.parse(dates[dayPicker.value])
             val date = outputFormat.format(fullDate)
 
-            params.Date = date
-            params.StartTime = "$fromHour:$fromMin"
-            params.EndTime = "$toHour:$toMin"
+            updateParams.Date = date
+            updateParams.StartTime = "$fromHour:$fromMin"
+            updateParams.EndTime = "$toHour:$toMin"
 
             if("$fromHour:$fromMin" != "$toHour:$toMin") {
                 dialog.dismiss()
-                updateAvailability(params, listId)
+                updateAvailability(updateParams, listId)
             }
             else
             {
@@ -243,25 +202,101 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
 
         dialog.show()
     }
+    fun initValsPicker(picker: NumberPicker, values: Array<String>)
+    {
+        picker.displayedValues = null
+        picker.minValue = 0
+        picker.maxValue = values.size-1
+        picker.displayedValues = values
+    }
 
+    fun toHourPickerChanged(fromHourPicker: NumberPicker, toHourPicker: NumberPicker, fromMinPicker: NumberPicker, toMinPicker: NumberPicker, hours: Array<String>, mins: Array<String>)
+    {
+        val availableHours = hours.slice(fromHourPicker.minValue..toHourPicker.value)
+        initValsPicker(fromHourPicker, availableHours.toTypedArray())
+
+        if(hours[fromHourPicker.value] == hours[toHourPicker.value])
+        {
+            val availableMins = ArrayList<String>()
+            availableMins.addAll(mins.slice(fromMinPicker.minValue..toMinPicker.value))
+            initValsPicker(fromMinPicker, availableMins.toTypedArray())
+        }
+        else
+        {
+            initValsPicker(fromMinPicker, mins)
+            initValsPicker(toMinPicker, mins)
+        }
+    }
+    fun fromHourPickerChanged(fromHourPicker: NumberPicker, toHourPicker: NumberPicker, fromMinPicker: NumberPicker, toMinPicker: NumberPicker, hours: Array<String>, mins: Array<String>)
+    {
+        val availableHours = hours.slice(fromHourPicker.value..toHourPicker.maxValue)
+        toHourPicker.displayedValues = null
+        toHourPicker.minValue = fromHourPicker.value
+        toHourPicker.displayedValues = availableHours.toTypedArray()
+
+        if(hours[fromHourPicker.value] == hours[toHourPicker.value])
+        {
+            val availableMins = ArrayList<String>()
+            availableMins.addAll(mins.slice(fromMinPicker.minValue..toMinPicker.value))
+            initValsPicker(fromMinPicker, availableMins.toTypedArray())
+        }
+        else
+        {
+            initValsPicker(fromMinPicker, mins)
+            initValsPicker(toMinPicker, mins)
+        }
+    }
+    fun fromMinPickerChanged(fromHourPicker: NumberPicker, toHourPicker: NumberPicker, fromMinPicker: NumberPicker, toMinPicker: NumberPicker, hours: Array<String>, mins: Array<String>)
+    {
+        if(hours[fromHourPicker.value] == hours[toHourPicker.value])
+        {
+            val availableMins = mins.slice(fromMinPicker.value..toMinPicker.maxValue)
+            toMinPicker.displayedValues = null
+            toMinPicker.minValue = fromMinPicker.value
+            toMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        else
+        {
+            initValsPicker(toMinPicker, mins)
+        }
+    }
+    fun toMinPickerChanged(fromHourPicker: NumberPicker, toHourPicker: NumberPicker, fromMinPicker: NumberPicker, toMinPicker: NumberPicker, hours: Array<String>, mins: Array<String>)
+    {
+        if(hours[fromHourPicker.value] == hours[toHourPicker.value])
+        {
+            val availableMins = mins.slice(fromHourPicker.minValue..toMinPicker.value)
+            fromMinPicker.displayedValues = null
+            fromMinPicker.maxValue = toMinPicker.value
+            fromMinPicker.displayedValues = availableMins.toTypedArray()
+        }
+        else
+        {
+            initValsPicker(fromMinPicker, mins)
+        }
+    }
     fun getDates() : ArrayList<String>
     {
         val fromatter = SimpleDateFormat("dd-MM-yyyy")
-        val today = Date()
+        val day = Calendar.getInstance()
+        day.time = Date()
 
         val dates = ArrayList<String>()
         for (i in 0..62)
         {
-            val day = Date(today.time + (1000 * 60 * 60 * 24) * i)
-            dates.add(fromatter.format(day))
+            day.add(Calendar.DATE, 1)
+            dates.add(fromatter.format(day.time))
         }
         return dates
     }
-
     fun deleteAvailability(id: String, listId: Int)
     {
+        showSpinner(root!!)
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
+
+        val availability_content: LinearLayout = root!!.findViewById(R.id.availability_content)
+        val availability_empty: LinearLayout = root!!.findViewById(R.id.availability_empty)
+
 
         service.availablitiesDelete(auth = decryptedToken, id = id).enqueue(object :
             Callback<ResponseBody> {
@@ -276,6 +311,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                         MijnbdApplication.appContext.resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root!!)
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -283,9 +319,17 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                         MijnbdApplication.appContext.resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root!!)
                 } else if (response.isSuccessful && response.body() != null) {
                     list.removeAt(listId)
                     notifyDataSetChanged()
+                    if(list.size == 0)
+                    {
+                        availability_content.visibility = View.GONE
+                        availability_empty.visibility = View.VISIBLE
+                    }
+                    hideSpinner(root!!)
+
                 }
             }
 
@@ -295,13 +339,14 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                     cont!!, MijnbdApplication.appContext.resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
-                return
+                hideSpinner(root!!)
             }
 
         })
     }
     fun updateAvailability(availability: Availability, listId: Int)
     {
+        showSpinner(root!!)
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
         val params  = ArrayList<Availability>()
@@ -318,6 +363,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                         cont!!.resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root!!)
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
@@ -325,11 +371,13 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                         cont!!.resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
+                    hideSpinner(root!!)
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     list[listId] = values[0]
-                    sortAvailabilities()
+                    list.sortBy{it.Date+' '+it.StartTime}
                     notifyDataSetChanged()
+                    hideSpinner(root!!)
                 }
             }
 
@@ -339,16 +387,12 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                     cont!!, cont!!.resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
-                return
+                hideSpinner(root!!)
             }
 
         })
     }
 
-    fun sortAvailabilities()
-    {
-        list = ArrayList(list.sortedWith(compareBy({it.Date}, {it.StartTime})))
-    }
 
 
 

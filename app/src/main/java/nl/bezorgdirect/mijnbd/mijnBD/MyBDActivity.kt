@@ -66,6 +66,7 @@ class MyBDActivity : Fragment() {
 
         cont = root.context
 
+
         email = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
         vehicle = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
         list_availability_day = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_day)
@@ -86,15 +87,15 @@ class MyBDActivity : Fragment() {
         img_profile = root.findViewById(nl.bezorgdirect.mijnbd.R.id.img_profile)
 
         btn_info.setOnClickListener{
-            gotoInfo(cont!!)
+            gotoInfo(root.context)
         }
 
         btn_availability.setOnClickListener {
-            gotoAvailability(cont!!)
+            gotoAvailability(root.context)
         }
 
         btn_meansoftransport.setOnClickListener {
-            gotoMeansoftransport(cont!!)
+            gotoMeansoftransport(root.context)
         }
         setAvatar()
         getAvailabilities()
@@ -104,7 +105,7 @@ class MyBDActivity : Fragment() {
     }
     fun setAvatar()
     {
-        val sharedPrefs = cont!!.getSharedPreferences("mybd", Context.MODE_PRIVATE)
+        val sharedPrefs = activity!!.applicationContext.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         val avataruri = sharedPrefs.getString("avatar", "")
         if(avataruri != "")
         {
@@ -116,7 +117,7 @@ class MyBDActivity : Fragment() {
         startLoading()
         busy++
         val service = getApiService()
-        val decryptedToken = getDecryptedToken(cont!!)
+        val decryptedToken = getDecryptedToken(activity!!.applicationContext)
 
         service.delivererGet(auth = decryptedToken).enqueue(object : Callback<User> {
             override fun onResponse(
@@ -126,7 +127,7 @@ class MyBDActivity : Fragment() {
                 println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
-                        cont!!,
+                        activity?.applicationContext,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
@@ -136,7 +137,7 @@ class MyBDActivity : Fragment() {
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
-                        cont!!,
+                        activity?.applicationContext,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
@@ -172,7 +173,7 @@ class MyBDActivity : Fragment() {
             override fun onFailure(call: Call<User>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
-                    cont!!, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
+                    activity?.applicationContext, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
                 err++
@@ -188,7 +189,7 @@ class MyBDActivity : Fragment() {
         startLoading()
         busy++
         val service = getApiService()
-        val decryptedToken = getDecryptedToken(cont!!)
+        val decryptedToken = getDecryptedToken(activity!!.applicationContext)
 
         service.availablitiesGet(auth = decryptedToken).enqueue(object : Callback<ArrayList<Availability>> {
             override fun onResponse(
@@ -198,7 +199,7 @@ class MyBDActivity : Fragment() {
                 println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
-                        cont!!,
+                        activity?.applicationContext,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
@@ -213,7 +214,7 @@ class MyBDActivity : Fragment() {
                 }
                 else if (response.code() == 401) {
                     Toast.makeText(
-                        cont!!,
+                        activity?.applicationContext,
                         resources.getString(nl.bezorgdirect.mijnbd.R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
@@ -237,7 +238,7 @@ class MyBDActivity : Fragment() {
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
-                    cont!!, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
+                    activity?.applicationContext, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
                 err++
@@ -270,9 +271,9 @@ class MyBDActivity : Fragment() {
                     val lbl_time = TextView(cont)
                     val lbl_type = TextView(cont)
 
-                    lbl_day.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-                    lbl_time.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-                    lbl_type.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                    lbl_day.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                    lbl_time.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                    lbl_type.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
 
                     lbl_day.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
                     lbl_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
@@ -298,9 +299,9 @@ class MyBDActivity : Fragment() {
                 val lbl_time = TextView(cont)
                 val lbl_type = TextView(cont)
 
-                lbl_day.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-                lbl_time.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
-                lbl_type.setTextColor(ContextCompat.getColor(cont!!, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                lbl_day.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                lbl_time.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
+                lbl_type.setTextColor(ContextCompat.getColor(activity!!.applicationContext, nl.bezorgdirect.mijnbd.R.color.colorAccent))
 
                 lbl_day.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)
                 lbl_time.setTextSize(TypedValue.COMPLEX_UNIT_SP,18.0f)

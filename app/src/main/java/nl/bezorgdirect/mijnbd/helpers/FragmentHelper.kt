@@ -2,7 +2,6 @@ package nl.bezorgdirect.mijnbd.helpers
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 
 fun Fragment.addFragment(frameId: Int, fragment: Fragment){
     fragmentManager?.beginTransaction()?.add(frameId, fragment)?.commit()

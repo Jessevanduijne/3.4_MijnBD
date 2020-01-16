@@ -1,24 +1,23 @@
 package nl.bezorgdirect.mijnbd.delivery
 
 
+import android.app.NotificationManager
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
-import nl.bezorgdirect.mijnbd.history.MyBDHistory
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.mijnBD.MyBDActivity
 import nl.bezorgdirect.mijnbd.R.*
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.*
+import nl.bezorgdirect.mijnbd.history.MyBDHistory
+import nl.bezorgdirect.mijnbd.mijnBD.MyBDActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.app.NotificationManager
-import android.content.Context
-import nl.bezorgdirect.mijnbd.R
 
 
 class AssignmentActivity : AppCompatActivity() {
@@ -29,6 +28,7 @@ class AssignmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_assignment)
 
+        bottom_navigation.selectedItemId = id.action_deliveries
         custom_toolbar_title.text = getString(string.title_assignment)
         setSupportActionBar(custom_toolbar)
         setFragment() // Sets the initial state
@@ -83,6 +83,7 @@ class AssignmentActivity : AppCompatActivity() {
     }
 
     private fun setBottomNav(){
+
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 id.action_history -> {
