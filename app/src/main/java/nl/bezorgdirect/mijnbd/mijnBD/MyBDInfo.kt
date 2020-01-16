@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_my_bdinfo.*
 import kotlinx.android.synthetic.main.toolbar.*
+import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.UpdateUserParams
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
@@ -57,6 +58,10 @@ class MyBDInfo : AppCompatActivity() {
         {
             val uri = Uri.parse((avataruri))
             img_profile.setImageURI(uri)
+        }
+        if(img_profile!!.drawable == null)
+        {
+            img_profile!!.setImageResource(R.drawable.ic_logo_y)
         }
 
         txt_email.setText(email)

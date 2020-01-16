@@ -112,6 +112,11 @@ class MyBDActivity : Fragment() {
             val uri = Uri.parse((avataruri))
             img_profile!!.setImageURI(uri)
         }
+        if(img_profile!!.drawable == null)
+        {
+            img_profile!!.setImageResource(R.drawable.ic_logo_y)
+        }
+
     }
     private fun getDeliverer(){
         startLoading()
