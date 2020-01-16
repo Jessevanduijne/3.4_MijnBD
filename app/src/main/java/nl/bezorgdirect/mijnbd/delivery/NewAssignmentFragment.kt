@@ -12,7 +12,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.*
@@ -187,8 +186,8 @@ class NewAssignmentFragment : Fragment() {
         val locationHelper = LocationHelper(this.activity!!)
         val apiKey = getString(R.string.google_maps_key)
 
-        val warehouseDestination = "${delivery.Warehouse.Latitude},${delivery.Warehouse.Longitude}"
-        val clientDestination = "${delivery.Customer.Latitude},${delivery.Customer.Longitude}"
+        val warehouseDestination = "${delivery.Warehouse.latitude},${delivery.Warehouse.longitude}"
+        val clientDestination = "${delivery.Customer.latitude},${delivery.Customer.longitude}"
 
         var travelDuration = 0
         var travelMode = ""

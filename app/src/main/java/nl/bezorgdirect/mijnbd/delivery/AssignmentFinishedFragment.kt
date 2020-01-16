@@ -74,11 +74,11 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
             val d = delivery!!
 
             //warehouse
-            intent.putExtra("warehouseAddress", d.Warehouse.Address)
+            intent.putExtra("warehouseAddress", d.Warehouse.address)
             intent.putExtra("warehouseDistance", d.WarehouseDistanceInKilometers)
             intent.putExtra("warehousePickUp", d.WarehousePickUpAt)
             //customer
-            intent.putExtra("customerAddress", d.Customer.Address)
+            intent.putExtra("customerAddress", d.Customer.address)
             intent.putExtra("customerDistance", d.CustomerDistanceInKilometers)
             intent.putExtra("customerDeliveredAt", d.DeliveredAt)
             //price

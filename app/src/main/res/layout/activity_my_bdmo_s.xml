@@ -141,7 +141,6 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp"
                     android:layout_weight="1"
-                    android:text="15 KM"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>

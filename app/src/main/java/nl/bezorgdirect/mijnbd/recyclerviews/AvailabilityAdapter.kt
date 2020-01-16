@@ -40,28 +40,28 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = list[position]
-        if(item.Date != null){
-            var formattedDate = item.Date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date")
+        if(item.date != null){
+            var formattedDate = item.date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "missing delimiter T in date")
             formattedDate = formattedDate.substring(5)
             holder.date.text = formattedDate
         }
         else holder.date.text = "??-??"
-        if(item.StartTime != null){
-            var formattedStartTime = item.StartTime!!.substring(0, 5)
+        if(item.startTime != null){
+            var formattedStartTime = item.startTime!!.substring(0, 5)
             holder.starttime.text = formattedStartTime
         }
         else holder.starttime.text = "??:??"
-        if(item.EndTime != null){
-            var formattedEndTime = item.EndTime!!.substring(0, 5)
+        if(item.endTime != null){
+            var formattedEndTime = item.endTime!!.substring(0, 5)
             holder.endtime.text = formattedEndTime
         }
         else holder.endtime.text = "??:??"
 
         holder.btn_delete.setOnClickListener {
             var id = ""
-            if(list[position].Id != null)
+            if(list[position].id != null)
             {
-                 id = list[position].Id!!
+                 id = list[position].id!!
             }
             deleteDialog(id, position)
         }
@@ -123,8 +123,8 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val mins = arrayOf("00", "15", "30", "45")
         val dates = getDates()
 
-        val fromParts = params.StartTime!!.split(":")
-        val toParts = params.EndTime!!.split(":")
+        val fromParts = params.startTime!!.split(":")
+        val toParts = params.endTime!!.split(":")
 
         println(fromParts)
         println(toParts)
@@ -144,7 +144,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         fromMinPicker.value = fromMinIndex
 
 
-        var dateString = params.Date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "")
+        var dateString = params.date!!.substringBefore(delimiter = 'T', missingDelimiterValue = "")
         val dateParts = dateString.split("-")
         dateString = dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0]
         val dateIndex = dates.indexOf(dateString)
@@ -179,9 +179,9 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
             val fullDate: Date = inputFormat.parse(dates[dayPicker.value])
             val date = outputFormat.format(fullDate)
 
-            updateParams.Date = date
-            updateParams.StartTime = "$fromHour:$fromMin"
-            updateParams.EndTime = "$toHour:$toMin"
+            updateParams.date = date
+            updateParams.startTime = "$fromHour:$fromMin"
+            updateParams.endTime = "$toHour:$toMin"
 
             if("$fromHour:$fromMin" != "$toHour:$toMin") {
                 dialog.dismiss()
@@ -350,6 +350,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
         val params  = ArrayList<Availability>()
+        println(availability)
         params.add(availability)
         service.availablitiesPut(auth = decryptedToken, availability = params).enqueue(object :
             Callback<ArrayList<Availability>> {
@@ -357,6 +358,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                 call: Call<ArrayList<Availability>>,
                 response: Response<ArrayList<Availability>>
             ) {
+                println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
                         cont!!,
@@ -375,7 +377,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     list[listId] = values[0]
-                    list.sortBy{it.Date+' '+it.StartTime}
+                    list.sortBy{it.date+' '+it.startTime}
                     notifyDataSetChanged()
                     hideSpinner(root!!)
                 }

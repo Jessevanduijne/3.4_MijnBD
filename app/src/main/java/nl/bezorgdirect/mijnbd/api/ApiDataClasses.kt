@@ -2,13 +2,13 @@ package nl.bezorgdirect.mijnbd.api
 
 data class Feed (val Id: Int?, val Name: String?)
 
-data class Location (val Id: String?, val Latitude: Double?, val Longitude: Double?, val Address: String?, val PostalCode: String?,
-                     val Place: String?, val IsWareHouse: Boolean?)
+data class Location (val id: String?, val latitude: Double?, val longitude: Double?, val address: String?, val postalCode: String?,
+                     val place: String?, val isWarehouse: Boolean?)
 
-data class User (val id: String?, var emailAddress: String?, val token: String?, var phoneNumber: String?,
+data class User (val id: String?, var emailAddress: String?, val firstName: String?, val lastName: String?, var phoneNumber: String?,
                           val home: Location, val dateOfBirth: String?, var range: Int?, var vehicle: Int?, val vehicleDisplayName: String?, val fare: Float?, val totalEarnings: Float?)
 
-data class Availability (val Id: String?, val DelivererId: String?, var Date:  String?, var StartTime: String?, var EndTime: String?)
+data class Availability (val id: String?, val delivererId: String?, var date:  String?, var startTime: String?, var endTime: String?)
 
 data class BDNotification (val Id: String?, val DelivererId: String?, val DeliveryId: String?,val CreatedAt: String?, val AcceptedAt: String?,
                            val RefusedAt: String?, val ExpiredAt: String?, val Status: Int?, val StatusDisplayName: String?)

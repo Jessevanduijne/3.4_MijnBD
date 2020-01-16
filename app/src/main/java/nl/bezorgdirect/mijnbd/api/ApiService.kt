@@ -8,7 +8,7 @@ interface ApiService {
 
     /************************auth******************************************/
     @POST("login") //Login as a Deliverer
-    fun loginPost(@Body params: LoginParams): Call<User>
+    fun loginPost(@Body params: LoginParams): Call<String>
 
     @POST("logout") //Logout the authenticated Deliverer
     fun logoutPost(@Header("Authorization") auth: String): Call<Void>
@@ -30,8 +30,12 @@ interface ApiService {
     @GET("me") //Read authenticated Deliverer
     fun delivererGet(@Header("Authorization") auth: String): Call<User>
 
+    @GET("me/earnings") //Read authenticated Deliverer
+
+    fun delivererGetEarnings(@Header("Authorization") auth: String, @Query("timeframe") timeframe: String = "day" ): Call<String>//Get total earnings of authenticated Deliverer
+
     @PUT("me") //Update authenticated Deliverer
-    fun delivererPut(@Header("Authorization") auth: String, @Body params: UpdateUserParams): Call<User>
+    fun delivererPut(@Header("Authorization") auth: String, @Body params: UpdateUserParams): Call<ResponseBody>
 
     /************************Notifications******************************************/
     @GET("notification") //Read Notification of authenticated Deliverer

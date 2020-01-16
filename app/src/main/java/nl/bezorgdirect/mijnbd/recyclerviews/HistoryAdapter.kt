@@ -87,7 +87,7 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             4 -> holder.vehicleimage.setImageResource(R.drawable.ic_car_w)
         }
 
-        holder.location.text = item.Customer.Address
+        holder.location.text = item.Customer.address
 
 
         println(item)

@@ -43,11 +43,11 @@ class MyBDHistory : Fragment() {
             //accepted
             intent.putExtra("timeAccepted",deliveries[position].WarehousePickUpAt)//needs to be added to api warhouse pickup for now
             //warehouse
-            intent.putExtra("warehouseAddress",deliveries[position].Warehouse.Address)
+            intent.putExtra("warehouseAddress",deliveries[position].Warehouse.address)
             intent.putExtra("warehouseDistance",deliveries[position].WarehouseDistanceInKilometers)
             intent.putExtra("warehousePickUp",deliveries[position].WarehousePickUpAt)
             //customer
-            intent.putExtra("customerAddress",deliveries[position].Customer.Address)
+            intent.putExtra("customerAddress",deliveries[position].Customer.address)
             intent.putExtra("customerDistance",deliveries[position].CustomerDistanceInKilometers)
             intent.putExtra("customerDeliveredAt",deliveries[position].DeliveredAt)
             //price

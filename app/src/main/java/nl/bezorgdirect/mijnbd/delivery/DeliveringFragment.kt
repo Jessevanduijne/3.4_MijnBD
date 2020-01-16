@@ -5,10 +5,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,15 +20,15 @@ import com.google.maps.android.PolyUtil
 import com.ncorti.slidetoact.SlideToActView
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_delivering.*
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
+import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
+import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
-import nl.bezorgdirect.mijnbd.helpers.*
 
 class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
 
@@ -69,8 +69,8 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     }
 
     private fun setLayout(){
-        lbl_delivering_address.text = delivery!!.Customer.Address!!.substringBefore(',') // cut zip code off
-        lbl_delivering_zip.text = (delivery!!.Customer.PostalCode + " " + delivery!!.Warehouse.Place)
+        lbl_delivering_address.text = delivery!!.Customer.address!!.substringBefore(',') // cut zip code off
+        lbl_delivering_zip.text = (delivery!!.Customer.postalCode + " " + delivery!!.Warehouse.place)
         btn_delivering_completed.text = getString(R.string.lbl_delivery_delivered)
         lbl_assignment.text = getString(R.string.lbl_assignment_client)
         img_delivering_destination.setImageResource(R.drawable.ic_house_w)
@@ -82,10 +82,10 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
-        val latLngDestination = LatLng(delivery!!.Customer.Latitude!!.toDouble(), delivery!!.Customer.Longitude!!.toDouble())
+        val latLngOrigin = LatLng(delivery!!.Warehouse.latitude!!.toDouble(), delivery!!.Warehouse.longitude!!.toDouble())
+        val latLngDestination = LatLng(delivery!!.Customer.latitude!!.toDouble(), delivery!!.Customer.longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Current"))
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Customer.Address))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Customer.address))
         this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12.5f))
     }
 
@@ -93,8 +93,8 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
-        val endLatLong = delivery!!.Customer.Latitude.toString() + "," + delivery!!.Customer.Longitude.toString()
+        val startLatLong = delivery!!.Warehouse.latitude.toString() + "," + delivery!!.Warehouse.longitude.toString()
+        val endLatLong = delivery!!.Customer.latitude.toString() + "," + delivery!!.Customer.longitude.toString()
 
         var travelmode = ""
         when(delivery!!.Vehicle)
@@ -137,7 +137,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     private fun updateDeliveryStatus(){
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(4, delivery!!.Customer.Latitude!!, delivery!!.Customer.Longitude!!) // status 4 = afgeleverd
+        val updateStatusBody = UpdateStatusParams(4, delivery!!.Customer.latitude!!, delivery!!.Customer.longitude!!) // status 4 = afgeleverd
 
         apiService.deliverystatusPatch(decryptedToken, delivery!!.Id!!, updateStatusBody)
             .enqueue(object: Callback<Delivery> {

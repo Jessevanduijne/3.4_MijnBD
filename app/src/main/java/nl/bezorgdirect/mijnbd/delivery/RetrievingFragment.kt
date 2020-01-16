@@ -1,12 +1,14 @@
 package nl.bezorgdirect.mijnbd.delivery
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,10 +28,6 @@ import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.content.Intent
-import android.net.Uri
-import android.opengl.Visibility
-import kotlinx.android.synthetic.main.fragment_cancel_assignment.*
 
 
 class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
@@ -70,8 +68,8 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     }
 
     private fun setLayout(){
-        lbl_delivering_address.text = delivery!!.Warehouse.Address!!.substringBefore(',') // cut zip code off
-        lbl_delivering_zip.text = (delivery!!.Warehouse.PostalCode + " " + delivery!!.Warehouse.Place)
+        lbl_delivering_address.text = delivery!!.Warehouse.address!!.substringBefore(',') // cut zip code off
+        lbl_delivering_zip.text = (delivery!!.Warehouse.postalCode + " " + delivery!!.Warehouse.place)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -80,10 +78,10 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = LatLng(delivery!!.Current.Latitude!!, delivery!!.Current.Longitude!!)
-        val latLngDestination = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
+        val latLngOrigin = LatLng(delivery!!.Current.latitude!!, delivery!!.Current.longitude!!)
+        val latLngDestination = LatLng(delivery!!.Warehouse.latitude!!.toDouble(), delivery!!.Warehouse.longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Your position"))
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.Address))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.address))
         this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12.5f))
     }
 
@@ -91,8 +89,8 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Current.Latitude.toString() + "," + delivery!!.Current.Longitude.toString()
-        val endLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val startLatLong = delivery!!.Current.latitude.toString() + "," + delivery!!.Current.longitude.toString()
+        val endLatLong = delivery!!.Warehouse.latitude.toString() + "," + delivery!!.Warehouse.longitude.toString()
 
         var travelmode = ""
         when(delivery!!.Vehicle)
@@ -134,7 +132,7 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     private fun updateDeliveryStatus(){
 
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(3, delivery!!.Warehouse.Latitude!!, delivery!!.Warehouse.Longitude!!) // status 3 = onderweg
+        val updateStatusBody = UpdateStatusParams(3, delivery!!.Warehouse.latitude!!, delivery!!.Warehouse.longitude!!) // status 3 = onderweg
 
         apiService.deliverystatusPatch(decryptedToken, delivery!!.Id!!, updateStatusBody)
             .enqueue(object: Callback<Delivery> {

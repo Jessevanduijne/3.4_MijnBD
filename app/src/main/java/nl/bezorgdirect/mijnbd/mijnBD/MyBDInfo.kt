@@ -18,9 +18,9 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_my_bdinfo.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.api.UpdateUserParams
-import nl.bezorgdirect.mijnbd.api.User
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,8 +34,9 @@ class MyBDInfo : AppCompatActivity() {
     var vehicle = 0
     var vehicledisplayname= ""
     var fare = 0.0f
-    var total = 0.0f
     var phonenumber= ""
+    var firstname= ""
+    var lastname= ""
     val apiService = getApiService()
 
 
@@ -72,8 +73,9 @@ class MyBDInfo : AppCompatActivity() {
         dateofbirth = intent.getStringExtra("dateofbirth")
         phonenumber = intent.getStringExtra("phonenumber")
         fare = intent.getFloatExtra("fare", 0.0f)
-        total = intent.getFloatExtra("totalearnings",0.0f)
         range = intent.getIntExtra("range", 0)
+        firstname = intent.getStringExtra("firstname")
+        lastname = intent.getStringExtra("lastname")
     }
 
     fun setButtons()
@@ -132,8 +134,7 @@ class MyBDInfo : AppCompatActivity() {
             }
             else
             {
-                txt_phonenumber.background = ContextCompat.getDrawable(applicationContext,
-                    nl.bezorgdirect.mijnbd.R.drawable.rounded_white_input)
+                txt_phonenumber.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_white_input)
                 txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
                 btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_save_black_24dp)
                 txt_phonenumber.isEnabled = true
@@ -175,11 +176,11 @@ class MyBDInfo : AppCompatActivity() {
     fun update()
     {
         val decryptedToken = getDecryptedToken(applicationContext)
-        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, vehicledisplayname, fare, total)
-        apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<User> {
+        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare, firstname, lastname)
+        apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
-                call: Call<User>,
-                response: Response<User>
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
             ) {
                 if (response.isSuccessful && response.body() != null) {
 
@@ -193,7 +194,7 @@ class MyBDInfo : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     applicationContext, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),

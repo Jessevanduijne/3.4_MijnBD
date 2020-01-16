@@ -7,17 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import com.ncorti.slidetoact.SlideToActView
 import kotlinx.android.synthetic.main.fragment_cancel_to_warehouse.*
-import kotlinx.android.synthetic.main.fragment_delivering.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
@@ -69,8 +66,8 @@ class CancelToWarehouseFragment(val delivery: Delivery) : Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Current.Latitude.toString() + "," + delivery!!.Current.Longitude.toString()
-        val endLatLong = delivery!!.Warehouse.Latitude.toString() + "," + delivery!!.Warehouse.Longitude.toString()
+        val startLatLong = delivery!!.Current.latitude.toString() + "," + delivery!!.Current.longitude.toString()
+        val endLatLong = delivery!!.Warehouse.latitude.toString() + "," + delivery!!.Warehouse.longitude.toString()
 
         var travelmode = ""
         when(delivery!!.Vehicle)

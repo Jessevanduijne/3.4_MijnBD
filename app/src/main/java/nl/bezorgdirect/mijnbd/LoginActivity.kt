@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import nl.bezorgdirect.mijnbd.api.LoginParams
-import nl.bezorgdirect.mijnbd.api.User
 import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
 import nl.bezorgdirect.mijnbd.encryption.CipherWrapper
 import nl.bezorgdirect.mijnbd.encryption.KeyStoreWrapper
@@ -60,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
 
         val editpref = sharedPref.edit()
         loadingSpinner.visibility = View.VISIBLE
-        service.loginPost(LoginParams(username,password)).enqueue(object : Callback<User> {
+        service.loginPost(LoginParams(username,password)).enqueue(object : Callback<String> {
             override fun onResponse(
-                call: Call<User>,
-                response: Response<User>
+                call: Call<String>,
+                response: Response<String>
             ) {
                 println(response)
                 if (response.code() == 500) {
@@ -74,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                     loadingSpinner.visibility = View.GONE
                 }
-                    else if (response.code() == 401) {
+                    else if (response.code() == 400) {
                     Toast.makeText(
                         context,
                         resources.getString(R.string.wrongcreds),
@@ -89,9 +88,9 @@ class LoginActivity : AppCompatActivity() {
                     val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
 
                     val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
-
+                    println(values)
                     // Encrypt message with the key, using public key
-                    val encryptedToken = cipherWrapper.encrypt(values.token!!, Key?.public)
+                    val encryptedToken = cipherWrapper.encrypt(values.toString(), Key?.public)
                     editpref.putString("T", encryptedToken)
                     editpref.commit()
 
@@ -100,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),

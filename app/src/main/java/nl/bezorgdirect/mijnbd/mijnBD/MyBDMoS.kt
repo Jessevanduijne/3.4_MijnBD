@@ -17,6 +17,7 @@ import nl.bezorgdirect.mijnbd.api.UpdateUserParams
 import nl.bezorgdirect.mijnbd.api.User
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +35,8 @@ class MyBDMoS : AppCompatActivity() {
     var vehicle = 0
     var vehicledisplayname= ""
     var fare = 0.0f
-    var total = 0.0f
+    var firstname = ""
+    var lastname = ""
     var phonenumber= ""
 
 
@@ -71,7 +73,7 @@ class MyBDMoS : AppCompatActivity() {
         var maxRange = 0
         when(vehicle)
         {
-            -1-> sb_radius.max = 0
+            0 -> maxRange = 0
             1 -> maxRange = 15
             2 -> maxRange = 30
             3 -> maxRange = 30
@@ -94,19 +96,22 @@ class MyBDMoS : AppCompatActivity() {
         dateofbirth = intent.getStringExtra("dateofbirth")
         phonenumber = intent.getStringExtra("phonenumber")
         fare = intent.getFloatExtra("fare", 0.0f)
-        total = intent.getFloatExtra("totalearnings",0.0f)
         range = intent.getIntExtra("range", 0)
+        firstname = intent.getStringExtra("firstname")
+        lastname = intent.getStringExtra("lastname")
     }
 
     fun update()
     {
         val decryptedToken = getDecryptedToken(applicationContext)
-        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, vehicledisplayname, fare, total)
-        apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<User> {
+        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare , firstname, lastname)
+        println(params)
+        apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
-                call: Call<User>,
-                response: Response<User>
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
             ) {
+                println(response)
                 if (response.isSuccessful && response.body() != null) {
 
                 }
@@ -119,7 +124,7 @@ class MyBDMoS : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<User>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     applicationContext, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),

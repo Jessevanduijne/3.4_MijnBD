@@ -33,7 +33,7 @@ import kotlin.collections.ArrayList
 
 class MyBDActivity : Fragment() {
 
-    private var user = User(null, null, null , null, Location(null, null, null, null , null, null ,null),
+    private var user = User(null, null, null , null, null, Location(null, null, null, null , null, null ,null),
         null, null ,null ,null, null, null )
     private var activeCall = false
 
@@ -153,14 +153,19 @@ class MyBDActivity : Fragment() {
                     val lbl_vehicle: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
                     val lbl_pd: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
                     val lbl_total_earnings: TextView = root!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payouttotalvar)
-                    lbl_vehicle.text = values.vehicleDisplayName
-                    lbl_name.text = values.emailAddress?.substringBefore(delimiter= '@', missingDelimiterValue = values.emailAddress!!)
-                    val fare = values.fare
-                    lbl_pd.text = "$fare"
+                    if(values.vehicleDisplayName != null) {
+                        lbl_vehicle.text = values.vehicleDisplayName
+                    }
+                    else
+                    {
+                        lbl_vehicle.text = "Geen"
+                    }
+                    lbl_name.text = values.firstName+" "+values.lastName
+                    lbl_pd.text = values.fare.toString()
                     var total = values.totalEarnings
                     if(total == null)
                     {
-                        lbl_total_earnings.text = "?"
+                        lbl_total_earnings.text = "0"
                     }
                     else {
                         lbl_total_earnings.text = "$total"
@@ -207,7 +212,7 @@ class MyBDActivity : Fragment() {
                     busy--
                     doneLoading()
                 }
-                else if (response.code() == 204 || response.code() == 400) {
+                else if (response.code() == 424) {
                     fillAvailability(ArrayList())
                     busy--
                     doneLoading()
@@ -263,7 +268,7 @@ class MyBDActivity : Fragment() {
             count = 0
             for(availability in availabilities)
             {
-                if(availability.Date == day)
+                if(availability.date == day)
                 {
 
                     count++
@@ -281,11 +286,11 @@ class MyBDActivity : Fragment() {
 
                     val dayFormat = SimpleDateFormat("EEE")
                     val inputFormat = SimpleDateFormat("yyyy-MM-dd")
-                    val availabilityDay: Date = inputFormat.parse(availability.Date)
+                    val availabilityDay: Date = inputFormat.parse(availability.date)
                     if(count == 1) {
                         lbl_day.text = dayFormat.format(availabilityDay)
                     }
-                    lbl_time.text = availability.StartTime!!.take(5) + " - " + availability.EndTime!!.take(5)
+                    lbl_time.text = availability.startTime!!.take(5) + " - " + availability.endTime!!.take(5)
                     lbl_type.text = "Beschikbaar"
 
                     list_availability_day!!.addView(lbl_day)
@@ -357,14 +362,24 @@ class MyBDActivity : Fragment() {
     }
     fun putObjects(intent: Intent)
     {
-        intent.putExtra("email", user.emailAddress)
+        intent.putExtra("email", checkStringNull(user.emailAddress))
         intent.putExtra("vehicle", user.vehicle)
         intent.putExtra("range", user.range)
-        intent.putExtra("phonenumber", user.phoneNumber)
-        intent.putExtra("vehicledisplayname", user.vehicleDisplayName)
-        intent.putExtra("dateofbirth",user.dateOfBirth)
+        intent.putExtra("phonenumber", checkStringNull(user.phoneNumber))
+        intent.putExtra("vehicledisplayname", checkStringNull(user.vehicleDisplayName))
+        intent.putExtra("dateofbirth",checkStringNull(user.dateOfBirth))
         intent.putExtra("fare",user.fare)
-        intent.putExtra("totalearnings",user.totalEarnings)
+        intent.putExtra("firstname",checkStringNull(user.firstName))
+        intent.putExtra("lastname",checkStringNull(user.lastName))
+    }
+    fun checkStringNull(string: String?) :String
+    {
+        var returnString = ""
+        if(string != null)
+        {
+            returnString = string
+        }
+        return returnString
     }
     fun doneLoading()
     {
@@ -396,7 +411,6 @@ class MyBDActivity : Fragment() {
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                email!!.text = data!!.getStringExtra("email").substringBefore(delimiter= '@', missingDelimiterValue = data!!.getStringExtra("email")!!)
                 user.emailAddress = data!!.getStringExtra("email")
                 user.phoneNumber = data!!.getStringExtra("phonenumber")
                 setAvatar()

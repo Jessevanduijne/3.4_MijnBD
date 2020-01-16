@@ -145,7 +145,7 @@ class MyBDAvailability : AppCompatActivity() {
                     availability_content.visibility = View.GONE
                     activeCall = false
                 }
-                else if (response.code() == 204) {
+                else if (response.code() == 424) {
                     availability_empty.visibility = View.VISIBLE
                     availability_error.visibility = View.GONE
                     availability_content.visibility = View.GONE
@@ -159,6 +159,7 @@ class MyBDAvailability : AppCompatActivity() {
                         if(values[0] != null)
                         {
                             availabilities = values
+                            availabilities.sortBy{it.date+' '+it.startTime+' '+it.endTime}
                             list_availabilities.adapter = AvailabilityAdapter(availabilities)
                         }
                     }
@@ -244,7 +245,7 @@ class MyBDAvailability : AppCompatActivity() {
                     changed = 1
                     val values = response.body()!!
                     availabilities.addAll(values)
-                    availabilities.sortBy{it.Date+' '+it.StartTime}
+                    availabilities.sortBy{it.date+' '+it.startTime}
                     list_availabilities.adapter!!.notifyDataSetChanged()
                     Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     hideSpinner(root)
@@ -423,8 +424,8 @@ class MyBDAvailability : AppCompatActivity() {
         val dates = ArrayList<String>()
         for (i in 0..62)
         {
-            day.add(Calendar.DATE, 1)
             dates.add(fromatter.format(day.time))
+            day.add(Calendar.DATE, 1)
         }
         return dates
     }
