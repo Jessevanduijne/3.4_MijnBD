@@ -17,8 +17,11 @@ import kotlin.math.round
 
 class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryListener) : RecyclerView.Adapter<HistoryAdapter.MyViewHolder>() {
 
+    private var cont: Context? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.history_item, parent, false)
+        cont = parent.context
         return MyViewHolder(view)
     }
 
@@ -30,52 +33,23 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = list[position]
-        val outputFormat = SimpleDateFormat("HH:mm")
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-
         if(item.DeliveredAt != null && item.WarehousePickUpAt != null) {
             val starttime: Date = inputFormat.parse(item.WarehousePickUpAt)//acceptedAt wharhouse pickup for now
             val endtime: Date = inputFormat.parse(item.DeliveredAt)
-            println("$starttime||$endtime")
-            println(starttime.time)
-            println(endtime.time)
-            val diff = starttime.time - endtime.time
-            val seconds = diff / 1000
-            var minutes = seconds / 60
-            val hours = minutes / 60
-            minutes -= hours * 60
-
-            println("min: $minutes hours: $hours")
-            var traveltime = ""
-            if (hours > 0) {
-                traveltime += "$hours u. "
-            }
-            if (minutes > 0) {
-                traveltime += "$minutes min."
-            }
-            if(minutes <= 0 && hours <= 0)
-            {
-                traveltime = "0 min."
-            }
-            holder.travel.text = traveltime
-
-            val formattedstart: String = outputFormat.format(starttime)
-            val formattedend: String = outputFormat.format(endtime)
-
-            val fromto = "$formattedstart - $formattedend"
-            holder.time.text = fromto
+            holder.travel.text = setTravelTime(starttime, endtime)
+            holder.time.text = setTimeFromTo(starttime, endtime)
         }
         else
         {
-            holder.time.text = "? - ?"
-            holder.travel.text = "? u. ? min."
+            holder.time.text = String.format("%s - %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.unknown))
+            holder.travel.text = String.format("%s %s - %s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_hours_short),cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_minutes_short))
         }
-
         if(item.Status == 4)
         {
             holder.successimage.setImageResource(R.drawable.ic_success_56dp)
         }
-        if(item.Status == 0)
+        else
         {
             holder.successimage.setImageResource(R.drawable.ic_failed_56dp)
         }
@@ -86,33 +60,58 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             3 -> holder.vehicleimage.setImageResource(R.drawable.ic_motor_w)
             4 -> holder.vehicleimage.setImageResource(R.drawable.ic_car_w)
         }
-
         holder.location.text = item.Customer.address
 
-
-        println(item)
         if(item.CustomerDistanceInKilometers != null && item.WarehouseDistanceInKilometers != null) {
-            var distance = item.CustomerDistanceInKilometers!! + item.WarehouseDistanceInKilometers!!
-            distance = round(distance * 100) / 100
-            holder.distance.text = "$distance km."
+            var distance = item.CustomerDistanceInKilometers + item.WarehouseDistanceInKilometers
+           // distance = round(distance * 100) / 100
+            holder.distance.text = String.format("%1f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
         else
         {
-            holder.distance.text = "? km."
+            holder.distance.text = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
         if(item.Price != null) {
             val earnings = round(item.Price!! * 100) / 100
-            holder.earnings.text = "€$earnings"
+            holder.earnings.text = String.format("%s%2f",cont?.resources?.getString(R.string.lbl_euro),earnings)
         }
         else
         {
-            holder.earnings.text = "?"
+            holder.earnings.text = cont?.resources?.getString(R.string.unknown)
         }
-
-
         holder.itemView.setOnClickListener{
             clicklistener.onItemClick(position)
         }
+    }
+
+    fun setTravelTime(start: Date, end: Date): String
+    {
+        val diff = start.time - end.time
+        val seconds = diff / 1000
+        var minutes = seconds / 60
+        val hours = minutes / 60
+        minutes -= hours * 60
+
+        var traveltime = ""
+        if (hours > 0) {
+            traveltime += String.format("%d %s",hours,cont?.resources?.getString(R.string.lbl_hours_short))
+        }
+        if (minutes > 0) {
+            traveltime += String.format("%d %s",minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
+        }
+        if(minutes <= 0 && hours <= 0)
+        {
+            traveltime = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_minutes_short))
+        }
+        return traveltime
+    }
+    fun setTimeFromTo(start: Date, end: Date): String
+    {
+        val outputFormat = SimpleDateFormat("HH:mm")
+        val formattedstart: String = outputFormat.format(start)
+        val formattedend: String = outputFormat.format(end)
+
+        return String.format("%s - %s",formattedstart,formattedend)
     }
 
     class MyViewHolder(history_item: View) : RecyclerView.ViewHolder(history_item) {

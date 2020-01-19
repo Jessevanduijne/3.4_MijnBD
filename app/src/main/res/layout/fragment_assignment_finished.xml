@@ -26,7 +26,6 @@
         android:layout_height="wrap_content"
         android:textStyle="normal"
         android:textSize="@dimen/text_size_h3"
-        android:text="@string/dummy_date"
         android:textColor="@color/white"
         android:layout_marginStart="20dp"/>
 
@@ -73,7 +72,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="@string/dummy_earnings"
                 android:textSize="@dimen/text_size_text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>
@@ -92,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@string/dummy_transport"
             android:textSize="@dimen/text_size_text"
             android:paddingStart="92dp"
             android:paddingEnd="10dp"/>
@@ -141,7 +138,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="@string/dummy_earnings"
                 android:textSize="@dimen/text_size_text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>
@@ -171,7 +167,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="@string/dummy_earnings"
                 android:textSize="@dimen/text_size_text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>
@@ -201,7 +196,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="@string/dummy_earnings"
                 android:textSize="@dimen/text_size_text"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>

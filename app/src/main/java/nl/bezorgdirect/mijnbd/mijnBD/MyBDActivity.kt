@@ -63,16 +63,13 @@ class MyBDActivity : Fragment() {
             custom_toolbar_title.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_mybdpersonalia)
         }
         this.root = root
-
         cont = root.context
-
 
         email = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
         vehicle = root.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
         list_availability_day = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_day)
         list_availability_time = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_time)
         list_availability_type = root.findViewById(nl.bezorgdirect.mijnbd.R.id.list_availability_type)
-
 
         val btn_info: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_info)
         val btn_availability: Button = root.findViewById(nl.bezorgdirect.mijnbd.R.id.btn_availability)
@@ -376,6 +373,7 @@ class MyBDActivity : Fragment() {
         intent.putExtra("fare",user.fare)
         intent.putExtra("firstname",checkStringNull(user.firstName))
         intent.putExtra("lastname",checkStringNull(user.lastName))
+        intent.putExtra("address",checkStringNull(user.home.address))
     }
     fun checkStringNull(string: String?) :String
     {

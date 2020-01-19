@@ -12,6 +12,8 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -25,6 +27,8 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MyBDInfo : AppCompatActivity() {
@@ -38,6 +42,7 @@ class MyBDInfo : AppCompatActivity() {
     var phonenumber= ""
     var firstname= ""
     var lastname= ""
+    var address=""
     val apiService = getApiService()
 
 
@@ -50,7 +55,6 @@ class MyBDInfo : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
         getintentextra()
-
 
         val sharedPrefs = this.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         val avataruri = sharedPrefs.getString("avatar", "")
@@ -66,8 +70,24 @@ class MyBDInfo : AppCompatActivity() {
 
         txt_email.setText(email)
         txt_phonenumber.setText(phonenumber)
+        lbl_dateofbirthvar.text = formatDate(dateofbirth)
+        lbl_namevar.text = String.format("%s %s", firstname, lastname)
+        lbl_addressvar.text = String.format("%s", address)
 
         setButtons()
+    }
+    fun formatDate(input: String): String
+    {
+        try {
+            val outputFormat = SimpleDateFormat("dd-MM-yyyy")
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+            val fullDate: Date = inputFormat.parse(input)
+            return outputFormat.format(fullDate)
+        }
+        catch (e: Exception) {
+            return input
+        }
+
     }
 
     fun getintentextra()
@@ -81,73 +101,85 @@ class MyBDInfo : AppCompatActivity() {
         range = intent.getIntExtra("range", 0)
         firstname = intent.getStringExtra("firstname")
         lastname = intent.getStringExtra("lastname")
+        address = intent.getStringExtra("address")
     }
-
+    fun handleEditClick(textbox: EditText, button: ImageButton)
+    {
+        textbox.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_white_input)
+        textbox.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+        button.setImageResource(R.drawable.ic_save_black_24dp)
+        textbox.isEnabled = true
+        textbox.requestFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(textbox, InputMethodManager.SHOW_IMPLICIT)
+        textbox.setSelection(textbox.text.length)
+    }
+    fun handleSaveClick(textbox: EditText, button: ImageButton, type: String)
+    {
+        var valid = true
+        if(type == "email")
+        {
+            valid = isEmailValid(textbox.text.toString())
+        }
+        else if(type == "phonenumber")
+        {
+            valid = isPhonenumberValid(textbox.text.toString())
+        }
+        if(valid) {
+            textbox.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+            textbox.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+            if(type == "email")
+            {
+                email = textbox.text.toString()
+            }
+            else if(type == "phonenumber")
+            {
+                phonenumber = textbox.text.toString()
+            }
+            update()
+            button.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
+            textbox.isEnabled = false
+        }
+        else
+        {
+            if(type == "email") {
+                Toast.makeText(
+                    applicationContext,
+                    resources.getString(nl.bezorgdirect.mijnbd.R.string.wrong_email),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            else if(type == "phonenumber")
+            {
+                Toast.makeText(
+                    applicationContext,
+                    resources.getString(nl.bezorgdirect.mijnbd.R.string.wrong_phone),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+    }
     fun setButtons()
     {
         btn_edit_email.setOnClickListener {
             if(txt_email.isEnabled)
             {
-                if(isEmailValid(txt_email.text.toString())) {
-                    txt_email.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-                    txt_email.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-                    email = txt_email.text.toString()
-                    update()
-                    btn_edit_email.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
-                    txt_email.isEnabled = false
-                }
-                else
-                {
-                    Toast.makeText(
-                        applicationContext, "Geen valide Email-adres",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-        }
+                handleSaveClick(txt_email, btn_edit_email, "email")
+            }
             else
             {
-                txt_email.background = ContextCompat.getDrawable(applicationContext,
-                    nl.bezorgdirect.mijnbd.R.drawable.rounded_white_input)
-                txt_email.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-                btn_edit_email.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_save_black_24dp)
-                txt_email.isEnabled = true
-                txt_email.requestFocus()
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm!!.showSoftInput(txt_email, InputMethodManager.SHOW_IMPLICIT)
-                txt_email.setSelection(txt_email.text.length)
+                handleEditClick(txt_email, btn_edit_email)
             }
         }
 
         btn_edit_phonenumber.setOnClickListener {
             if(txt_phonenumber.isEnabled)
             {
-                if(isPhonenumberValid(txt_phonenumber.text.toString())) {
-                    txt_phonenumber.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-                    txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-                    phonenumber = txt_phonenumber.text.toString()
-                    update()
-                    btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_edit_y_24dp)
-                    txt_phonenumber.isEnabled = false
-                }
-                else
-                {
-                    Toast.makeText(
-                        applicationContext, "Geen valide telefoonnummer",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+                handleSaveClick(txt_phonenumber, btn_edit_phonenumber, "phonenumber")
             }
             else
             {
-                txt_phonenumber.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_white_input)
-                txt_phonenumber.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-                btn_edit_phonenumber.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_save_black_24dp)
-                txt_phonenumber.isEnabled = true
-                txt_phonenumber.requestFocus()
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm!!.showSoftInput(txt_phonenumber, InputMethodManager.SHOW_IMPLICIT)
-                txt_phonenumber.setSelection(txt_phonenumber.text.length)
-                txt_phonenumber.isCursorVisible=true
+                handleEditClick(txt_phonenumber, btn_edit_phonenumber)
             }
         }
 
@@ -159,29 +191,29 @@ class MyBDInfo : AppCompatActivity() {
                     //permission denied
                     val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
                     //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+                    requestPermissions(permissions, PERMISSION_CODE)
                 }
                 else{
                     //permission already granted
-                    pickImageFromGallery();
+                    pickImageFromGallery()
                 }
             }
             else{
                 //system OS is < Marshmallow
-                pickImageFromGallery();
+                pickImageFromGallery()
             }
         }
     }
     companion object {
         //image pick code
-        private val IMAGE_PICK_CODE = 1000;
+        private const val IMAGE_PICK_CODE = 1000
         //Permission code
-        private val PERMISSION_CODE = 1001;
+        private const val PERMISSION_CODE = 1001
     }
     fun update()
     {
         val decryptedToken = getDecryptedToken(applicationContext)
-        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare, firstname, lastname)
+        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare, vehicledisplayname, firstname, lastname)
         apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -255,7 +287,7 @@ class MyBDInfo : AppCompatActivity() {
                 }
                 else{
                     //permission from popup denied
-                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, resources.getString(nl.bezorgdirect.mijnbd.R.string.no_permission), Toast.LENGTH_SHORT).show()
                 }
             }
         }

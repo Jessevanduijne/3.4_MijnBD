@@ -20,6 +20,8 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
+
+
 class AssignmentActivity : AppCompatActivity() {
     val apiService = getApiService()
     val PERMISSION_ID = 42
@@ -28,13 +30,16 @@ class AssignmentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_assignment)
 
+        LocationHelper(this).checkLocationPermission()
+
         bottom_navigation.selectedItemId = id.action_deliveries
         custom_toolbar_title.text = getString(string.title_assignment)
         setSupportActionBar(custom_toolbar)
         setFragment() // Sets the initial state
 
+
       //  Handler().postDelayed({
-            hideNotification()
+        hideNotification()
     //    }, 2000)
 
     }
@@ -105,7 +110,14 @@ class AssignmentActivity : AppCompatActivity() {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 Log.e("PERMISSIONS", "Location permissions granted by user")
             }
-            else Log.e("PERMISSIONS", "Location permissions denied by user")
+            else
+            {
+                Log.e("PERMISSIONS", "Location permissions denied by user")
+                //todo dialog app doesnt work without location permission
+            }
         }
+    }
+    override fun onBackPressed() {
+
     }
 }

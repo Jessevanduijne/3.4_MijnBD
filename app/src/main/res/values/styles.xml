@@ -18,6 +18,9 @@
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="colorControlNormal">@color/colorPrimaryDark</item>
+    </style>
 
 <!--    <style name="AppTheme.CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">-->
 <!--        <item name="titleTextStyle">@style/AppTheme.CustomActionBar.TitleTextStyle</item>-->

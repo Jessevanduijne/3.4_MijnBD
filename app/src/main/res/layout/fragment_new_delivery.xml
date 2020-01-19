@@ -42,7 +42,6 @@
                     android:textSize="@dimen/text_size_h2"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:text="@string/dummy_earnings"
                     android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:paddingTop="10dp" />
@@ -89,8 +88,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/text_size_h2"
                         android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:text="@string/dummy_transport" />
+                        android:textColor="@color/white" />
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -149,8 +147,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/text_size_h2"
                             android:textStyle="bold"
-                            android:textColor="@color/white"
-                            android:text="@string/dummy_minutes" />
+                            android:textColor="@color/white" />
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -179,7 +176,6 @@
                             android:textSize="@dimen/text_size_h2"
                             android:textStyle="bold"
                             android:textColor="@color/white"
-                            android:text="@string/dummy_time"
                             android:paddingEnd="40dp"
                             android:paddingStart="0dp"/>
                         <TextView
@@ -219,7 +215,6 @@
                     android:textSize="@dimen/text_size_text"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:text="@string/dummy_kilometers"
                     android:paddingStart="10dp"
                     android:paddingEnd="0dp"
                     android:paddingTop="10dp"
@@ -248,7 +243,6 @@
                     android:textSize="@dimen/text_size_text"
                     android:textStyle="bold"
                     android:textColor="@color/white"
-                    android:text="@string/dummy_kilometers"
                     android:paddingStart="15dp"
                     android:paddingEnd="0dp"
                     android:paddingTop="10dp"
@@ -308,8 +302,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/text_size_text_smaller"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:text="@string/dummy_minutes" />
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -326,7 +319,6 @@
                 android:textSize="@dimen/text_size_text_smaller"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                android:text="@string/dummy_minutes"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"/>
             <TextView

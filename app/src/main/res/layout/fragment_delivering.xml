@@ -86,7 +86,6 @@
                 android:id="@+id/lbl_delivering_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_address"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_text"
                 android:textStyle="bold"/>
@@ -94,7 +93,6 @@
                 android:id="@+id/lbl_delivering_zip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/dummy_zip"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_text"
                 android:textStyle="bold"/>

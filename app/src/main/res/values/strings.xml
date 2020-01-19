@@ -14,26 +14,19 @@
     <!-- General -->
     <string name="lbl_seconds_short">sec.</string>
     <string name="lbl_minutes_short">min.</string>
+    <string name="lbl_hours_short">u.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
     <string name="lbl_distance">km. Afstand</string>
     <string name="lbl_euro">€</string>
+    <string name="unknown">/?</string>
 
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
     <string name="E401">Oops permission denied.</string>
-
-    <!-- Dummies: -->
-    <string name="dummy_time">00:00</string>
-    <string name="dummy_minutes">00</string>
-    <string name="dummy_address">Richard Holkade 14</string>
-    <string name="dummy_zip">2033 PZ Haarlem</string>
-    <string name="dummy_description">description</string>
-    <string name="dummy_earnings">00,00</string>
-    <string name="dummy_transport">Motor/scooter</string>
-    <string name="dummy_order_number">#000</string>
-    <string name="dummy_date">01&#8211;01&#8211;1900</string>
-    <string name="dummy_kilometers">0,0</string>
+    <string name="wrong_phone">Geen valide telefoonnummer</string>
+    <string name="wrong_email">Geen valide E-mail adres</string>
+    <string name="no_permission">Toegang geweigerd</string>
 
     <!-- Login: -->
     <string name="username">E-mail</string>

@@ -55,6 +55,13 @@ class LocationHelper(activity: Activity) {
             requestPermissions()
         }
     }
+    fun checkLocationPermission()
+    {
+        if(!checkPermissions())
+        {
+            requestPermissions()
+        }
+    }
 
     @SuppressLint("MissingPermission")
     private fun requestNewLocationData(listener: () -> Unit) {

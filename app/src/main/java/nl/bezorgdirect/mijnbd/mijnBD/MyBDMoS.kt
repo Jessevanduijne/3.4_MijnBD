@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
@@ -14,7 +15,6 @@ import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_my_bdmo_s.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.api.UpdateUserParams
-import nl.bezorgdirect.mijnbd.api.User
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import okhttp3.ResponseBody
@@ -104,7 +104,7 @@ class MyBDMoS : AppCompatActivity() {
     fun update()
     {
         val decryptedToken = getDecryptedToken(applicationContext)
-        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare , firstname, lastname)
+        val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare,vehicledisplayname, firstname, lastname)
         println(params)
         apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
@@ -158,50 +158,33 @@ class MyBDMoS : AppCompatActivity() {
         }
 
         btn_bicycle.setOnClickListener {
-            btn_bicycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-            btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-            btn_car.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-
-            btn_bicycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-            btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-            btn_car.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-
-            vehicle = 1
-            setMaxRange()
-            range = sb_radius.progress
-            update()
+            handleMOTClick(btn_bicycle,btn_car, btn_motorcycle, 1)
         }
 
         btn_motorcycle.setOnClickListener {
-            btn_bicycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-            btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-            btn_car.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-
-            btn_bicycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-            btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-            btn_car.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-
-            vehicle = 3
-            setMaxRange()
-            range = sb_radius.progress
-            update()
+            handleMOTClick(btn_motorcycle,btn_car, btn_bicycle, 3)
         }
 
         btn_car.setOnClickListener {
-            btn_bicycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-            btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-            btn_car.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-
-            btn_bicycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-            btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-            btn_car.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-
-            vehicle = 4
-            setMaxRange()
-            range = sb_radius.progress
-            update()
+            handleMOTClick(btn_car,btn_motorcycle, btn_bicycle, 4)
         }
     }
+    fun handleMOTClick(button: Button, otherButton1:Button, otherButton2: Button ,vehicle: Int)
+    {
+        button.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
+        otherButton1.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+        otherButton2.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+
+        button.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+        otherButton1.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+        otherButton2.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+        this.vehicle = vehicle
+        vehicledisplayname= button.text.toString()
+        setMaxRange()
+        range = sb_radius.progress
+        update()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
             android.R.id.home -> {

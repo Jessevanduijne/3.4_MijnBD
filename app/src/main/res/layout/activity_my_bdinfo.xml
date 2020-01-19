@@ -72,7 +72,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_gray_section"
                     android:padding="5dp"
-                    android:text="Naam"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -98,7 +97,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_gray_section"
                     android:padding="5dp"
-                    android:text="voorbeeldstraat 1;1111AA; Haarlem"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
@@ -124,7 +122,6 @@
                     android:layout_weight="1"
                     android:background="@drawable/rounded_gray_section"
                     android:padding="5dp"
-                    android:text="01-01-2000"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>

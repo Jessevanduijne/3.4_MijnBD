@@ -21,7 +21,6 @@ import com.ncorti.slidetoact.SlideToActView
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_delivering.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
 import nl.bezorgdirect.mijnbd.api.UpdateStatusParams
@@ -30,6 +29,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
+
 class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
@@ -37,7 +38,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         this.activity?.bottom_navigation?.visibility = View.GONE
-        return inflater.inflate(R.layout.fragment_delivering, container, false)
+        return inflater.inflate(nl.bezorgdirect.mijnbd.R.layout.fragment_delivering, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,12 +59,12 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
         btn_cancel_delivery.setOnClickListener {
             val fragment = CancelAssignmentFragment(delivery!!, true)
-            replaceFragment(R.id.delivery_fragment, fragment)
+            replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
         }
 
         btn_call_warehouse.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
-            intent.data = Uri.parse("tel:${getString(R.string.warehouse_phone_number)}")
+            intent.data = Uri.parse("tel:${getString(nl.bezorgdirect.mijnbd.R.string.warehouse_phone_number)}")
             startActivity(intent)
         }
     }
@@ -71,11 +72,11 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     private fun setLayout(){
         lbl_delivering_address.text = delivery!!.Customer.address!!.substringBefore(',') // cut zip code off
         lbl_delivering_zip.text = (delivery!!.Customer.postalCode + " " + delivery!!.Warehouse.place)
-        btn_delivering_completed.text = getString(R.string.lbl_delivery_delivered)
-        lbl_assignment.text = getString(R.string.lbl_assignment_client)
-        img_delivering_destination.setImageResource(R.drawable.ic_house_w)
+        btn_delivering_completed.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_delivery_delivered)
+        lbl_assignment.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_assignment_client)
+        img_delivering_destination.setImageResource(nl.bezorgdirect.mijnbd.R.drawable.ic_house_w)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        val mapFragment = childFragmentManager.findFragmentById(nl.bezorgdirect.mijnbd.R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         getRoute()
     }
@@ -105,7 +106,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
             4 -> travelmode = "driving" // car
         }
 
-        val apiKey = getString(R.string.google_maps_key)
+        val apiKey = getString(nl.bezorgdirect.mijnbd.R.string.google_maps_key)
         val call = service.getDirections(startLatLong, endLatLong, apiKey, travelmode = travelmode)
         call.enqueue(object: Callback<GoogleDirections> {
 
@@ -146,7 +147,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
                         val updatedAssignment = response.body()!!
 
                         val fragment = AssignmentFinishedFragment(updatedAssignment)
-                        replaceFragment(R.id.delivery_fragment, fragment)
+                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
                     }
                     else Log.e("DELIVERING", "Updating delivery status response unsuccessful")
                 }
@@ -155,4 +156,6 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
                 }
             })
     }
+
+
 }
