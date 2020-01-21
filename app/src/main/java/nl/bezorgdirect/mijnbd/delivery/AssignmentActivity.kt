@@ -37,11 +37,7 @@ class AssignmentActivity : AppCompatActivity() {
         setSupportActionBar(custom_toolbar)
         setFragment() // Sets the initial state
 
-
-      //  Handler().postDelayed({
         hideNotification()
-    //    }, 2000)
-
     }
 
     private fun hideNotification(){
@@ -54,7 +50,7 @@ class AssignmentActivity : AppCompatActivity() {
         showSpinner(view)
 
         val decryptedToken = getDecryptedToken(this)
-        apiService.deliveryGet(decryptedToken)
+        apiService.deliveryGetCurrent(decryptedToken)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {

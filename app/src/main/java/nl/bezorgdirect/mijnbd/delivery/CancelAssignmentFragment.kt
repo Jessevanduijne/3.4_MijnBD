@@ -61,14 +61,12 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
         locationHelper.getLastLocation { location -> run {
             val updateStatusBody = UpdateStatusParams(0, location.latitude, location.longitude) // status 0 = afgemeld
 
-            apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody)
-                .enqueue(object: Callback<Delivery> {
-                    override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
-                        if(response.isSuccessful && response.body() != null) {
-                            val updatedAssignment = response.body()!!
-
+            apiService.deliverystatusPatch(decryptedToken, delivery.id!!, updateStatusBody)
+                .enqueue(object: Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful) {
                             if(!cb_driver_can_return.isChecked) {
-                                val fragment = CancelToWarehouseFragment(updatedAssignment)
+                                val fragment = CancelToWarehouseFragment(delivery)
                                 replaceFragment(R.id.delivery_fragment, fragment)
                             }
                             else {
@@ -78,13 +76,13 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                val fragment = AssignmentFinishedFragment(updatedAssignment)
+                                val fragment = AssignmentFinishedFragment(delivery)
                                 replaceFragment(R.id.delivery_fragment, fragment)
                             }
                         }
                         else Log.e("CANCEL_ASSIGNMENT", "Updating delivery status response unsuccessful")
                     }
-                    override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
                         Log.e("CANCEL_ASSIGNMENT", "Updating delivery by delivery by deliveryId failed")
                     }
                 })

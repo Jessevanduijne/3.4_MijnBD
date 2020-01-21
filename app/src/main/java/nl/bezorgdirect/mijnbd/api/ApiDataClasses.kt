@@ -1,8 +1,6 @@
 package nl.bezorgdirect.mijnbd.api
 
-data class Feed (val Id: Int?, val Name: String?)
-
-data class Location (val id: String?, val latitude: Double?, val longitude: Double?, val address: String?, val postalCode: String?,
+data class Location (val id: String?, var latitude: Double?, var longitude: Double?, val address: String?, val postalCode: String?,
                      val place: String?, val isWarehouse: Boolean?)
 
 data class User (val id: String?, var emailAddress: String?, val firstName: String?, val lastName: String?, var phoneNumber: String?,
@@ -10,15 +8,48 @@ data class User (val id: String?, var emailAddress: String?, val firstName: Stri
 
 data class Availability (val id: String?, val delivererId: String?, var date:  String?, var startTime: String?, var endTime: String?)
 
-data class BDNotification (val Id: String?, val DelivererId: String?, val DeliveryId: String?,val CreatedAt: String?, val AcceptedAt: String?,
-                           val RefusedAt: String?, val ExpiredAt: String?, val Status: Int?, val StatusDisplayName: String?)
+data class Delivery (
+
+    val id : String,
+    val delivererId : String,
+    val customerPhoneNumber : Int,
+    val dueDate : String,
+    val vehicle : Int,
+    val startedAtId : String,
+    val warehouseDistanceInKilometers : String,
+    val warehouseETA : String,
+    val warehouseId : String,
+    val warehousePickUpAt : String,
+    val customerDistanceInKilometers : String,
+    val customerETA : String,
+    val customerId : String,
+    val currentId : String,
+    val deliveredAt : String,
+    val price : Int,
+    val tip : String,
+    val paymentMethod : Int,
+    val status : Int,
+    val warehouse : Location,
+    val customer : Location,
+    val current : Location
+)
+
+data class BDNotification (
+
+    val id : String,
+    val delivererId : String,
+    val expiredAt : String,
+    val delivery : Delivery
+)
 
 
-data class Delivery (val Id: String?, val DelivererId: String?, val CustomerPhoneNumber: String?, val DueDate: String?, val Vehicle: Int?, val StartedAtId: String?,
-                     val WarehouseDistanceInKilometers: Float?, val WarehouseETA: String?, val WarehousePickUpAt:  String?, val CustomerDistanceInKilometers: Float?,
-                     val CustomerETA: String?, val CustomerId: String?, val CurrentId: String?, val DeliveredAt: String?, val Price: Float?, val tip: Float?,
-                     val PaymentMethod: Int?, val PaymenMethodDisplayName: String?, val Status: Int?, val StatusDisplayName: String?, val Warehouse: Location,
-                     val Customer: Location, val Current: Location, val VehicleDisplayName: String)
 
+// OLD API:
+//data class BDNotification (val Id: String?, val DelivererId: String?, val DeliveryId: String?,val CreatedAt: String?, val AcceptedAt: String?,
+//                           val RefusedAt: String?, val ExpiredAt: String?, val Status: Int?, val StatusDisplayName: String?)
 
-
+//data class Delivery (val id: String?, val delivererId: String?, val customerPhoneNumber: String?, val dueDate: String?, val vehicle: Int?, val startedAtId: String?,
+//                     val warehouseDistanceInKilometers: Float?, val warehouseETA: String?, val warehousePickUpAt:  String?, val customerDistanceInKilometers: Float?,
+//                     val customerETA: String?, val customerId: String?, val currentId: String?, val deliveredAt: String?, val price: Float?, val tip: Float?,
+//                     val paymentMethod: Int?, val paymenMethodDisplayName: String?, val status: Int?, val statusDisplayName: String?, val warehouse: Location,
+//                     val customer: Location, val current: Location, val vehicleDisplayName: String)

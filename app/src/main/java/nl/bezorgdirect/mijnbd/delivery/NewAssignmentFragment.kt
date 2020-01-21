@@ -33,8 +33,8 @@ class NewAssignmentFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getNotificationId { notification -> run {
-                getDeliveryById(notification.DeliveryId!!) { delivery -> run {
-                        setClickListeners(notification.Id!!, delivery)
+                getDeliveryById(notification.delivery.id!!) { delivery -> run {
+                        setClickListeners(notification.id!!, delivery)
                         setLayoutData(delivery)
                         setTimer(notification, delivery)
                     }
@@ -55,21 +55,21 @@ class NewAssignmentFragment : Fragment() {
     private fun setLayoutData(delivery: Delivery){
         val formattedTime: String
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val localDateTime = LocalDateTime.parse(delivery.DueDate)
+            val localDateTime = LocalDateTime.parse(delivery.dueDate)
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             formattedTime = formatter.format(localDateTime)
         }
         else {
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val formatter = SimpleDateFormat("HH:mm")
-            formattedTime = formatter.format(parser.parse(delivery.DueDate!!)!!)
+            formattedTime = formatter.format(parser.parse(delivery.dueDate!!)!!)
         }
 
-        lbl_new_assignment_earnings.text = delivery.Price!!.toBigDecimal().setScale(2).toString()
+        lbl_new_assignment_earnings.text = delivery.price!!.toBigDecimal().setScale(2).toString()
         lbl_new_assignment_due_date.text = formattedTime
-        lbl_new_assignment_vehicle.text = delivery.VehicleDisplayName
+        lbl_new_assignment_vehicle.text = delivery.vehicle.toString() // TODO: get display name
 
-        when(delivery.Vehicle)
+        when(delivery.vehicle)
         {
             1 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_bike_y)
             2 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
@@ -162,19 +162,18 @@ class NewAssignmentFragment : Fragment() {
         locationHelper.getLastLocation { location -> run {
             val updateStatusBody = UpdateStatusParams(2, location.latitude, location.longitude) // status 2 = bevestigd
 
-            apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody)
-                .enqueue(object: Callback<Delivery> {
-                    override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
-                        if(response.isSuccessful && response.body() != null) {
-                            val updatedAssignment = response.body()!!
+            apiService.deliverystatusPatch(decryptedToken, delivery.id!!, updateStatusBody)
+                .enqueue(object: Callback<Void> {
+                    override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                        if(response.isSuccessful) {
 
                             timer!!.cancel()
-                            val fragment = RetrievingFragment(updatedAssignment)
+                            val fragment = RetrievingFragment(delivery)
                             replaceFragment(R.id.delivery_fragment, fragment)
                         }
                         else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
                     }
-                    override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    override fun onFailure(call: Call<Void>, t: Throwable) {
                         Log.e("NEW_ASSIGNMENT", "Updating delivery by delivery by deliveryId failed")
                     }
                 })
@@ -186,12 +185,12 @@ class NewAssignmentFragment : Fragment() {
         val locationHelper = LocationHelper(this.activity!!)
         val apiKey = getString(R.string.google_maps_key)
 
-        val warehouseDestination = "${delivery.Warehouse.latitude},${delivery.Warehouse.longitude}"
-        val clientDestination = "${delivery.Customer.latitude},${delivery.Customer.longitude}"
+        val warehouseDestination = "${delivery.warehouse.latitude},${delivery.warehouse.longitude}"
+        val clientDestination = "${delivery.customer.latitude},${delivery.customer.longitude}"
 
         var travelDuration = 0
         var travelMode = ""
-        when(delivery.Vehicle)
+        when(delivery.vehicle)
         {
             1 -> travelMode = "bicycling"
             2 or 3 or 4 -> travelMode = "driving"
@@ -200,7 +199,6 @@ class NewAssignmentFragment : Fragment() {
         // Location on opening screen (won't be saved):
         locationHelper.getLastLocation { location -> run {
             val startLocation = "${location.latitude},${location.longitude}"
-
             val toWarehouseDistanceCall = service.getDistance(startLocation, warehouseDestination, apiKey, travelMode)
             toWarehouseDistanceCall.enqueue(object: Callback<GoogleDistance> {
                 override fun onResponse(call: Call<GoogleDistance>, response: Response<GoogleDistance>) {
@@ -244,7 +242,7 @@ class NewAssignmentFragment : Fragment() {
     private fun setTimer(notification: BDNotification, delivery: Delivery){
 
         val currentTime = Calendar.getInstance().time
-        val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.ExpiredAt!!)
+        val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.expiredAt!!)
         val diffInMilliSec = (expirationTime!!.time - currentTime.time)
         val maxResponseTimeMilliSec = 10 * 60 * 1000
         val minute = 60 * 1000
@@ -267,7 +265,7 @@ class NewAssignmentFragment : Fragment() {
             }
 
             override fun onFinish() {
-                confirmAssignment(false, notification.Id!!, delivery)
+                //confirmAssignment(false, notification.id!!, delivery) TODO: repair timer
             }
         }
         timer!!.start()

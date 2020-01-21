@@ -38,7 +38,7 @@ interface ApiService {
     fun delivererPut(@Header("Authorization") auth: String, @Body params: UpdateUserParams): Call<ResponseBody>
 
     /************************Notifications******************************************/
-    @GET("notification") //Read Notification of authenticated Deliverer
+    @GET("notifications") //Read Notification of authenticated Deliverer
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
 
     @PATCH("notifications/{id}") //Update Notification of authenticated Deliverer
@@ -51,21 +51,21 @@ interface ApiService {
     fun locationGet(@Header("Authorization") auth: String): Call<ArrayList<Location>>
 
     /************************Deliveries******************************************/
-    @GET("delivery") //Read Delivery of authenticated Deliverer
-    fun deliveryGet(@Header("Authorization") auth: String): Call<Delivery>
+    @GET("deliveries/current") //Read Delivery of authenticated Deliverer
+    fun deliveryGetCurrent(@Header("Authorization") auth: String): Call<Delivery>
 
     @GET("deliveries/{id}") //Read Delivery of authenticated Deliverer
     fun deliveryGetById(@Header("Authorization") auth: String,
                         @Path("id") id: String): Call<Delivery>
 
-    @PATCH("delivery/location") //Update currentLocation in Delivery
+    @PATCH("deliveries/location") //Update currentLocation in Delivery
     fun deliverylocationPatch(@Header("Authorization") auth: String,
                               @Body params: UpdateLocationParams): Call<Delivery>
 
-    @PATCH("delivery/{id}/status") //Update status in Delivery
+    @PATCH("deliveries/{id}/status") //Update status in Delivery
     fun deliverystatusPatch(@Header("Authorization") auth: String,
                             @Path("id") id: String,
-                            @Body params: UpdateStatusParams): Call<Delivery>
+                            @Body params: UpdateStatusParams): Call<Void>
 
     @GET("deliveries") //List Deliveries of authenticated Deliverer
     fun deliveriesGet(@Header("Authorization") auth: String): Call<ArrayList<Delivery>>

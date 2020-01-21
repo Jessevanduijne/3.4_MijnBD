@@ -37,7 +37,7 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
 
         val d = delivery!!
 
-        if(d.Status != 4) {  // 4 = Afgeleverd
+        if(d.status != 4) {  // 4 = Afgeleverd
             lbl_status_text.text = getString(R.string.lbl_delivery_cancelled)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -46,10 +46,10 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
         }
 
         // Todo: Edit if cloud group makes api call possible:
-        lbl_success_earnings.text = d.Price!!.toBigDecimal().setScale(2).toString()
-        lbl_success_total_earnings_day.text = d.Price.toBigDecimal().setScale(2).toString()
-        lbl_success_total_earnings_month.text = d.Price!!.toBigDecimal().setScale(2).toString()
-        lbl_success_total_earnings_week.text = d.Price!!.toBigDecimal().setScale(2).toString()
+        lbl_success_earnings.text = d.price!!.toBigDecimal().setScale(2).toString()
+        lbl_success_total_earnings_day.text = d.price.toBigDecimal().setScale(2).toString()
+        lbl_success_total_earnings_month.text = d.price!!.toBigDecimal().setScale(2).toString()
+        lbl_success_total_earnings_week.text = d.price!!.toBigDecimal().setScale(2).toString()
 
         val formattedTime: String
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -60,7 +60,7 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
         else {
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             val formatter = SimpleDateFormat("HH:mm")
-            formattedTime = formatter.format(parser.parse(delivery.DueDate!!)!!)
+            formattedTime = formatter.format(parser.parse(delivery.dueDate!!)!!)
         }
 
         lbl_successful_datetime.text = formattedTime
@@ -74,20 +74,20 @@ class AssignmentFinishedFragment(val delivery: Delivery? = null): Fragment(){
             val d = delivery!!
 
             //warehouse
-            intent.putExtra("warehouseAddress", d.Warehouse.address)
-            intent.putExtra("warehouseDistance", d.WarehouseDistanceInKilometers)
-            intent.putExtra("warehousePickUp", d.WarehousePickUpAt)
+            intent.putExtra("warehouseAddress", d.warehouse.address)
+            intent.putExtra("warehouseDistance", d.warehouseDistanceInKilometers)
+            intent.putExtra("warehousePickUp", d.warehousePickUpAt)
             //customer
-            intent.putExtra("customerAddress", d.Customer.address)
-            intent.putExtra("customerDistance", d.CustomerDistanceInKilometers)
-            intent.putExtra("customerDeliveredAt", d.DeliveredAt)
+            intent.putExtra("customerAddress", d.customer.address)
+            intent.putExtra("customerDistance", d.customerDistanceInKilometers)
+            intent.putExtra("customerDeliveredAt", d.deliveredAt)
             //price
-            intent.putExtra("price", d.Price)
+            intent.putExtra("price", d.price)
             intent.putExtra("tip", 0)
             //status+vehicle
-            intent.putExtra("statusDisplayName", d.StatusDisplayName)
-            intent.putExtra("status", d.Status)
-            intent.putExtra("vehicle", d.Vehicle)
+            intent.putExtra("statusDisplayName", d.status) // TODO: show display name
+            intent.putExtra("status", d.status)
+            intent.putExtra("vehicle", d.vehicle)
             startActivity(intent)
         }
 

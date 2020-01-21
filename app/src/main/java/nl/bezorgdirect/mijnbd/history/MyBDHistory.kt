@@ -41,22 +41,22 @@ class MyBDHistory : Fragment() {
             println("Pos "+position)
             println(deliveries[position])
             //accepted
-            intent.putExtra("timeAccepted",deliveries[position].WarehousePickUpAt)//needs to be added to api warhouse pickup for now
+            intent.putExtra("timeAccepted",deliveries[position].warehousePickUpAt)//needs to be added to api warhouse pickup for now
             //warehouse
-            intent.putExtra("warehouseAddress",deliveries[position].Warehouse.address)
-            intent.putExtra("warehouseDistance",deliveries[position].WarehouseDistanceInKilometers)
-            intent.putExtra("warehousePickUp",deliveries[position].WarehousePickUpAt)
+            intent.putExtra("warehouseAddress",deliveries[position].warehouse.address)
+            intent.putExtra("warehouseDistance",deliveries[position].warehouseDistanceInKilometers)
+            intent.putExtra("warehousePickUp",deliveries[position].warehousePickUpAt)
             //customer
-            intent.putExtra("customerAddress",deliveries[position].Customer.address)
-            intent.putExtra("customerDistance",deliveries[position].CustomerDistanceInKilometers)
-            intent.putExtra("customerDeliveredAt",deliveries[position].DeliveredAt)
+            intent.putExtra("customerAddress",deliveries[position].customer.address)
+            intent.putExtra("customerDistance",deliveries[position].customerDistanceInKilometers)
+            intent.putExtra("customerDeliveredAt",deliveries[position].deliveredAt)
             //price
-            intent.putExtra("price",deliveries[position].Price)
+            intent.putExtra("price",deliveries[position].price)
             intent.putExtra("tip",deliveries[position].tip)
             //status+vehicle
-            intent.putExtra("statusDisplayName",deliveries[position].StatusDisplayName)
-            intent.putExtra("status",deliveries[position].Status)
-            intent.putExtra("vehicle",deliveries[position].Vehicle)
+            intent.putExtra("statusDisplayName",deliveries[position].status) // TODO: get status name
+            intent.putExtra("status",deliveries[position].status)
+            intent.putExtra("vehicle",deliveries[position].vehicle)
 
             startActivity(intent)
         }
@@ -160,7 +160,7 @@ class MyBDHistory : Fragment() {
                     val values = response.body()!!
                     deliveries = values
 
-                    println(deliveries[0].CurrentId)
+                    println(deliveries[0].currentId)
                     println(list_historie.adapter)
                     history_empty.visibility = View.GONE
                     history_error.visibility = View.GONE

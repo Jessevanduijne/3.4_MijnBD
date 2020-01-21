@@ -34,7 +34,6 @@ class NotificationService: Service() {
 
     override fun onBind(intent: Intent?): IBinder? {
         // If the application needs to send data the service, this method will be used
-        Log.e("", "")
         throw UnsupportedOperationException("Not yet implemented")
     }
 
@@ -73,33 +72,17 @@ class NotificationService: Service() {
                     if(response.isSuccessful && response.body() != null) {
                         mHandler.postDelayed(mRunnable, 20000)
                         val notification: BDNotification = response.body()!!
-                        getDeliveryInfoForNotification(notification.DeliveryId!!)
+                        val delivery = notification.delivery
 
                         canReceiveNotification = false // Until response of user, receive no new notifications
+                        showNotification(notification.delivery)
+
                     }
                     else Log.e("NOTIFICATION", "No notification for you at the moment") // TODO: Remove in final version, or this will be spam
                 }
 
                 override fun onFailure(call: Call<BDNotification>, t: Throwable) {
                     Log.e("NOTIFICATION", "Something went wrong with the notification call (getNotification)")
-                }
-            })
-    }
-
-    private fun getDeliveryInfoForNotification(deliveryId: String){
-        val decryptedToken = getDecryptedToken(this.applicationContext!!)
-        apiService.deliveryGetById(decryptedToken, deliveryId)
-            .enqueue(object: Callback<Delivery> {
-                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
-                    if(response.isSuccessful && response.body() != null) {
-                        val delivery = response.body()!!
-                        showNotification(delivery)
-                    }
-                    else Log.e("NOTIFICATION", "delivery call unsuccessful or body empty")
-                }
-
-                override fun onFailure(call: Call<Delivery>, t: Throwable) {
-                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (getDeliveryForNotification)")
                 }
             })
     }
@@ -114,7 +97,7 @@ class NotificationService: Service() {
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_header, getString(nl.bezorgdirect.mijnbd.R.string.lbl_new_assignment))
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext1, getString(nl.bezorgdirect.mijnbd.R.string.lbl_earn))
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext2, getString(nl.bezorgdirect.mijnbd.R.string.lbl_euro))
-        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext3, deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext3, deliveryInfo.price!!.toBigDecimal().setScale(2).toString())
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
