@@ -22,6 +22,11 @@
     <string name="lbl_euro">€</string>
     <string name="unknown">/?</string>
 
+    <!-- Location dialog -->
+    <string name="loc_permission">Deze app heeft locatie toegang nodig om te functioneren. Geef de app alstublieft permissie uw locatie te gebruiken.</string>
+    <string name="to_settings">Naar instellingen</string>
+    <string name="close_app">Sluit app</string>
+
     <!-- Error -->
     <string name="E500">Oops something went wrong, try again later.</string>
     <string name="E401">Oops permission denied.</string>
@@ -84,20 +89,7 @@
     <string name="lbl_payoutpd">€/bezorging:</string>
     <string name="lbl_payouttotal">Totale verdiensten:</string>
     <string name="lbl_availability">Beschikbaarheid</string>
-    <string name="lbl_monday">Ma</string>
-    <string name="lbl_tuesday">Di</string>
-    <string name="lbl_wednesday">Wo</string>
-    <string name="lbl_thursday">Do</string>
-    <string name="lbl_friday">Vr</string>
-    <string name="lbl_saturday">Za</string>
-    <string name="lbl_sunday">Zo</string>
-    <string name="lbl_monday_var">Onbekend</string>
-    <string name="lbl_tuesday_var">Onbekend</string>
-    <string name="lbl_wednesday_var">Onbekend</string>
-    <string name="lbl_thursday_var">Onbekend</string>
-    <string name="lbl_friday_var">Onbekend</string>
-    <string name="lbl_saturday_var">Onbekend</string>
-    <string name="lbl_sunday_var">Onbekend</string>
+
 
     <!-- MijnBD Info: -->
     <string name="lbl_mybdinfo">Wijzig Personalia</string>
