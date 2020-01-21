@@ -51,6 +51,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
+        android:paddingTop="10dp"
         android:visibility="gone">
         <LinearLayout
             android:layout_width="match_parent"
@@ -247,10 +248,16 @@
                     android:layout_gravity="center"
                     android:padding="10dp"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"/>
 
-                </LinearLayout>
-
+                <LinearLayout
+                    android:id="@+id/list_availability_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="10dp"
+                    android:layout_gravity="start"
+                    android:layout_weight="1"
+                    android:orientation="vertical"/>
 
                 <LinearLayout
                     android:id="@+id/list_availability_time"
@@ -259,23 +266,8 @@
                     android:padding="10dp"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="vertical"/>
 
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/list_availability_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-
-                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>

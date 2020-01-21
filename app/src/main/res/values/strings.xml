@@ -10,6 +10,7 @@
     <string name="V1">Fiets</string>
     <string name="V2_3">Motor</string>
     <string name="V4">Auto</string>
+    <string name="VNone">Geen</string>
 
     <!-- General -->
     <string name="lbl_seconds_short">sec.</string>
