@@ -168,7 +168,7 @@ class NewAssignmentFragment : Fragment() {
                         if(response.isSuccessful) {
 
                             timer!!.cancel()
-                            val fragment = RetrievingFragment(delivery)
+                            val fragment = RetrievingFragment(delivery, location)
                             replaceFragment(R.id.delivery_fragment, fragment)
                         }
                         else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
@@ -265,7 +265,7 @@ class NewAssignmentFragment : Fragment() {
             }
 
             override fun onFinish() {
-                //confirmAssignment(false, notification.id!!, delivery) TODO: repair timer
+                confirmAssignment(false, notification.id, delivery)
             }
         }
         timer!!.start()

@@ -30,7 +30,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReadyCallback {
+class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: LatLng): Fragment(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
     private val apiService = getApiService()
@@ -78,7 +78,7 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
+        val latLngOrigin = LatLng(currentLocation.latitude, currentLocation.longitude)
         val latLngDestination = LatLng(delivery!!.warehouse.latitude!!.toDouble(), delivery!!.warehouse.longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Your position"))
         this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.warehouse.address))
@@ -89,7 +89,7 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.current.latitude.toString() + "," + delivery!!.current.longitude.toString()
+        val startLatLong = currentLocation.latitude.toString() + "," + currentLocation.longitude.toString()
         val endLatLong = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
 
         var travelmode = ""

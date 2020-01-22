@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
@@ -55,7 +56,8 @@ class AssignmentActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
                         val delivery = response.body()
-                        val deliveringFragment = RetrievingFragment(delivery)
+                        val currentLocation = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
+                        val deliveringFragment = RetrievingFragment(delivery, currentLocation)
                         replaceFragment(id.delivery_fragment, deliveringFragment)
                         canReceiveNotification = false
                     }
