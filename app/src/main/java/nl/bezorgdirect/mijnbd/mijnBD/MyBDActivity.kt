@@ -173,7 +173,7 @@ class MyBDActivity : Fragment() {
                         2 -> vehicle!!.text = resources.getString(R.string.V2_3)
                         3 -> vehicle!!.text = resources.getString(R.string.V2_3)
                         4 -> vehicle!!.text = resources.getString(R.string.V4)
-                        else -> vehicle!!.text = resources.getString(R.string.VNone)
+                        else -> vehicle!!.text = resources.getString(R.string.unknown)
                     }
                     lbl_name.text = values.firstName+" "+values.lastName
                     lbl_pd.text = values.fare.toString()
