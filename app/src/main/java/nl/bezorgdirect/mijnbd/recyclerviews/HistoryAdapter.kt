@@ -19,10 +19,10 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
 
     private var cont: Context? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryAdapter.MyViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.history_item, parent, false)
         cont = parent.context
-        return MyViewHolder(view)
+        return HistoryAdapter.MyViewHolder(view)
     }
 
     override fun getItemCount(): Int {
@@ -61,11 +61,11 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             4 -> holder.vehicleimage.setImageResource(R.drawable.ic_car_w)
         }
         holder.location.text = item.customer.address
-
+        println(item)
         if(item.customerDistanceInKilometers != null && item.warehouseDistanceInKilometers != null) {
-            var distance = item.customerDistanceInKilometers + item.warehouseDistanceInKilometers
+            val distance = item.customerDistanceInKilometers + item.warehouseDistanceInKilometers
            // distance = round(distance * 100) / 100
-            holder.distance.text = String.format("%1f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
+            holder.distance.text = String.format("%.2f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
         else
         {
@@ -86,12 +86,12 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
 
     fun setTravelTime(start: Date, end: Date): String
     {
-        val diff = start.time - end.time
+        val diff = end.time - start.time
         val seconds = diff / 1000
         var minutes = seconds / 60
         val hours = minutes / 60
         minutes -= hours * 60
-
+        println(diff)
         var traveltime = ""
         if (hours > 0) {
             traveltime += String.format("%d %s",hours,cont?.resources?.getString(R.string.lbl_hours_short))
@@ -99,7 +99,11 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         if (minutes > 0) {
             traveltime += String.format("%d %s",minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
         }
-        if(minutes <= 0 && hours <= 0)
+        if(minutes == 0L && hours == 0L)
+        {
+            traveltime = String.format("%d %s", minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
+        }
+        else
         {
             traveltime = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_minutes_short))
         }

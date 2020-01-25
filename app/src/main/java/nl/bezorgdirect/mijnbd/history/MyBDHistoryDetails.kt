@@ -11,7 +11,6 @@ import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.R
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.round
 
 class MyBDHistoryDetails : AppCompatActivity() {
 
@@ -166,8 +165,7 @@ class MyBDHistoryDetails : AppCompatActivity() {
     {
         var output = "?"
         if(input != -1.0f ) {
-            var rounded = round(input * 100) / 100
-            output = "$rounded"
+            output = String.format("%.2f",input)
         }
         return output
     }

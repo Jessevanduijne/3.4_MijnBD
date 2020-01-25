@@ -32,6 +32,7 @@ class AssignmentActivity : AppCompatActivity() {
     val apiService = getApiService()
     val PERMISSION_ID = 42
     var perm = 0
+    var permDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,6 +134,7 @@ class AssignmentActivity : AppCompatActivity() {
             dialog.hide()
             finishAndRemoveTask()
         }
+        permDialog = dialog
         dialog.show()
     }
 
@@ -140,6 +142,10 @@ class AssignmentActivity : AppCompatActivity() {
         if (requestCode == PERMISSION_ID) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                 Log.e("PERMISSIONS", "Location permissions granted by user")
+                if(permDialog != null)
+                {
+                    permDialog!!.hide()
+                }
             }
             else
             {
