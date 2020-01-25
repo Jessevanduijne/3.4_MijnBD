@@ -162,7 +162,7 @@ class MyBDActivity : Fragment() {
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     user = values
-
+                    print(user)
                     val lbl_name: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
                     val lbl_vehicle: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
                     val lbl_pd: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
@@ -274,7 +274,7 @@ class MyBDActivity : Fragment() {
 
     fun fillAvailability(availabilities: ArrayList<Availability>)
     {
-
+        availabilities.sortBy{it.date+' '+it.startTime+' '+it.endTime}
         list_availability_day!!.removeAllViews()
         list_availability_time!!.removeAllViews()
         list_availability_date!!.removeAllViews()
@@ -350,16 +350,17 @@ class MyBDActivity : Fragment() {
     fun getWeek() : ArrayList<String>
     {
         val fromatter = SimpleDateFormat("yyyy-MM-dd")
+        val day = Calendar.getInstance()
+        day.time = Date()
 
-        val today = Date()
-
-        val week = ArrayList<String>()
+        val dates = ArrayList<String>()
         for (i in 0..6)
         {
-            val day = Date(today.time + (1000 * 60 * 60 * 24) * i)
-            week.add(fromatter.format(day)+"T00:00:00")
+            dates.add(String.format("%sT00:00:00",fromatter.format(day.time)))
+            day.add(Calendar.DATE, 1)
         }
-        return week
+        println(dates)
+        return dates
     }
     fun gotoInfo(context: Context)
     {

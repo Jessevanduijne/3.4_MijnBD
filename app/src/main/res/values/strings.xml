@@ -18,7 +18,7 @@
     <string name="lbl_hours_short">u.</string>
     <string name="lbl_kilometers_short">km.</string>
     <string name="lbl_edit">wijzig</string>
-    <string name="lbl_distance">km. Afstand</string>
+    <string name="lbl_distance">km. afstand</string>
     <string name="lbl_euro">€</string>
     <string name="unknown">?</string>
 
@@ -113,13 +113,15 @@
     <!-- Historie: -->
     <string name="nodeliveries">You haven\'t done any deliveries yet</string>
     <string name="title_order_details">Order details</string>
-    <string name="lbl_warehouse_ready_text">Gereed magazijn</string>
+    <string name="lbl_order_submitted">Order geplaatst</string>
     <string name="lbl_warehouse_pickup_text">Order opgehaald</string>
     <string name="lbl_accepted_text">Geaccepteerd</string>
     <string name="lbl_reward_header">Verdiensten</string>
     <string name="lbl_tip_text">Fooi</string>
     <string name="lbl_reward_text">Totaal</string>
     <string name="lbl_add">+</string>
+
+
 
     <string name="btn_bicycle">Fiets</string>
     <string name="btn_motorcycle">Scooter/Motor</string>
@@ -131,6 +133,12 @@
     <!-- Notifications -->
     <string name="lbl_channel_name">mijnbd_notification_channel</string>
     <string name="lbl_earn">Verdien</string>
+    <!-- Status -->
+    <string name="stat_0">Afgemeld</string>
+    <string name="stat_1">Aangekondigd</string>
+    <string name="stat_2">Bevestigd</string>
+    <string name="stat_3">Onderweg</string>
+    <string name="stat_4">Afgeleverd</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

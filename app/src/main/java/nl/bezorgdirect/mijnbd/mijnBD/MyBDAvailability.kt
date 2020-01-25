@@ -159,7 +159,9 @@ class MyBDAvailability : AppCompatActivity() {
                         if(values[0] != null)
                         {
                             availabilities = values
-                            availabilities.sortBy{it.date+' '+it.startTime+' '+it.endTime}
+                            println("hierzo")
+                            println(availabilities)
+                            filterAndSortAvailabilities()
                             list_availabilities.adapter = AvailabilityAdapter(availabilities)
                         }
                     }
@@ -244,8 +246,10 @@ class MyBDAvailability : AppCompatActivity() {
                 }else if (response.isSuccessful && response.body() != null) {
                     changed = 1
                     val values = response.body()!!
+                    val fromatter = SimpleDateFormat("yyyy-MM-dd")
+                    val today = Date()
                     availabilities.addAll(values)
-                    availabilities.sortBy{it.date+' '+it.startTime}
+                    filterAndSortAvailabilities()
                     list_availabilities.adapter!!.notifyDataSetChanged()
                     Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     hideSpinner(root)
@@ -267,6 +271,14 @@ class MyBDAvailability : AppCompatActivity() {
 
         })
     }
+
+    fun filterAndSortAvailabilities()
+    {
+        val fromatter = SimpleDateFormat("yyyy-MM-dd")
+        val today = Date()
+        availabilities = ArrayList(availabilities.filter { it.date!! >= String.format("%sT00:00:00",fromatter.format(today))})
+        availabilities.sortBy{it.date+' '+it.startTime+' '+it.endTime}
+    }
     fun addDialog()
     {
         val dialog = Dialog(this)
@@ -280,7 +292,7 @@ class MyBDAvailability : AppCompatActivity() {
         val toHourPicker = dialog.findViewById(R.id.pkr_to_hour) as NumberPicker
         val toMinPicker = dialog.findViewById(R.id.pkr_to_min) as NumberPicker
         val dayPicker = dialog.findViewById(R.id.pkr_date) as NumberPicker
-        val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23")
+        val hours = arrayOf("09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23")
         val mins = arrayOf("00", "15", "30", "45")
         val dates = getDates()
         initValsPicker(fromHourPicker, hours)

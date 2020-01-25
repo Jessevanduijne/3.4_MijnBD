@@ -119,7 +119,7 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val toHourPicker = dialog.findViewById(R.id.pkr_to_hour) as NumberPicker
         val toMinPicker = dialog.findViewById(R.id.pkr_to_min) as NumberPicker
         val dayPicker = dialog.findViewById(R.id.pkr_date) as NumberPicker
-        val hours = arrayOf("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23")
+        val hours = arrayOf("09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23")
         val mins = arrayOf("00", "15", "30", "45")
         val dates = getDates()
 

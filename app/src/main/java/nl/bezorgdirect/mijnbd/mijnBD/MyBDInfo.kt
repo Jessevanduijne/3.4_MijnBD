@@ -253,7 +253,7 @@ class MyBDInfo : AppCompatActivity() {
 
     private fun pickImageFromGallery() {
         //Intent to pick image
-        val intent = Intent(Intent.ACTION_PICK)
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
     }

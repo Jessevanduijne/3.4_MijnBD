@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".LoginActivity"
     android:layout_width="fill_parent"
@@ -124,7 +123,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/lbl_ready_warehouse_time"
+                        android:id="@+id/lbl_order_submitted_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/white"
@@ -146,11 +145,11 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/lbl_ready_warehouse_text"
+                        android:id="@+id/lbl_order_submitted_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:text="@string/lbl_warehouse_ready_text"
+                        android:text="@string/lbl_order_submitted"
                         android:textColor="@color/white"
                         android:textSize="16sp" />
 
@@ -299,7 +298,6 @@
                             android:id="@+id/lbl_customer_distance_value"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
 
@@ -323,7 +321,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
                             android:text="@string/lbl_distance"
                             android:textColor="@color/white"
                             android:textSize="16sp" />
@@ -425,14 +422,14 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp">
 
                     <TextView
                         android:id="@+id/lbl_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginTop="5dp"
                         android:text="@string/lbl_add"
                         android:textColor="@color/white"
                         android:textSize="16sp" />

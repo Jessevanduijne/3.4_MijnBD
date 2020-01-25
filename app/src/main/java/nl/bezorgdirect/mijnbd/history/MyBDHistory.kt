@@ -40,6 +40,8 @@ class MyBDHistory : Fragment() {
             val intent = Intent(activity, MyBDHistoryDetails::class.java)
             println("Pos "+position)
             println(deliveries[position])
+
+            intent.putExtra("orderSubmitted", deliveries[position].warehousePickUpAt)//needs to be added to api is in ntoifcations
             //accepted
             intent.putExtra("timeAccepted",deliveries[position].warehousePickUpAt)//needs to be added to api warhouse pickup for now
             //warehouse
