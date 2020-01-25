@@ -64,10 +64,13 @@ class AssignmentActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {
                         val delivery = response.body()
-                        val currentLocation = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
-                        val deliveringFragment = RetrievingFragment(delivery, currentLocation)
-                        replaceFragment(id.delivery_fragment, deliveringFragment)
+                        val initialLocation = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
                         canReceiveNotification = false
+
+                        when(delivery.status) {
+                            2 -> replaceFragment(id.delivery_fragment, RetrievingFragment(delivery, initialLocation))
+                            3 -> replaceFragment(id.delivery_fragment, DeliveringFragment(delivery))
+                        }
                     }
                     else {
                         if(canReceiveNotification) {

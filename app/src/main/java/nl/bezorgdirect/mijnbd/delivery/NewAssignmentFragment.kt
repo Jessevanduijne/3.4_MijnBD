@@ -34,10 +34,14 @@ class NewAssignmentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getNotificationId { notification -> run {
                 getDeliveryById(notification.delivery.id!!) { delivery -> run {
-
                         setClickListeners(notification.id!!, delivery)
                         setLayoutData(delivery)
                         setTimer(notification, delivery)
+
+                        setDistanceData(delivery) {
+                            layout_delivery_decision.visibility = View.VISIBLE
+                            hideSpinner((this.view!!))
+                        }
                     }
                 }
             }
@@ -49,7 +53,7 @@ class NewAssignmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        hideSpinner(view)
+        layout_delivery_decision.visibility = View.INVISIBLE
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -77,9 +81,6 @@ class NewAssignmentFragment : Fragment() {
             3 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
             4 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_car_y)
         }
-
-        // Google API data:
-        setDistanceData(delivery)
     }
 
     private fun setClickListeners(notificationId: String, delivery: Delivery){
@@ -180,10 +181,11 @@ class NewAssignmentFragment : Fragment() {
         } }
     }
 
-    private fun setDistanceData(delivery: Delivery){
+    private fun setDistanceData(delivery: Delivery, callback:() -> Unit){
         val service = getGoogleService()
         val locationHelper = LocationHelper(this.activity!!)
         val apiKey = getString(R.string.google_maps_key)
+        var callCount = 0
 
         val warehouseDestination = "${delivery.warehouse.latitude},${delivery.warehouse.longitude}"
         val clientDestination = "${delivery.customer.latitude},${delivery.customer.longitude}"
@@ -210,6 +212,10 @@ class NewAssignmentFragment : Fragment() {
                         travelDuration += toWarehouseDuration.toInt()
                         lbl_to_warehouse_kilometers.text = toWarehouseDistance
                         lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                        callCount++
+                        if(callCount == 2) {
+                            callback()
+                        }
                     }
                 }
                 override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {
@@ -229,6 +235,10 @@ class NewAssignmentFragment : Fragment() {
 
                         lbl_to_client_kilometers.text = toClientDistance
                         lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                        callCount++
+                        if(callCount == 2) {
+                            callback()
+                        }
                     }
                 }
                 override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {
@@ -244,7 +254,8 @@ class NewAssignmentFragment : Fragment() {
         val currentTime = Calendar.getInstance().time
         val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.expiredAt!!)
         val diffInMilliSec = (expirationTime!!.time - currentTime.time)
-        val maxResponseTimeMilliSec = 10 * 60 * 1000
+        val apiUpdateToExpiredTime = 2
+        val maxResponseTimeMilliSec = (10 * 60 * 1000) + apiUpdateToExpiredTime
         val minute = 60 * 1000
 
         timer = object: CountDownTimer(diffInMilliSec, 1000) {
@@ -265,7 +276,9 @@ class NewAssignmentFragment : Fragment() {
             }
 
             override fun onFinish() {
-                confirmAssignment(false, notification.id, delivery)
+                // api autmatically updates assignments to expired
+                val fragment = NoAssignmentFragment()
+                replaceFragment(R.id.delivery_fragment, fragment)
             }
         }
         timer!!.start()
