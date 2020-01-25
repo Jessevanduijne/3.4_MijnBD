@@ -10,15 +10,15 @@ data class User (val id: String?, var emailAddress: String?, val firstName: Stri
 
 data class Availability (val id: String?, val delivererId: String?, var date:  String?, var startTime: String?, var endTime: String?)
 
-data class BDNotification (val Id: String?, val DelivererId: String?, val DeliveryId: String?,val CreatedAt: String?, val AcceptedAt: String?,
-                           val RefusedAt: String?, val ExpiredAt: String?, val Status: Int?, val StatusDisplayName: String?)
+data class BDNotification (val id: String?, val delivererId: String?, val deliveryId: String?,val createdAt: String?, val acceptedAt: String?,
+                           val refusedAt: String?, val expiredAt: String?, val status: Int?, val statusDisplayName: String?)
 
 
-data class Delivery (val Id: String?, val DelivererId: String?, val CustomerPhoneNumber: String?, val DueDate: String?, val Vehicle: Int?, val StartedAtId: String?,
-                     val WarehouseDistanceInKilometers: Float?, val WarehouseETA: String?, val WarehousePickUpAt:  String?, val CustomerDistanceInKilometers: Float?,
-                     val CustomerETA: String?, val CustomerId: String?, val CurrentId: String?, val DeliveredAt: String?, val Price: Float?, val tip: Float?,
-                     val PaymentMethod: Int?, val PaymenMethodDisplayName: String?, val Status: Int?, val StatusDisplayName: String?, val Warehouse: Location,
-                     val Customer: Location, val Current: Location, val VehicleDisplayName: String)
+data class Delivery (val id: String?, val delivererId: String?, val customerPhoneNumber: String?, val dueDate: String?, val vehicle: Int?, val startedAtId: String?,
+                     val warehouseDistanceInKilometers: Float?, val warehouseETA: String?, val warehousePickUpAt:  String?, val customerDistanceInKilometers: Float?,
+                     val customerETA: String?, val customerId: String?, val currentId: String?, val deliveredAt: String?, val price: Float?, val tip: Float?,
+                     val paymentMethod: Int?, val paymenMethodDisplayName: String?, val status: Int?, val statusDisplayName: String?, val warehouse: Location,
+                     val customer: Location, val current: Location, val vehicleDisplayName: String)
 
 
 

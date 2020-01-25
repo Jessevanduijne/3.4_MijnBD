@@ -61,7 +61,7 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
         locationHelper.getLastLocation { location -> run {
             val updateStatusBody = UpdateStatusParams(0, location.latitude, location.longitude) // status 0 = afgemeld
 
-            apiService.deliverystatusPatch(decryptedToken, delivery.Id!!, updateStatusBody)
+            apiService.deliverystatusPatch(decryptedToken, delivery.id!!, updateStatusBody)
                 .enqueue(object: Callback<Delivery> {
                     override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                         if(response.isSuccessful && response.body() != null) {

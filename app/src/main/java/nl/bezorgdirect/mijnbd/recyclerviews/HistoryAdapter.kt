@@ -34,9 +34,9 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = list[position]
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        if(item.DeliveredAt != null && item.WarehousePickUpAt != null) {
-            val starttime: Date = inputFormat.parse(item.WarehousePickUpAt)//acceptedAt wharhouse pickup for now
-            val endtime: Date = inputFormat.parse(item.DeliveredAt)
+        if(item.deliveredAt != null && item.warehousePickUpAt != null) {
+            val starttime: Date = inputFormat.parse(item.warehousePickUpAt)//acceptedAt wharhouse pickup for now
+            val endtime: Date = inputFormat.parse(item.deliveredAt)
             holder.travel.text = setTravelTime(starttime, endtime)
             holder.time.text = setTimeFromTo(starttime, endtime)
         }
@@ -45,7 +45,7 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             holder.time.text = String.format("%s - %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.unknown))
             holder.travel.text = String.format("%s %s - %s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_hours_short),cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_minutes_short))
         }
-        if(item.Status == 4)
+        if(item.status == 4)
         {
             holder.successimage.setImageResource(R.drawable.ic_success_56dp)
         }
@@ -53,17 +53,17 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         {
             holder.successimage.setImageResource(R.drawable.ic_failed_56dp)
         }
-        when(item.Vehicle)
+        when(item.vehicle)
         {
             1 -> holder.vehicleimage.setImageResource(R.drawable.ic_bike_w)
             2 -> holder.vehicleimage.setImageResource(R.drawable.ic_motor_w)
             3 -> holder.vehicleimage.setImageResource(R.drawable.ic_motor_w)
             4 -> holder.vehicleimage.setImageResource(R.drawable.ic_car_w)
         }
-        holder.location.text = item.Customer.address
+        holder.location.text = item.customer.address
 
-        if(item.CustomerDistanceInKilometers != null && item.WarehouseDistanceInKilometers != null) {
-            var distance = item.CustomerDistanceInKilometers + item.WarehouseDistanceInKilometers
+        if(item.customerDistanceInKilometers != null && item.warehouseDistanceInKilometers != null) {
+            var distance = item.customerDistanceInKilometers + item.warehouseDistanceInKilometers
            // distance = round(distance * 100) / 100
             holder.distance.text = String.format("%1f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
@@ -71,9 +71,9 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         {
             holder.distance.text = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
-        if(item.Price != null) {
-            val earnings = round(item.Price!! * 100) / 100
-            holder.earnings.text = String.format("%s%2f",cont?.resources?.getString(R.string.lbl_euro),earnings)
+        if(item.price != null) {
+            val earnings = round(item.price!! * 100) / 100
+            holder.earnings.text = String.format("%s%.2f",cont?.resources?.getString(R.string.lbl_euro),earnings)
         }
         else
         {

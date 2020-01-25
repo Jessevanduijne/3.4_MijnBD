@@ -68,8 +68,8 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     }
 
     private fun setLayout(){
-        lbl_delivering_address.text = delivery!!.Warehouse.address!!.substringBefore(',') // cut zip code off
-        lbl_delivering_zip.text = (delivery!!.Warehouse.postalCode + " " + delivery!!.Warehouse.place)
+        lbl_delivering_address.text = delivery!!.warehouse.address!!.substringBefore(',') // cut zip code off
+        lbl_delivering_zip.text = (delivery!!.warehouse.postalCode + " " + delivery!!.warehouse.place)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -78,10 +78,10 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     override fun onMapReady(googleMap: GoogleMap?) {
         this.googleMap = googleMap
-        val latLngOrigin = LatLng(delivery!!.Current.latitude!!, delivery!!.Current.longitude!!)
-        val latLngDestination = LatLng(delivery!!.Warehouse.latitude!!.toDouble(), delivery!!.Warehouse.longitude!!.toDouble())
+        val latLngOrigin = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
+        val latLngDestination = LatLng(delivery!!.warehouse.latitude!!.toDouble(), delivery!!.warehouse.longitude!!.toDouble())
         this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Your position"))
-        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.address))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.warehouse.address))
         this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 12.5f))
     }
 
@@ -89,11 +89,11 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Current.latitude.toString() + "," + delivery!!.Current.longitude.toString()
-        val endLatLong = delivery!!.Warehouse.latitude.toString() + "," + delivery!!.Warehouse.longitude.toString()
+        val startLatLong = delivery!!.current.latitude.toString() + "," + delivery!!.current.longitude.toString()
+        val endLatLong = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
 
         var travelmode = ""
-        when(delivery!!.Vehicle)
+        when(delivery!!.vehicle)
         {
             1 or 2 -> travelmode = "cycling" // bike / scooter
             3 or 4 -> travelmode = "driving" // motor / car
@@ -132,9 +132,9 @@ class RetrievingFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
     private fun updateDeliveryStatus(){
 
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(3, delivery!!.Warehouse.latitude!!, delivery!!.Warehouse.longitude!!) // status 3 = onderweg
+        val updateStatusBody = UpdateStatusParams(3, delivery!!.warehouse.latitude!!, delivery!!.warehouse.longitude!!) // status 3 = onderweg
 
-        apiService.deliverystatusPatch(decryptedToken, delivery!!.Id!!, updateStatusBody)
+        apiService.deliverystatusPatch(decryptedToken, delivery!!.id!!, updateStatusBody)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
                     if(response.isSuccessful && response.body() != null) {

@@ -38,7 +38,7 @@ interface ApiService {
     fun delivererPut(@Header("Authorization") auth: String, @Body params: UpdateUserParams): Call<ResponseBody>
 
     /************************Notifications******************************************/
-    @GET("notification") //Read Notification of authenticated Deliverer
+    @GET("notifications") //Read Notification of authenticated Deliverer
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
 
     @PATCH("notifications/{id}") //Update Notification of authenticated Deliverer

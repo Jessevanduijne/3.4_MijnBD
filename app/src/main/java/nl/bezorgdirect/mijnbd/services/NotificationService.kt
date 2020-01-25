@@ -10,16 +10,15 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
-import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.api.BDNotification
+import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.UnsupportedOperationException
-import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.api.Delivery
 
 
 class NotificationService: Service() {
@@ -73,7 +72,9 @@ class NotificationService: Service() {
                     if(response.isSuccessful && response.body() != null) {
                         mHandler.postDelayed(mRunnable, 20000)
                         val notification: BDNotification = response.body()!!
-                        getDeliveryInfoForNotification(notification.DeliveryId!!)
+                        println(response.body())
+                        println(notification)
+                        getDeliveryInfoForNotification(notification.id!!)
 
                         canReceiveNotification = false // Until response of user, receive no new notifications
                     }
@@ -114,7 +115,7 @@ class NotificationService: Service() {
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_header, getString(nl.bezorgdirect.mijnbd.R.string.lbl_new_assignment))
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext1, getString(nl.bezorgdirect.mijnbd.R.string.lbl_earn))
         contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext2, getString(nl.bezorgdirect.mijnbd.R.string.lbl_euro))
-        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext3, deliveryInfo.Price!!.toBigDecimal().setScale(2).toString())
+        contentView.setTextViewText(nl.bezorgdirect.mijnbd.R.id.notification_subtext3, deliveryInfo.price!!.toBigDecimal().setScale(2).toString())
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -66,11 +66,11 @@ class CancelToWarehouseFragment(val delivery: Delivery) : Fragment(), OnMapReady
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.Current.latitude.toString() + "," + delivery!!.Current.longitude.toString()
-        val endLatLong = delivery!!.Warehouse.latitude.toString() + "," + delivery!!.Warehouse.longitude.toString()
+        val startLatLong = delivery!!.current.latitude.toString() + "," + delivery!!.current.longitude.toString()
+        val endLatLong = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
 
         var travelmode = ""
-        when(delivery!!.Vehicle)
+        when(delivery!!.vehicle)
         {
             1 or 2 -> travelmode = "cycling" // bike / scooter
             3 or 4 -> travelmode = "driving" // motor / car
