@@ -88,7 +88,6 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
     private fun getRoute(){
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
-
         val startLatLong = currentLocation.latitude.toString() + "," + currentLocation.longitude.toString()
         val endLatLong = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
 

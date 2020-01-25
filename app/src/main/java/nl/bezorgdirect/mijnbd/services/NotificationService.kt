@@ -10,16 +10,15 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
-import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.api.BDNotification
+import nl.bezorgdirect.mijnbd.api.Delivery
+import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.UnsupportedOperationException
-import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
-import nl.bezorgdirect.mijnbd.api.Delivery
 
 
 class NotificationService: Service() {
@@ -73,7 +72,6 @@ class NotificationService: Service() {
                         mHandler.postDelayed(mRunnable, 20000)
                         val notification: BDNotification = response.body()!!
                         val delivery = notification.delivery
-
                         canReceiveNotification = false // Until response of user, receive no new notifications
                         showNotification(notification.delivery)
 

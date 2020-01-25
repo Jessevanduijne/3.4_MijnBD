@@ -25,8 +25,8 @@ data class Delivery (
     val customerId : String,
     val currentId : String,
     val deliveredAt : String,
-    val price : Int,
-    val tip : String,
+    val price : Float,
+    val tip : Float,
     val paymentMethod : Int,
     val status : Int,
     val warehouse : Location,
@@ -53,3 +53,4 @@ data class BDNotification (
 //                     val customerETA: String?, val customerId: String?, val currentId: String?, val deliveredAt: String?, val price: Float?, val tip: Float?,
 //                     val paymentMethod: Int?, val paymenMethodDisplayName: String?, val status: Int?, val statusDisplayName: String?, val warehouse: Location,
 //                     val customer: Location, val current: Location, val vehicleDisplayName: String)
+

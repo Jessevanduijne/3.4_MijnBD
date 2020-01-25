@@ -63,10 +63,6 @@ class MyBDHistory : Fragment() {
 
     }
 
-    companion object {
-        fun newInstance() = MyBDHistory()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

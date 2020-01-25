@@ -58,7 +58,7 @@ class MyBDInfo : AppCompatActivity() {
 
         val sharedPrefs = this.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         val avataruri = sharedPrefs.getString("avatar", "")
-        if(avataruri != "")
+        if(avataruri != "" && checkStoragePriv())
         {
             val uri = Uri.parse((avataruri))
             img_profile.setImageURI(uri)
@@ -75,6 +75,14 @@ class MyBDInfo : AppCompatActivity() {
         lbl_addressvar.text = String.format("%s", address)
 
         setButtons()
+    }
+    fun checkStoragePriv() :Boolean
+    {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            return true
+        }
+        return false
     }
     fun formatDate(input: String): String
     {
@@ -189,7 +197,7 @@ class MyBDInfo : AppCompatActivity() {
                 if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
                     PackageManager.PERMISSION_DENIED){
                     //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
                     //show popup to request runtime permission
                     requestPermissions(permissions, PERMISSION_CODE)
                 }
@@ -242,6 +250,7 @@ class MyBDInfo : AppCompatActivity() {
 
         })
     }
+
     private fun pickImageFromGallery() {
         //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)

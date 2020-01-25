@@ -148,9 +148,8 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val dateParts = dateString.split("-")
         dateString = dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0]
         val dateIndex = dates.indexOf(dateString)
-        dayPicker.value = dateIndex
-
         initValsPicker(dayPicker, dates.toTypedArray())
+        dayPicker.value = dateIndex
 
         toHourPicker.setOnValueChangedListener{ _, _, newVal ->
             toHourPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
@@ -283,8 +282,8 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val dates = ArrayList<String>()
         for (i in 0..62)
         {
-            day.add(Calendar.DATE, 1)
             dates.add(fromatter.format(day.time))
+            day.add(Calendar.DATE, 1)
         }
         return dates
     }

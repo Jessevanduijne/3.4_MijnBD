@@ -72,8 +72,8 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             holder.distance.text = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
         if(item.price != null) {
-            val earnings = round((item.price!! * 100).toDouble()) / 100
-            holder.earnings.text = String.format("%s%2f",cont?.resources?.getString(R.string.lbl_euro),earnings)
+            val earnings = round(item.price!! * 100) / 100
+            holder.earnings.text = String.format("%s%.2f",cont?.resources?.getString(R.string.lbl_euro),earnings)
         }
         else
         {

@@ -34,6 +34,7 @@ class NewAssignmentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getNotificationId { notification -> run {
                 getDeliveryById(notification.delivery.id!!) { delivery -> run {
+
                         setClickListeners(notification.id!!, delivery)
                         setLayoutData(delivery)
                         setTimer(notification, delivery)
@@ -166,7 +167,6 @@ class NewAssignmentFragment : Fragment() {
                 .enqueue(object: Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if(response.isSuccessful) {
-
                             timer!!.cancel()
                             val fragment = RetrievingFragment(delivery, location)
                             replaceFragment(R.id.delivery_fragment, fragment)
