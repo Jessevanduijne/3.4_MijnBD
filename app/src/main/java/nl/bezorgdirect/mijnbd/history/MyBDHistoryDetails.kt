@@ -27,7 +27,7 @@ class MyBDHistoryDetails : AppCompatActivity() {
         setVehicle()
         setStatus()
         lbl_date.text = getDate(intent.getStringExtra("customerDeliveredAt"))
-        lbl_time.text = getFromTo(intent.getStringExtra("customerDeliveredAt"), intent.getStringExtra("timeAccepted"))
+        lbl_time.text = getFromTo(intent.getStringExtra("timeAccepted"), intent.getStringExtra("customerDeliveredAt"))
         lbl_total_reward.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
         lbl_total_distance.text = getTotalDistance(intent.getFloatExtra("customerDistance", 0.0f), intent.getFloatExtra("warehouseDistance", 0.0f))
 

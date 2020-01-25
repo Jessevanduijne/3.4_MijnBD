@@ -64,7 +64,6 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         println(item)
         if(item.customerDistanceInKilometers != null && item.warehouseDistanceInKilometers != null) {
             val distance = item.customerDistanceInKilometers + item.warehouseDistanceInKilometers
-           // distance = round(distance * 100) / 100
             holder.distance.text = String.format("%.2f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
         }
         else
