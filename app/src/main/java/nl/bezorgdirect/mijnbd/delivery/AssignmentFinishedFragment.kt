@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_assignment_finished.*
+import kotlinx.android.synthetic.main.fragment_new_delivery.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.getApiService
@@ -25,7 +26,7 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class AssignmentFinishedFragment(val delivery: Delivery, val status: Int): Fragment(){
+class AssignmentFinishedFragment(val deliveryId: String): Fragment(){
     private val apiService = getApiService()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -35,15 +36,19 @@ class AssignmentFinishedFragment(val delivery: Delivery, val status: Int): Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setOnClickListeners()
-        setLayout()
-        hideSpinner(view)
+
+        getUpdatedDelivery { delivery -> run {
+            setOnClickListeners(delivery)
+            setLayout(delivery)
+            hideSpinner(view)
+        } }
+
     }
 
     @SuppressLint("SetTextI18n", "SimpleDateFormat")
-    fun setLayout(){
+    fun setLayout(delivery: Delivery){
 
-        if(status != 4) {  // 4 = Afgeleverd
+        if(delivery.status != 4) {  // 4 = Afgeleverd
             lbl_status_text.text = getString(R.string.lbl_delivery_cancelled)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -76,11 +81,22 @@ class AssignmentFinishedFragment(val delivery: Delivery, val status: Int): Fragm
             val formatter = SimpleDateFormat("HH:mm")
             formattedTime = formatter.format(parser.parse(delivery.dueDate!!)!!)
         }
-
         lbl_successful_datetime.text = formattedTime
+
+        when(delivery.vehicle) {
+            1 -> {
+                lbl_success_vehicle.text = getString(R.string.V1)
+            }
+            2 or 3 -> {
+                lbl_success_vehicle.text = getString(R.string.V2_3)
+            }
+            4 -> {
+                lbl_success_vehicle.text = getString(R.string.V4)
+            }
+        }
     }
 
-    private fun setOnClickListeners(){
+    private fun setOnClickListeners(delivery: Delivery){
         btn_check_details.setOnClickListener {
             val intent = Intent(activity, MyBDHistoryDetails::class.java)
 
@@ -127,6 +143,24 @@ class AssignmentFinishedFragment(val delivery: Delivery, val status: Int): Fragm
 
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Log.e("NOTIFICATION", "Something went wrong with the earnings call (getEarnings)")
+                }
+            })
+    }
+
+    private fun getUpdatedDelivery(callback: (Delivery) -> Unit) {
+        val decryptedToken = getDecryptedToken(context!!)
+        apiService.deliveryGetById(decryptedToken, deliveryId)
+            .enqueue(object: Callback<Delivery> {
+                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
+                    if(response.isSuccessful && response.body() != null) {
+                        val delivery = response.body()!!
+                        callback(delivery)
+                    }
+                    else Log.e("NOTIFICATION", "Delivery call unsuccessful or body empty")
+                }
+
+                override fun onFailure(call: Call<Delivery>, t: Throwable) {
+                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (getUpdatedDelivery)")
                 }
             })
     }

@@ -25,24 +25,21 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
 class NewAssignmentFragment : Fragment() {
 
     private val apiService = getApiService()
     private var timer: CountDownTimer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        getNotificationId { notification -> run {
-                getDeliveryById(notification.delivery.id!!) { delivery -> run {
-                        setClickListeners(notification.id!!, delivery)
-                        setLayoutData(delivery)
-                        setTimer(notification)
+        getNotification { notification -> run {
+                val delivery = notification.delivery
+                setClickListeners(notification.id, delivery)
+                setLayoutData(delivery)
+                setTimer(notification)
 
-                        setDistanceData(delivery) {
-                            layout_delivery_decision.visibility = View.VISIBLE
-                            hideSpinner((this.view!!))
-                        }
-                    }
+                setDistanceData(delivery) {
+                    layout_delivery_decision.visibility = View.VISIBLE
+                    hideSpinner(this.view!!)
                 }
             }
         }
@@ -72,16 +69,23 @@ class NewAssignmentFragment : Fragment() {
 
         lbl_new_assignment_earnings.text = delivery.price!!.toBigDecimal().setScale(2).toString()
         lbl_new_assignment_due_date.text = formattedTime
-        lbl_new_assignment_vehicle.text = delivery.vehicle.toString() // TODO: get display name
 
-        when(delivery.vehicle)
-        {
-            1 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_bike_y)
-            2 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
-            3 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
-            4 -> img_new_assignment_vehicle.setImageResource(R.drawable.ic_car_y)
+        when(delivery.vehicle) {
+            1 -> {
+                img_new_assignment_vehicle.setImageResource(R.drawable.ic_bike_y)
+                lbl_new_assignment_vehicle.text = getString(R.string.V1)
+            }
+            2 or 3 -> {
+                img_new_assignment_vehicle.setImageResource(R.drawable.ic_motor_y)
+                lbl_new_assignment_vehicle.text = getString(R.string.V2_3)
+            }
+            4 -> {
+                img_new_assignment_vehicle.setImageResource(R.drawable.ic_car_y)
+                lbl_new_assignment_vehicle.text = getString(R.string.V4)
+            }
         }
     }
+
 
     private fun setClickListeners(notificationId: String, delivery: Delivery){
         btn_delivery_accept.setOnClickListener {
@@ -94,25 +98,7 @@ class NewAssignmentFragment : Fragment() {
         }
     }
 
-    private fun getDeliveryById(deliveryId: String, callback: (Delivery) -> Unit) {
-        val decryptedToken = getDecryptedToken(context!!)
-        apiService.deliveryGetById(decryptedToken, deliveryId)
-            .enqueue(object: Callback<Delivery> {
-                override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
-                    if(response.isSuccessful && response.body() != null) {
-                        val delivery = response.body()!!
-                        callback(delivery)
-                    }
-                    else Log.e("NOTIFICATION", "delivery call unsuccessful or body empty")
-                }
-
-                override fun onFailure(call: Call<Delivery>, t: Throwable) {
-                    Log.e("NOTIFICATION", "Something went wrong with the delivery call (getDeliveryForNotification)")
-                }
-            })
-    }
-
-    private fun getNotificationId(callback: (BDNotification) -> Unit) {
+    private fun getNotification(callback: (BDNotification) -> Unit) {
         val decryptedToken = getDecryptedToken(context!!)
         apiService.notificationGet(decryptedToken)
             .enqueue(object: Callback<BDNotification> {

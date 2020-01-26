@@ -44,9 +44,7 @@ class AssignmentActivity : AppCompatActivity() {
         custom_toolbar_title.text = getString(string.title_assignment)
         setSupportActionBar(custom_toolbar)
         setFragment() // Sets the initial state
-
         hideNotification()
-
     }
 
     private fun hideNotification(){
