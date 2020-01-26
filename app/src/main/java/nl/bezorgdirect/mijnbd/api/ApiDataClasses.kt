@@ -9,7 +9,6 @@ data class User (val id: String?, var emailAddress: String?, val firstName: Stri
 data class Availability (val id: String?, val delivererId: String?, var date:  String?, var startTime: String?, var endTime: String?)
 
 data class Delivery (
-
     val id : String,
     val delivererId : String,
     val customerPhoneNumber : Int,
