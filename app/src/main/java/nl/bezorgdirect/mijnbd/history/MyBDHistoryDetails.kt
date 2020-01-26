@@ -31,7 +31,7 @@ class MyBDHistoryDetails : AppCompatActivity() {
         lbl_total_reward.text = getTotalReward(intent.getFloatExtra("price", -1.0f), intent.getFloatExtra("tip", -1.0f))
         lbl_total_distance.text = getTotalDistance(intent.getFloatExtra("customerDistance", 0.0f), intent.getFloatExtra("warehouseDistance", 0.0f))
 
-        lbl_ready_warehouse_time.text = getTime(intent.getStringExtra("wareHouseReady"))
+        lbl_order_submitted_time.text = getTime(intent.getStringExtra("orderSubmitted"))
         lbl_accepted_time.text = getTime(intent.getStringExtra("timeAccepted"))
 
         lbl_warehouse_address.text = checkNullString(intent.getStringExtra("warehouseAddress"))
@@ -59,14 +59,37 @@ class MyBDHistoryDetails : AppCompatActivity() {
     {
         when(intent.getIntExtra("status", -1))
         {
-            0 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.red))
-            1 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            2 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            3 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
-            4 -> lbl_status.setTextColor(ContextCompat.getColor(this, R.color.lightgreen))
+            0 ->
+            {
+                lbl_status.setTextColor(ContextCompat.getColor(this, R.color.red))
+                lbl_status.text = resources.getString(R.string.stat_0)
+                lbl_customer_status.text = resources.getString(R.string.stat_0)
+            }
+            1 ->
+            {
+                lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                lbl_status.text = resources.getString(R.string.stat_1)
+                lbl_customer_status.text = resources.getString(R.string.stat_1)
+            }
+            2 ->
+            {
+                lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                lbl_status.text = resources.getString(R.string.stat_2)
+                lbl_customer_status.text = resources.getString(R.string.stat_2)
+            }
+            3 ->
+            {
+                lbl_status.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+                lbl_status.text = resources.getString(R.string.stat_3)
+                lbl_customer_status.text = resources.getString(R.string.stat_3)
+            }
+            4 ->
+            {
+                lbl_status.setTextColor(ContextCompat.getColor(this, R.color.lightgreen))
+                lbl_status.text = resources.getString(R.string.stat_4)
+                lbl_customer_status.text = resources.getString(R.string.stat_4)
+            }
         }
-        lbl_status.text = intent.getStringExtra("statusDisplayName")
-        lbl_customer_status.text = intent.getStringExtra("statusDisplayName")
     }
     fun setVehicle()
     {
