@@ -41,9 +41,9 @@ class MyBDHistory : Fragment() {
             println("Pos "+position)
             println(deliveries[position])
 
-            intent.putExtra("orderSubmitted", deliveries[position].warehousePickUpAt)//needs to be added to api is in ntoifcations
+            intent.putExtra("orderSubmitted", deliveries[position].createdAt)
             //accepted
-            intent.putExtra("timeAccepted",deliveries[position].warehousePickUpAt)//needs to be added to api warhouse pickup for now
+            intent.putExtra("timeAccepted",deliveries[position].acceptedAt)
             //warehouse
             intent.putExtra("warehouseAddress",deliveries[position].warehouse.address)
             intent.putExtra("warehouseDistance",deliveries[position].warehouseDistanceInKilometers)

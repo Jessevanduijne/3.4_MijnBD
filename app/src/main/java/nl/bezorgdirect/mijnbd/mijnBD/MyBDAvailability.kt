@@ -246,11 +246,10 @@ class MyBDAvailability : AppCompatActivity() {
                 }else if (response.isSuccessful && response.body() != null) {
                     changed = 1
                     val values = response.body()!!
-                    val fromatter = SimpleDateFormat("yyyy-MM-dd")
-                    val today = Date()
                     availabilities.addAll(values)
                     filterAndSortAvailabilities()
-                    list_availabilities.adapter!!.notifyDataSetChanged()
+                    println("sort")
+                    list_availabilities.adapter = AvailabilityAdapter(availabilities)
                     Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     hideSpinner(root)
                     availability_empty.visibility = View.GONE
@@ -331,18 +330,11 @@ class MyBDAvailability : AppCompatActivity() {
 
             val fullDate: Date = inputFormat.parse(dates[dayPicker.value])
             val date = outputFormat.format(fullDate)
-            if("$fromHour:$fromMin" != "$toHour:$toMin") {
-                dialog.dismiss()
 
+            if(checkAvailability(fromHour, fromMin, toHour, toMin, date)) {
+                dialog.dismiss()
                 params.add(AddAvailabilityParams(date, "$fromHour:$fromMin", "$toHour:$toMin"))
                 postAvailabilities(cont!!, params)
-            }
-            else
-            {
-                Toast.makeText(
-                    this, "Start en eind tijd mogen niet hetzelfde zijn.",
-                    Toast.LENGTH_LONG
-                ).show()
             }
 
         }
@@ -354,6 +346,34 @@ class MyBDAvailability : AppCompatActivity() {
         dialog.show()
     }
 
+    fun checkAvailability(fromHour: String, fromMin :String, toHour: String, toMin :String, date:String) : Boolean
+    {
+        if("$fromHour:$fromMin" == "$toHour:$toMin") {
+            Toast.makeText(
+                this, "Start en eind tijd mogen niet hetzelfde zijn.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(availabilities.any {it.date == date && it.startTime!! == "$fromHour:$fromMin:00" && it.endTime!! == "$toHour:$toMin:00"})
+        {
+            Toast.makeText(
+                this, "U heeft deze beschikbaarheid al opgegeven",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(availabilities.any {it.date == date && it.startTime!! < "$toHour:$toMin:00" && it.endTime!! > "$fromHour:$fromMin:00"})
+        {
+            Toast.makeText(
+                this, "Uw beschikbaarheid overlapt met een eerder opgegeven beschikbaarheid",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else
+        {
+            return true
+        }
+        return false
+    }
     fun initValsPicker(picker: NumberPicker, values: Array<String>)
     {
         picker.displayedValues = null
