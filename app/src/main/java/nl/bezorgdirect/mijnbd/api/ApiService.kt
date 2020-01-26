@@ -13,6 +13,9 @@ interface ApiService {
     @POST("logout") //Logout the authenticated Deliverer
     fun logoutPost(@Header("Authorization") auth: String): Call<Void>
 
+
+
+
     /************************availablities******************************************/
     @POST("availabilities") //Availabilities will be pushed to authenticated Deliverer's Availabilities array
     fun availablitiesPost(@Header("Authorization") auth: String, @Body availabilityPost: ArrayList<AddAvailabilityParams>): Call<ArrayList<Availability>>
@@ -26,6 +29,9 @@ interface ApiService {
     @DELETE("availabilities/{id}") //Delete Availability with {Id} of authenticated Deliverer
     fun availablitiesDelete(@Path("id") id: String, @Header("Authorization") auth: String): Call<ResponseBody>
 
+
+
+
     /************************Deliverers******************************************/
     @GET("me") //Read authenticated Deliverer
     fun delivererGet(@Header("Authorization") auth: String): Call<User>
@@ -37,6 +43,9 @@ interface ApiService {
     @PUT("me") //Update authenticated Deliverer
     fun delivererPut(@Header("Authorization") auth: String, @Body params: UpdateUserParams): Call<ResponseBody>
 
+
+
+
     /************************Notifications******************************************/
     @GET("notifications") //Read Notification of authenticated Deliverer
     fun notificationGet(@Header("Authorization") auth: String): Call<BDNotification>
@@ -46,9 +55,15 @@ interface ApiService {
                           @Path("id") id: String,
                           @Body params: UpdateNotificationParams): Call<ResponseBody>
 
+
+
+
     /************************Locations******************************************/
     @GET("locations/warehouses") //List Warehouses
     fun locationGet(@Header("Authorization") auth: String): Call<ArrayList<Location>>
+
+
+
 
     /************************Deliveries******************************************/
     @GET("deliveries/current") //Read Delivery of authenticated Deliverer

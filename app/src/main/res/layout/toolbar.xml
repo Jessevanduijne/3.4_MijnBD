@@ -19,7 +19,8 @@
             android:gravity="center"
             android:textSize="@dimen/text_size_h1"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark" />
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginEnd="?android:attr/actionBarSize" />
     </androidx.appcompat.widget.Toolbar>
 
 </LinearLayout>
