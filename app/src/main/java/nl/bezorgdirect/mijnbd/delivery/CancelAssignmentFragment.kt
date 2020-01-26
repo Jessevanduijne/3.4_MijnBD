@@ -76,7 +76,7 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                val fragment = AssignmentFinishedFragment(delivery)
+                                val fragment = AssignmentFinishedFragment(delivery, 0)
                                 replaceFragment(R.id.delivery_fragment, fragment)
                             }
                         }

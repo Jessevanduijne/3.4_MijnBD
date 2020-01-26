@@ -61,7 +61,12 @@ class MyBDInfo : AppCompatActivity() {
         if(avataruri != "" && checkStoragePriv())
         {
             val uri = Uri.parse((avataruri))
-            img_profile.setImageURI(uri)
+            try {
+                img_profile.setImageURI(uri)
+            }
+            catch (e: Exception) {
+                img_profile!!.setImageResource(R.drawable.ic_logo_y)
+            }
         }
         if(img_profile!!.drawable == null)
         {

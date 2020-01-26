@@ -36,7 +36,7 @@ class NewAssignmentFragment : Fragment() {
                 getDeliveryById(notification.delivery.id!!) { delivery -> run {
                         setClickListeners(notification.id!!, delivery)
                         setLayoutData(delivery)
-                        setTimer(notification, delivery)
+                        setTimer(notification)
 
                         setDistanceData(delivery) {
                             layout_delivery_decision.visibility = View.VISIBLE
@@ -249,7 +249,7 @@ class NewAssignmentFragment : Fragment() {
     }
 
     @SuppressLint("SimpleDateFormat")
-    private fun setTimer(notification: BDNotification, delivery: Delivery){
+    private fun setTimer(notification: BDNotification){
 
         val currentTime = Calendar.getInstance().time
         val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.expiredAt!!)

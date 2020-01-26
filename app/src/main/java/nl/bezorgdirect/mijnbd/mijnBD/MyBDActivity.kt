@@ -27,6 +27,7 @@ import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -104,14 +105,17 @@ class MyBDActivity : Fragment() {
     }
     fun setAvatar()
     {
-        println("hoi")
-        println(activity)
         val sharedPrefs = activity!!.applicationContext.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         val avataruri = sharedPrefs.getString("avatar", "")
         if(avataruri != "" && checkStoragePriv())
         {
-            val uri = Uri.parse((avataruri))
-            img_profile!!.setImageURI(uri)
+            try {
+                val uri = Uri.parse((avataruri))
+                img_profile!!.setImageURI(uri)
+            }
+            catch (e: Exception) {
+                img_profile!!.setImageResource(R.drawable.ic_logo_y)
+            }
         }
         if(img_profile!!.drawable == null)
         {
