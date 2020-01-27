@@ -149,16 +149,16 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         initValsPicker(dayPicker, dates.toTypedArray())
         dayPicker.value = dateIndex
 
-        toHourPicker.setOnValueChangedListener{ _, _, newVal ->
+        toHourPicker.setOnValueChangedListener{ _, _, _ ->
             toHourPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
         }
-        fromHourPicker.setOnValueChangedListener{ _, _, newVal ->
+        fromHourPicker.setOnValueChangedListener{ _, _, _ ->
             fromHourPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
         }
-        fromMinPicker.setOnValueChangedListener{ _, _, newVal ->
+        fromMinPicker.setOnValueChangedListener{ _, _, _ ->
             fromMinPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
         }
-        toMinPicker.setOnValueChangedListener{ _, _, newVal ->
+        toMinPicker.setOnValueChangedListener{ _, _, _ ->
             toMinPickerChanged(fromHourPicker, toHourPicker, fromMinPicker, toMinPicker, hours, mins)
         }
 

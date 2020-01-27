@@ -265,7 +265,7 @@ class MyBDFragment : Fragment() {
         list_availability_time!!.removeAllViews()
         list_availability_date!!.removeAllViews()
         val week = getWeek()
-        var count = 0
+        var count :Int
         for (day in week) {
 
             count = 0
@@ -414,8 +414,8 @@ class MyBDFragment : Fragment() {
         {
             if (resultCode == Activity.RESULT_OK)
             {
-                user.emailAddress = data!!.getStringExtra("email")
-                user.phoneNumber = data!!.getStringExtra("phonenumber")
+                user.emailAddress = data?.getStringExtra("email")
+                user.phoneNumber = data?.getStringExtra("phonenumber")
                 setAvatar()
             }
         }
@@ -434,8 +434,8 @@ class MyBDFragment : Fragment() {
         else if(requestCode == 3) //meansoftransport
         {
             if (resultCode == Activity.RESULT_OK) {
-                val vehicleval = data!!.getIntExtra("vehicle", -1)
-                user.range = data!!.getIntExtra("range", -1)
+                val vehicleval = data?.getIntExtra("vehicle", -1)
+                user.range = data?.getIntExtra("range", -1)
                 user.vehicle = vehicleval
                 when(vehicleval)
                 {
