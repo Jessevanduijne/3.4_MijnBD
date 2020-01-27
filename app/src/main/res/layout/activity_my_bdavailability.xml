@@ -43,7 +43,7 @@
             android:textAlignment="center"
             android:textStyle="bold"
             android:textSize="21sp"
-            android:text="Geen beschikbaarheid opgegeven, druk op de witte plus knop!"/>
+            android:text="@string/availability_empty"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/availability_error"
@@ -66,14 +66,14 @@
             android:textAlignment="center"
             android:textStyle="bold"
             android:textSize="21sp"
-            android:text="Oeps er ging iets mis bij het ophalen van uw beschikbaarheid :("/>
+            android:text="@string/showerror_500"/>
         <Button
             android:id="@+id/btn_retry_availability"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
             android:background="@drawable/rounded_gold_btn"
-            android:text="Probeer opnieuw"/>
+            android:text="@string/try_again"/>
 
     </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Datum"
+                android:text="@string/lbl_date"
                 android:paddingStart="15dp"
                 android:padding="5dp"
                 android:textColor="@color/white"
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Starttijd"
+                android:text="@string/lbl_starttime"
                 android:padding="5dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
@@ -117,9 +117,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingStart="0dp"
                 android:padding="5dp"
-                android:text="Eindtijd"
+                android:text="@string/lbl_endtime"
                 android:textAlignment="textStart"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
@@ -190,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Date"
+                    android:text="@string/lbl_date"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_h3" />
 
@@ -199,7 +198,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Starttime"
+                    android:text="@string/lbl_starttime"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_h3" />
 
@@ -209,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="20dp"
-                    android:text="Endtime"
+                    android:text="@string/lbl_endtime"
                     android:textColor="@color/white"
                     android:textSize="@dimen/text_size_h3" />
             </LinearLayout>
@@ -255,14 +254,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="cancel" />
-
+                android:text="@string/cancel" />
             <Button
                 android:id="@+id/btn_submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="submit" />
+                android:text="@string/confirm" />
         </LinearLayout>
 
     </LinearLayout>

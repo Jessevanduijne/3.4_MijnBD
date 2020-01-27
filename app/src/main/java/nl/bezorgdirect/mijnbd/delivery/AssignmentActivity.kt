@@ -23,7 +23,7 @@ import nl.bezorgdirect.mijnbd.R.*
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.*
 import nl.bezorgdirect.mijnbd.history.MyBDHistory
-import nl.bezorgdirect.mijnbd.mijnBD.MyBDActivity
+import nl.bezorgdirect.mijnbd.mijnBD.MyBDFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -106,7 +106,7 @@ class AssignmentActivity : AppCompatActivity() {
                 }
                 id.action_deliveries -> setFragment()
                 id.action_mybd -> {
-                    val myBD = MyBDActivity()
+                    val myBD = MyBDFragment()
                     supportFragmentManager.beginTransaction().replace(id.content, myBD).commit()
                 }
             }

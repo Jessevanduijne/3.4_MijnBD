@@ -30,7 +30,7 @@
             android:id="@+id/lbl_day_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="@string/lbl_date"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/colorAccent" />
@@ -48,7 +48,7 @@
             android:id="@+id/lbl_from_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="From"
+            android:text="@string/from"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/colorAccent" />
@@ -63,14 +63,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:text="Hour"
+                android:text="@string/lbl_hours_full"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="Minutes"
+                android:text="@string/lbl_minutes_full"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
@@ -107,7 +107,7 @@
             android:id="@+id/lbl_to_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="To"
+            android:text="@string/to"
             android:textStyle="bold"
             android:textSize="18sp"
             android:textColor="@color/colorAccent" />
@@ -122,14 +122,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:text="Hour"
+                android:text="@string/lbl_hours_full"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:text="Minutes"
+                android:text="@string/lbl_minutes_full"
                 android:textColor="@color/colorAccent"
                 android:textSize="14sp"
                 android:layout_weight="1"/>
@@ -169,7 +169,8 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Bevestig"
+                android:focusable="true"
+                android:text="@string/confirm"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"/>
@@ -179,7 +180,8 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Annuleer"
+                android:focusable="true"
+                android:text="@string/cancel"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </LinearLayout>

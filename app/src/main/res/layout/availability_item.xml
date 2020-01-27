@@ -19,10 +19,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="00-00"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="20dp" />
+        android:textSize="20sp" />
     <View
         android:layout_width="1dp"
         android:layout_height="fill_parent"
@@ -33,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="00:00"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp" />
@@ -47,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="00:00"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp" />

@@ -38,7 +38,6 @@ private lateinit var linearLayoutManager: LinearLayoutManager
 class MyBDAvailability : AppCompatActivity() {
 
     private var availabilities: ArrayList<Availability> = ArrayList()
-    private var cont :Context? = null
     private var changed : Int = 1
     private var activeCall = false
 
@@ -52,8 +51,6 @@ class MyBDAvailability : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-        cont = this
         addAvailabilityLayout.visibility = View.GONE
 
         var listitems = AvailabilityAdapter(availabilities)
@@ -124,11 +121,7 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.E500),
                         Toast.LENGTH_LONG
                     ).show()
-                    swp_availability.isRefreshing = false
-                    hideSpinner(root)
-                    availability_empty.visibility = View.GONE
-                    availability_error.visibility = View.VISIBLE
-                    availability_content.visibility = View.GONE
+                    setErrorVisibility(root)
                     activeCall = false
                 }
                 else if (response.code() == 401) {
@@ -137,19 +130,11 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
-                    swp_availability.isRefreshing = false
-                    hideSpinner(root)
-                    availability_empty.visibility = View.GONE
-                    availability_error.visibility = View.VISIBLE
-                    availability_content.visibility = View.GONE
+                    setErrorVisibility(root)
                     activeCall = false
                 }
                 else if (response.code() == 424) {
-                    availability_empty.visibility = View.VISIBLE
-                    availability_error.visibility = View.GONE
-                    availability_content.visibility = View.GONE
-                    activeCall = false
-                    hideSpinner(root)
+                    setEmptyVisibility(root)
                 }else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
 
@@ -158,26 +143,15 @@ class MyBDAvailability : AppCompatActivity() {
                         if(values[0] != null)
                         {
                             availabilities = values
-                            println("hierzo")
-                            println(availabilities)
                             filterAndSortAvailabilities()
                             list_availabilities.adapter = AvailabilityAdapter(availabilities)
                         }
                     }
-                    swp_availability.isRefreshing = false
-                    hideSpinner(root)
-                    availability_empty.visibility = View.GONE
-                    availability_error.visibility = View.GONE
-                    availability_content.visibility = View.VISIBLE
+                    setSuccessVisibility(root)
                     activeCall = false
-                    //list_availabilities.adapter?.notifyDataSetChanged()
                 }
                 else{
-                    swp_availability.isRefreshing = false
-                    hideSpinner(root)
-                    availability_empty.visibility = View.GONE
-                    availability_error.visibility = View.VISIBLE
-                    availability_content.visibility = View.GONE
+                    setErrorVisibility(root)
                     activeCall = false
                 }
 
@@ -188,16 +162,36 @@ class MyBDAvailability : AppCompatActivity() {
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
                 ).show()
-                swp_availability.isRefreshing = false
-                hideSpinner(root)
-                availability_empty.visibility = View.GONE
-                availability_error.visibility = View.VISIBLE
-                availability_content.visibility = View.GONE
+                setErrorVisibility(root)
                 activeCall = false
                 return
             }
 
         })
+    }
+    fun setSuccessVisibility(root :View)
+    {
+        swp_availability.isRefreshing = false
+        hideSpinner(root)
+        availability_empty.visibility = View.GONE
+        availability_error.visibility = View.GONE
+        availability_content.visibility = View.VISIBLE
+    }
+    fun setEmptyVisibility(root :View)
+    {
+        availability_empty.visibility = View.VISIBLE
+        availability_error.visibility = View.GONE
+        availability_content.visibility = View.GONE
+        activeCall = false
+        hideSpinner(root)
+    }
+    fun setErrorVisibility(root: View)
+    {
+        swp_availability.isRefreshing = false
+        hideSpinner(root)
+        availability_empty.visibility = View.GONE
+        availability_error.visibility = View.VISIBLE
+        availability_content.visibility = View.GONE
     }
 
     private fun postAvailabilities(context: Context, params: ArrayList<AddAvailabilityParams>){
@@ -237,21 +231,14 @@ class MyBDAvailability : AppCompatActivity() {
                         resources.getString(R.string.wrongcreds),
                         Toast.LENGTH_LONG
                     ).show()
-                    availability_empty.visibility = View.VISIBLE
-                    availability_error.visibility = View.GONE
-                    availability_content.visibility = View.GONE
-                    hideSpinner(root)
+                    setEmptyVisibility(root)
                 }else if (response.isSuccessful && response.body() != null) {
                     changed = 1
                     val values = response.body()!!
                     availabilities.addAll(values)
                     filterAndSortAvailabilities()
-                    println("sort")
                     list_availabilities.adapter = AvailabilityAdapter(availabilities)
-                    hideSpinner(root)
-                    availability_empty.visibility = View.GONE
-                    availability_error.visibility = View.GONE
-                    availability_content.visibility = View.VISIBLE
+                    setSuccessVisibility(root)
                 }
             }
 
@@ -330,7 +317,7 @@ class MyBDAvailability : AppCompatActivity() {
             if(checkAvailability(fromHour, fromMin, toHour, toMin, date)) {
                 dialog.dismiss()
                 params.add(AddAvailabilityParams(date, "$fromHour:$fromMin", "$toHour:$toMin"))
-                postAvailabilities(cont!!, params)
+                postAvailabilities(applicationContext, params)
             }
 
         }
