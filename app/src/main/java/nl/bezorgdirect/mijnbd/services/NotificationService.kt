@@ -14,6 +14,7 @@ import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.api.BDNotification
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.delivery.AssignmentActivity
+import nl.bezorgdirect.mijnbd.helpers.LocationHelper
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import retrofit2.Call
@@ -25,8 +26,8 @@ class NotificationService: Service() {
 
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    lateinit var notificationManager: NotificationManager
-    lateinit var notificationChannel: NotificationChannel
+    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationChannel: NotificationChannel
     lateinit var builder: Notification.Builder
     private val channelId = "nl.bezorgdirect.mijnbd"
     private val apiService = getApiService()
@@ -121,7 +122,8 @@ class NotificationService: Service() {
                 .setAutoCancel(true)
         }
 
-        notificationManager.notify(0, builder.build()) // Todo: what does this id do?
+
+        notificationManager.notify(0, builder.build())
 
         val assignmentIntent = Intent(this.applicationContext, AssignmentActivity::class.java)
         assignmentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

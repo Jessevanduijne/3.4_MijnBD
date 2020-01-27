@@ -40,8 +40,9 @@ class LocationHelper(activity: Activity) {
             if (isLocationEnabled()) {
                 fusedLocationClient.lastLocation.addOnCompleteListener(activity) { task ->
                     var location: Location? = task.result
-                    if (location == null) {
-                        requestNewLocationData { callback(LatLng(lat, long))}
+                    if (location == null || location.latitude < 50 || location.latitude > 54 || location.longitude < 2 || location.longitude > 8) {
+                        requestNewLocationData ()
+                        callback(LatLng(lat, long))
                     } else {
                         callback(LatLng(location.latitude, location.longitude))
                     }
@@ -64,7 +65,7 @@ class LocationHelper(activity: Activity) {
     }
 
     @SuppressLint("MissingPermission")
-    private fun requestNewLocationData(listener: () -> Unit) {
+    private fun requestNewLocationData() {
         var mLocationRequest = LocationRequest()
         mLocationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         mLocationRequest.interval = 0

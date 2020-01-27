@@ -154,7 +154,7 @@ class NewAssignmentFragment : Fragment() {
                 .enqueue(object: Callback<Void> {
                     override fun onResponse(call: Call<Void>, response: Response<Void>) {
                         if(response.isSuccessful) {
-                            timer!!.cancel()
+                            timer?.cancel()
                             val fragment = RetrievingFragment(delivery, location)
                             replaceFragment(R.id.delivery_fragment, fragment)
                         }
@@ -241,7 +241,7 @@ class NewAssignmentFragment : Fragment() {
         val expirationTime = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").parse(notification.expiredAt!!)
         val diffInMilliSec = (expirationTime!!.time - currentTime.time)
         val apiUpdateToExpiredTime = 2
-        val maxResponseTimeMilliSec = (10 * 60 * 1000) + apiUpdateToExpiredTime
+        val maxResponseTimeMilliSec = (10 * 60 * 1000)
         val minute = 60 * 1000
 
         timer = object: CountDownTimer(diffInMilliSec, 1000) {
@@ -255,10 +255,12 @@ class NewAssignmentFragment : Fragment() {
                     lbl_new_assignment_seconds_to_accept.text = secondsLeft.toString()
                 }
 
-                if(percentageTimeLeft < minute) {
-                    pgb_decision_timer.progress = Color.RED
+                if(pgb_decision_timer != null) {
+                    if(percentageTimeLeft < minute) {
+                        pgb_decision_timer.progress = Color.RED
+                    }
+                    pgb_decision_timer.progress = percentageTimeLeft.toInt()
                 }
-                pgb_decision_timer.progress = percentageTimeLeft.toInt()
             }
 
             override fun onFinish() {
@@ -267,6 +269,18 @@ class NewAssignmentFragment : Fragment() {
                 replaceFragment(R.id.delivery_fragment, fragment)
             }
         }
-        timer!!.start()
+        timer?.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 }
