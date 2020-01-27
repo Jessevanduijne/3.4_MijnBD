@@ -11,13 +11,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.fragment_assignment_finished.*
-import kotlinx.android.synthetic.main.fragment_new_delivery.*
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.Delivery
-import nl.bezorgdirect.mijnbd.helpers.getApiService
-import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
-import nl.bezorgdirect.mijnbd.helpers.hideSpinner
-import nl.bezorgdirect.mijnbd.helpers.replaceFragment
+import nl.bezorgdirect.mijnbd.helpers.*
 import nl.bezorgdirect.mijnbd.history.MyBDHistoryDetails
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,11 +32,11 @@ class AssignmentFinishedFragment(val deliveryId: String): Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        showLoadingOverlay(view)
         getUpdatedDelivery { delivery -> run {
             setOnClickListeners(delivery)
             setLayout(delivery)
-            hideSpinner(view)
+            showContent(view)
         } }
 
     }

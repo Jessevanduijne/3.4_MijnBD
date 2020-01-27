@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_new_delivery.*
@@ -44,7 +45,8 @@ class NewAssignmentFragment : Fragment() {
                 setTimer(notification)
 
                 setDistanceData(delivery) {
-                    layout_delivery_decision.visibility = View.VISIBLE
+                    val content: LinearLayout = activity!!.findViewById(R.id.layout_delivery_decision)
+                    content.visibility = View.VISIBLE
                     hideSpinner(this.view!!)
                 }
             }
@@ -52,11 +54,6 @@ class NewAssignmentFragment : Fragment() {
         val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
         custom_toolbar_title.text = getString(R.string.title_assignment)
         return inflater.inflate(R.layout.fragment_new_delivery, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        layout_delivery_decision.visibility = View.INVISIBLE
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
