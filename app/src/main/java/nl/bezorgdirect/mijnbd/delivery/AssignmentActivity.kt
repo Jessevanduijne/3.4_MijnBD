@@ -62,7 +62,7 @@ class AssignmentActivity : AppCompatActivity() {
         apiService.deliveryGetCurrent(decryptedToken)
             .enqueue(object: Callback<Delivery> {
                 override fun onResponse(call: Call<Delivery>, response: Response<Delivery>) {
-                    if(response.isSuccessful && response.body() != null) {
+                    if(response.isSuccessful && response.body() != null && response.body()!!.current.latitude != null) {
                         val delivery = response.body()
                         val initialLocation = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
                         canReceiveNotification = false
