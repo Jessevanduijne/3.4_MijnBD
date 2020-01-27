@@ -52,7 +52,7 @@ class MyBDActivity : Fragment() {
     var list_availability_date :LinearLayout? = null
     var content :LinearLayout? = null
     var rview: View? = null
-    var act: Activity? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -165,7 +165,6 @@ class MyBDActivity : Fragment() {
                 } else if (response.isSuccessful && response.body() != null) {
                     val values = response.body()!!
                     user = values
-                    print(user)
                     val lbl_name: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_name)
                     val lbl_vehicle: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_mosvar)
                     val lbl_pd: TextView = rview!!.findViewById(nl.bezorgdirect.mijnbd.R.id.lbl_payoutpdvar)
@@ -178,16 +177,9 @@ class MyBDActivity : Fragment() {
                         4 -> vehicle!!.text = resources.getString(R.string.V4)
                         else -> vehicle!!.text = resources.getString(R.string.unknown)
                     }
-                    lbl_name.text = values.firstName+" "+values.lastName
-                    lbl_pd.text = values.fare.toString()
-                    var total = values.totalEarnings
-                    if(total == null)
-                    {
-                        lbl_total_earnings.text = "0"
-                    }
-                    else {
-                        lbl_total_earnings.text = "$total"
-                    }
+                    lbl_name.text = String.format("%s %s",values.firstName,values.lastName)
+                    lbl_pd.text = String.format("%.2f", values.fare)
+                    lbl_total_earnings.text = String.format("%.2f", values.totalEarnings)
                     busy--
                     doneLoading()
                 }

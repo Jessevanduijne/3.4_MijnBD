@@ -144,7 +144,6 @@
                             android:id="@+id/lbl_payoutpdvar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="ppd"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp" />
@@ -153,7 +152,6 @@
                             android:id="@+id/lbl_payouttotalvar"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="ptotal"
                             android:textAlignment="center"
                             android:textColor="@color/colorPrimary"
                             android:textSize="18sp" />
