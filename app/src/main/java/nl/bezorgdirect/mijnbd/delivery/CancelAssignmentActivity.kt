@@ -66,7 +66,7 @@ class CancelAssignmentActivity :  AppCompatActivity() {
 
         // Location on time of cancelling assignment:
         locationHelper.getLastLocation { location -> run {
-            val updateStatusBody = UpdateStatusParams(0, location.latitude, location.longitude) // status 0 = afgemeld
+            val updateStatusBody = UpdateStatusParams(0, location.latitude, location.longitude, null, null) // status 0 = afgemeld
 
             apiService.deliverystatusPatch(decryptedToken, deliveryId, updateStatusBody)
                 .enqueue(object: Callback<Void> {

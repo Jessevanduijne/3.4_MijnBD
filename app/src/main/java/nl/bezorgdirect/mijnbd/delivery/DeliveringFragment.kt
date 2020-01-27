@@ -148,7 +148,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
     private fun updateDeliveryStatus(){
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(4, delivery!!.customer.latitude!!, delivery!!.customer.longitude!!) // status 4 = afgeleverd
+        val updateStatusBody = UpdateStatusParams(4, delivery!!.customer.latitude!!, delivery!!.customer.longitude!!, null, null) // status 4 = afgeleverd
 
         apiService.deliverystatusPatch(decryptedToken, delivery.id, updateStatusBody)
             .enqueue(object: Callback<Void> {

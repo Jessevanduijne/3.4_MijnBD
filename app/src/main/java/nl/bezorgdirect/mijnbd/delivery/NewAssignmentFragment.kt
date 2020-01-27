@@ -33,6 +33,8 @@ class NewAssignmentFragment : Fragment() {
 
     private val apiService = getApiService()
     private var timer: CountDownTimer? = null
+    private var warehouseDistance = ""
+    private var clientDistance = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         getNotification { notification -> run {
@@ -97,7 +99,7 @@ class NewAssignmentFragment : Fragment() {
         }
 
         btn_delivery_refuse.setOnClickListener{
-           // startNotificationService()
+            canReceiveNotification = true
             confirmAssignment(false, notificationId, delivery)
         }
     }
@@ -136,6 +138,7 @@ class NewAssignmentFragment : Fragment() {
                             val fragment = NoAssignmentFragment()
                             replaceFragment(R.id.content, fragment)
                             canReceiveNotification = true
+                            startNotificationService()
                         }
                     }
                     else Log.e("NEW_ASSIGNMENT", "Confirming assignment response unsuccessful")
@@ -153,7 +156,7 @@ class NewAssignmentFragment : Fragment() {
 
         // Location on time of accepting assignment:
         locationHelper.getLastLocation { location -> run {
-            val updateStatusBody = UpdateStatusParams(2, location.latitude, location.longitude) // status 2 = bevestigd
+            val updateStatusBody = UpdateStatusParams(2, location.latitude, location.longitude, warehouseDistance.toFloat(), clientDistance.toFloat()) // status 2 = bevestigd
 
             apiService.deliverystatusPatch(decryptedToken, delivery.id!!, updateStatusBody)
                 .enqueue(object: Callback<Void> {
@@ -210,6 +213,8 @@ class NewAssignmentFragment : Fragment() {
                         if(callCount == 2) {
                             callback()
                         }
+
+                        warehouseDistance = toWarehouseDistance
                     }
                 }
                 override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {
@@ -232,11 +237,12 @@ class NewAssignmentFragment : Fragment() {
                             lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
                         }
 
-
                         callCount++
                         if(callCount == 2) {
                             callback()
                         }
+
+                        clientDistance = toClientDistance
                     }
                 }
                 override fun onFailure(call: Call<GoogleDistance>, t: Throwable) {

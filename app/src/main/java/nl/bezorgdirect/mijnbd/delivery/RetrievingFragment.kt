@@ -140,7 +140,7 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
     private fun updateDeliveryStatus(){
 
         val decryptedToken = getDecryptedToken(this.activity!!)
-        val updateStatusBody = UpdateStatusParams(3, delivery!!.warehouse.latitude!!, delivery!!.warehouse.longitude!!) // status 3 = onderweg
+        val updateStatusBody = UpdateStatusParams(3, delivery!!.warehouse.latitude!!, delivery!!.warehouse.longitude!!, null, null) // status 3 = onderweg
 
         apiService.deliverystatusPatch(decryptedToken, delivery!!.id!!, updateStatusBody)
             .enqueue(object: Callback<Void> {
