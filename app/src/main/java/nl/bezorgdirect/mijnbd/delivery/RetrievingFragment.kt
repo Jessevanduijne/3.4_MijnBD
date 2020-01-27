@@ -61,18 +61,36 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
             startActivity(intent)
         }
 
-        btn_cancel_delivery.setOnClickListener {
-            val locationHelper = LocationHelper(this.activity!!)
-            locationHelper.getLastLocation { location -> run {
-                val intent = Intent(context, CancelAssignmentActivity::class.java)
-                intent.putExtra("deliveryId", delivery!!.id)
-                intent.putExtra("orderpickedup", false)
-                intent.putExtra("currentLatLong", location.latitude.toString() + "," + location.longitude.toString())
-                intent.putExtra("warehouseLatLong", delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString())
-                intent.putExtra("vehicle", delivery!!.vehicle)
-                startActivity(intent)
-            } }
+        val locationHelper = LocationHelper(this.activity!!)
+        var travelMode = ""
+        when(delivery!!.vehicle)
+        {
+            1 -> travelMode = "b"
+            2 or 3 or 4 -> travelMode = "d"
+        }
 
+        locationHelper.getLastLocation { location ->
+            run {
+                val currentLocation =  location.latitude.toString() + "," + location.longitude.toString()
+                val warehouseLocation = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
+
+                btn_map_open.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_VIEW,
+                        Uri.parse("https://maps.google.com/maps/?saddr=" + currentLocation +
+                                "&daddr=" + warehouseLocation + "&mode=" + travelMode))
+                    startActivity(intent)
+                }
+
+                btn_cancel_delivery.setOnClickListener {
+                    val intent = Intent(context, CancelAssignmentActivity::class.java)
+                    intent.putExtra("deliveryId", delivery!!.id)
+                    intent.putExtra("orderpickedup", false)
+//                    intent.putExtra("currentLatLong", currentLocation)
+//                    intent.putExtra("warehouseLatLong", warehouseLocation)
+//                    intent.putExtra("vehicle", delivery!!.vehicle)
+                    startActivity(intent)
+                }
+            }
         }
     }
 
@@ -81,6 +99,8 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
         lbl_delivering_zip.text = (delivery!!.warehouse.postalCode + " " + delivery!!.warehouse.place)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+
+
         mapFragment.getMapAsync(this)
         getRoute()
     }

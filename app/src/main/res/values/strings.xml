@@ -31,6 +31,7 @@
     <string name="from">Van</string>
     <string name="to">Tot</string>
     <string name="sure_delete">Weet u zeker dat u dit wilt verwijderen?</string>
+    <string name="open_maps">Open kaart</string>
 
     <!-- Location dialog -->
     <string name="loc_permission">Deze app heeft locatie toegang nodig om te functioneren. Geef de app alstublieft permissie uw locatie te gebruiken.</string>

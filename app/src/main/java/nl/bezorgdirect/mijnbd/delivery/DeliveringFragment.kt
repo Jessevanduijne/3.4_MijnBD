@@ -57,20 +57,42 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
             }
         }
 
-        btn_cancel_delivery.setOnClickListener {
-            val locationHelper = LocationHelper(this.activity!!)
-            locationHelper.getLastLocation { location -> run {
+
+
+
+        val locationHelper = LocationHelper(this.activity!!)
+        locationHelper.getLastLocation { location -> run {
+            val currentLocation =  location.latitude.toString() + "," + location.longitude.toString()
+            val clientLocation = delivery!!.customer.latitude.toString() + "," + delivery!!.customer.longitude.toString()
+            var travelMode = ""
+            when(delivery.vehicle)
+            {
+                1 -> travelMode = "b"
+                2 or 3 or 4 -> travelMode = "d"
+            }
+            btn_map_open.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://maps.google.com/maps/?saddr=" + currentLocation +
+                            "&daddr=" + clientLocation + "&mode=" + travelMode))
+                startActivity(intent)
+            }
+
+            btn_cancel_delivery.setOnClickListener {
                 val intent = Intent(context, CancelAssignmentActivity::class.java)
                 intent.putExtra("deliveryId", delivery!!.id)
                 intent.putExtra("orderpickedup", true)
-                intent.putExtra("currentLatLong", location.latitude.toString() + "," + location.longitude.toString())
-                intent.putExtra("warehouseLatLong", delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString())
+                intent.putExtra(
+                    "currentLatLong",
+                    currentLocation
+                )
+                intent.putExtra(
+                    "warehouseLatLong",
+                    clientLocation
+                )
                 intent.putExtra("vehicle", delivery!!.vehicle)
                 startActivity(intent)
-            }}
-
-
-        }
+            }
+        }}
 
         btn_call_warehouse.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
