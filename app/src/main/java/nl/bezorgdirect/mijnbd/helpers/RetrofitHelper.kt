@@ -15,7 +15,7 @@ fun getApiService(): ApiService{
         .create()
 
     val retrofit = Retrofit.Builder()
-        .baseUrl("http://192.168.178.14:7071/api/")
+        .baseUrl("http://83.163.108.27:7071/api/")
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
     // https://bezorgdirect-bezorgersapplicatie-api.azurewebsites.net/api/
