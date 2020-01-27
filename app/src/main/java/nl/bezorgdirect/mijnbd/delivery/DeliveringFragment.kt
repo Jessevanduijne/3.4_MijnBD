@@ -156,7 +156,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
                     if(response.isSuccessful) {
 
                         val fragment = AssignmentFinishedFragment(delivery.id)
-                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.content, fragment)
                     }
                     else Log.e("DELIVERING", "Updating delivery status response unsuccessful")
                 }

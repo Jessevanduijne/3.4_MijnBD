@@ -147,7 +147,7 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if(response.isSuccessful) {
                         val fragment = DeliveringFragment(delivery)
-                        replaceFragment(R.id.delivery_fragment, fragment)
+                        replaceFragment(R.id.content, fragment)
                     }
                     else Log.e("DELIVERING", "Updating delivery status response unsuccessful")
                 }
