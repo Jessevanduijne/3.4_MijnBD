@@ -21,7 +21,9 @@
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <item name="colorControlNormal">@color/colorPrimaryDark</item>
     </style>
-
+    <style name="AppTheme.Launcher">
+    <item name="android:windowBackground">@drawable/launch_screen</item>
+    </style>
 <!--    <style name="AppTheme.CustomActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">-->
 <!--        <item name="titleTextStyle">@style/AppTheme.CustomActionBar.TitleTextStyle</item>-->
 <!--        <item name="android:background">@color/colorPrimary</item>-->

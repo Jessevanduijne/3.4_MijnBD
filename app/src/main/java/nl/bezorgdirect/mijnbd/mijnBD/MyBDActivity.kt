@@ -27,7 +27,6 @@ import nl.bezorgdirect.mijnbd.helpers.showSpinner
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -76,7 +75,7 @@ class MyBDActivity : Fragment() {
 
         btn_retry_mybd.setOnClickListener{
             val myBD= MyBDActivity()
-            this.fragmentManager!!.beginTransaction().replace(R.id.delivery_fragment, myBD).commit()
+            this.fragmentManager!!.beginTransaction().replace(R.id.content, myBD).commit()
         }
 
         img_profile = root.findViewById(nl.bezorgdirect.mijnbd.R.id.img_profile)

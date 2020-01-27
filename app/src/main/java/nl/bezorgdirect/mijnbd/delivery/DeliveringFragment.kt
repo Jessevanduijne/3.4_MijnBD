@@ -59,7 +59,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
 
         btn_cancel_delivery.setOnClickListener {
             val fragment = CancelAssignmentFragment(delivery!!, true)
-            replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+            replaceFragment(nl.bezorgdirect.mijnbd.R.id.content, fragment)
         }
 
         btn_call_warehouse.setOnClickListener {
@@ -146,7 +146,7 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
                     if(response.isSuccessful) {
 
                         val fragment = AssignmentFinishedFragment(delivery.id)
-                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+                        replaceFragment(nl.bezorgdirect.mijnbd.R.id.content, fragment)
                     }
                     else Log.e("DELIVERING", "Updating delivery status response unsuccessful")
                 }

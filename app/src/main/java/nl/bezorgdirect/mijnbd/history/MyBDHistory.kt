@@ -90,7 +90,7 @@ class MyBDHistory : Fragment() {
         btn_retry_history.setOnClickListener{
             println("kaka")
             val myBDHistory = MyBDHistory()
-            this.fragmentManager!!.beginTransaction().replace(R.id.delivery_fragment, myBDHistory).commit()
+            this.fragmentManager!!.beginTransaction().replace(R.id.content, myBDHistory).commit()
         }
 
         list_historie.layoutManager = verticalList

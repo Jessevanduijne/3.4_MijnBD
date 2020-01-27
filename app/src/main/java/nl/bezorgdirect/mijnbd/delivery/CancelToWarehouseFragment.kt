@@ -48,7 +48,7 @@ class CancelToWarehouseFragment(val delivery: Delivery) : Fragment(), OnMapReady
                 override fun onSlideComplete(slider: SlideToActView) {
                     showSpinner(view!!)
                     val fragment = AssignmentFinishedFragment(delivery.id)
-                    replaceFragment(R.id.delivery_fragment, fragment)
+                    replaceFragment(R.id.content, fragment)
                 }
             }
     }

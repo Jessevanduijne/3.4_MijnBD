@@ -35,7 +35,7 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         val item = list[position]
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         if(item.deliveredAt != null && item.warehousePickUpAt != null) {
-            val starttime: Date = inputFormat.parse(item.warehousePickUpAt)//acceptedAt wharhouse pickup for now
+            val starttime: Date = inputFormat.parse(item.acceptedAt)
             val endtime: Date = inputFormat.parse(item.deliveredAt)
             holder.travel.text = setTravelTime(starttime, endtime)
             holder.time.text = setTimeFromTo(starttime, endtime)

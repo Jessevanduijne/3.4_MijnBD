@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.bottom_bar.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
+import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.R.*
 import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.helpers.*
@@ -35,6 +36,7 @@ class AssignmentActivity : AppCompatActivity() {
     var permDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppThemeNoBar)
         super.onCreate(savedInstanceState)
         setContentView(layout.activity_assignment)
 
@@ -54,7 +56,7 @@ class AssignmentActivity : AppCompatActivity() {
 
     private fun setFragment() {
         val view = window.decorView.rootView
-        showSpinner(view)
+        showLoadingOverlay(view)
 
         val decryptedToken = getDecryptedToken(this)
         apiService.deliveryGetCurrent(decryptedToken)
@@ -66,29 +68,29 @@ class AssignmentActivity : AppCompatActivity() {
                         canReceiveNotification = false
 
                         when(delivery.status) {
-                            2 -> replaceFragment(id.delivery_fragment, RetrievingFragment(delivery, initialLocation))
-                            3 -> replaceFragment(id.delivery_fragment, DeliveringFragment(delivery))
+                            2 -> replaceFragment(id.content, RetrievingFragment(delivery, initialLocation))
+                            3 -> replaceFragment(id.content, DeliveringFragment(delivery))
                         }
                     }
                     else {
                         if(canReceiveNotification) {
                             val noAssignmentFragment = NoAssignmentFragment()
-                            replaceFragment(id.delivery_fragment, noAssignmentFragment)
+                            replaceFragment(id.content, noAssignmentFragment)
                             setBottomNav()
                         }
                         else {
                             val newAssignmentFragment = NewAssignmentFragment()
-                            replaceFragment(id.delivery_fragment, newAssignmentFragment)
+                            replaceFragment(id.content, newAssignmentFragment)
                             setBottomNav()
                         }
                     }
-                    hideSpinner(view)
+                    showContent(view)
                 }
                 override fun onFailure(call: Call<Delivery>, t: Throwable) {
                     Log.e("ASSIGNMENT", "Something went wrong with the Get Delivery call in AssignmentActivity")
                     val noAssignmentFragment = NoAssignmentFragment()
-                    replaceFragment(id.delivery_fragment, noAssignmentFragment)
-                    hideSpinner(view)
+                    replaceFragment(id.content, noAssignmentFragment)
+                    showContent(view)
                     setBottomNav()
                 }
             })
@@ -100,12 +102,12 @@ class AssignmentActivity : AppCompatActivity() {
             when (item.itemId) {
                 id.action_history -> {
                     val myBDHistory = MyBDHistory()
-                    supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBDHistory).commit()
+                    supportFragmentManager.beginTransaction().replace(id.content, myBDHistory).commit()
                 }
                 id.action_deliveries -> setFragment()
                 id.action_mybd -> {
                     val myBD = MyBDActivity()
-                    supportFragmentManager.beginTransaction().replace(id.delivery_fragment, myBD).commit()
+                    supportFragmentManager.beginTransaction().replace(id.content, myBD).commit()
                 }
             }
             true

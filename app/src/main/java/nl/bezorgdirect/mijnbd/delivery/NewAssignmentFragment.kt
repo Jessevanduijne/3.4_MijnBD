@@ -130,7 +130,7 @@ class NewAssignmentFragment : Fragment() {
                         }
                         else {
                             val fragment = NoAssignmentFragment()
-                            replaceFragment(R.id.delivery_fragment, fragment)
+                            replaceFragment(R.id.content, fragment)
                         }
                     }
                     else Log.e("NEW_ASSIGNMENT", "Confirming assignment response unsuccessful")
@@ -156,7 +156,7 @@ class NewAssignmentFragment : Fragment() {
                         if(response.isSuccessful) {
                             timer!!.cancel()
                             val fragment = RetrievingFragment(delivery, location)
-                            replaceFragment(R.id.delivery_fragment, fragment)
+                            replaceFragment(R.id.content, fragment)
                         }
                         else Log.e("NEW_ASSIGNMENT", "Updating delivery status response unsuccessful")
                     }
@@ -264,7 +264,7 @@ class NewAssignmentFragment : Fragment() {
             override fun onFinish() {
                 // api autmatically updates assignments to expired
                 val fragment = NoAssignmentFragment()
-                replaceFragment(R.id.delivery_fragment, fragment)
+                replaceFragment(R.id.content, fragment)
             }
         }
         timer!!.start()

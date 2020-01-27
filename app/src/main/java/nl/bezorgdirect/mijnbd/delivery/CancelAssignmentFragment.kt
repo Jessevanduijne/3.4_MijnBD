@@ -67,7 +67,7 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
                         if(response.isSuccessful) {
                             if(!cb_driver_can_return.isChecked) {
                                 val fragment = CancelToWarehouseFragment(delivery)
-                                replaceFragment(R.id.delivery_fragment, fragment)
+                                replaceFragment(R.id.content, fragment)
                             }
                             else {
                                 Toast.makeText(
@@ -77,7 +77,7 @@ class CancelAssignmentFragment(val delivery: Delivery, val orderPickedUp: Boolea
                                 ).show()
 
                                 val fragment = AssignmentFinishedFragment(delivery.id)
-                                replaceFragment(R.id.delivery_fragment, fragment)
+                                replaceFragment(R.id.content, fragment)
                             }
                         }
                         else Log.e("CANCEL_ASSIGNMENT", "Updating delivery status response unsuccessful")

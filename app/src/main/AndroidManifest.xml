@@ -20,6 +20,7 @@
         android:theme="@style/AppThemeNoBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".delivery.AssignmentActivity"
+            android:theme="@style/AppTheme.Launcher"
             android:screenOrientation="portrait"/>
         <activity android:name=".mijnBD.MyBDAvailability"
             android:screenOrientation="portrait"/>
@@ -35,6 +36,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
+            android:theme="@style/AppTheme.Launcher"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
