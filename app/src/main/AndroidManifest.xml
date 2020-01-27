@@ -28,11 +28,11 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".history.MyBDHistory"
             android:screenOrientation="portrait"/>
-        <activity android:name=".mijnBD.MyBDMoS"
+        <activity android:name=".mijnBD.MyBDMot"
             android:screenOrientation="portrait"/>
         <activity android:name=".mijnBD.MyBDInfo"
             android:screenOrientation="portrait"/>
-        <activity android:name=".mijnBD.MyBDActivity"
+        <activity android:name=".mijnBD.MyBDFragment"
             android:screenOrientation="portrait"/>
         <activity android:name=".delivery.CancelAssignmentActivity"
             android:screenOrientation="portrait"/>

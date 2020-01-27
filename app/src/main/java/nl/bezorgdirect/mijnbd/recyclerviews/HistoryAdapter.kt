@@ -61,7 +61,6 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
             4 -> holder.vehicleimage.setImageResource(R.drawable.ic_car_w)
         }
         holder.location.text = item.customer.address
-        println(item)
         if(item.customerDistanceInKilometers != null && item.warehouseDistanceInKilometers != null) {
             val distance = item.customerDistanceInKilometers + item.warehouseDistanceInKilometers
             holder.distance.text = String.format("%.2f %s",distance,cont?.resources?.getString(R.string.lbl_kilometers_short))
@@ -90,7 +89,6 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         var minutes = seconds / 60
         val hours = minutes / 60
         minutes -= hours * 60
-        println(minutes)
         var traveltime = ""
         if(minutes == 0L && hours == 0L)
         {

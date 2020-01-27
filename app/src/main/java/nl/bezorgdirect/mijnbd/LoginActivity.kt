@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -23,7 +22,6 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("hoi")
         setTheme(R.style.AppThemeNoBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
@@ -71,7 +69,6 @@ class LoginActivity : AppCompatActivity() {
                 call: Call<String>,
                 response: Response<String>
             ) {
-                println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
                         context,
@@ -95,7 +92,6 @@ class LoginActivity : AppCompatActivity() {
                     val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
 
                     val cipherWrapper = CipherWrapper("RSA/ECB/PKCS1Padding")
-                    println(values)
                     // Encrypt message with the key, using public key
                     val encryptedToken = cipherWrapper.encrypt(values.toString(), Key?.public)
                     editpref.putString("T", encryptedToken)
@@ -107,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
@@ -157,6 +152,6 @@ class LoginActivity : AppCompatActivity() {
         if(!notificationServiceIsRunning) {
             startService(notificationIntent)
         }
-        else Log.e("NOTIFICATION", "Notification service already started (on login)")
+
     }
 }

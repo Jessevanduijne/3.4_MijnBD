@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weet u zeker dat u dit wilt verwijderen?"
+            android:text="@string/sure_delete"
             android:textColor="@color/colorAccent"
             android:textSize="24sp"
             android:textAlignment="center"
@@ -32,7 +32,8 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Bevestig"
+                android:focusable="true"
+                android:text="@string/confirm"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold"
                 android:layout_marginEnd="10dp"/>
@@ -42,7 +43,8 @@
                 android:layout_height="30dp"
                 android:background="@color/colorPrimary"
                 android:clickable="true"
-                android:text="Annuleer"
+                android:focusable="true"
+                android:text="@string/cancel"
                 android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
         </LinearLayout>

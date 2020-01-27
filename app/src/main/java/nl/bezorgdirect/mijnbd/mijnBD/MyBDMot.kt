@@ -3,7 +3,6 @@ package nl.bezorgdirect.mijnbd.mijnBD
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
@@ -12,8 +11,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_my_bdmo_s.*
+import kotlinx.android.synthetic.main.activity_my_bdmot.*
 import kotlinx.android.synthetic.main.toolbar.*
+import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.UpdateUserParams
 import nl.bezorgdirect.mijnbd.helpers.getApiService
 import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
@@ -25,7 +25,7 @@ import retrofit2.Response
 
 
 
-class MyBDMoS : AppCompatActivity() {
+class MyBDMot : AppCompatActivity() {
 
     val apiService = getApiService()
 
@@ -42,10 +42,10 @@ class MyBDMoS : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(nl.bezorgdirect.mijnbd.R.layout.activity_my_bdmo_s)
+        setContentView(R.layout.activity_my_bdmot)
 
         
-        custom_toolbar_title.text = getString(nl.bezorgdirect.mijnbd.R.string.lbl_mos)
+        custom_toolbar_title.text = getString(R.string.lbl_mot)
         setSupportActionBar(custom_toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -64,7 +64,7 @@ class MyBDMoS : AppCompatActivity() {
 
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 range = progress
-                lblradiusvar.text = "$progress km."
+                lblradiusvar.text = String.format("%d %s",progress, resources.getString(R.string.lbl_kilometers_short))
             }
         })
     }
@@ -79,13 +79,13 @@ class MyBDMoS : AppCompatActivity() {
             3 -> maxRange = 30
             4 -> maxRange = 60
         }
-        lbl_radkm2.text = "$maxRange km."
+        lbl_radkmto.text = String.format("%d %s",maxRange, resources.getString(R.string.lbl_kilometers_short))
         sb_radius.max = maxRange
     }
     fun setSB()
     {
         setMaxRange()
-        lblradiusvar.text = "$range km."
+        lblradiusvar.text = String.format("%d %s", range, resources.getString(R.string.lbl_kilometers_short))
         sb_radius.progress = range
     }
     fun getintentextra()
@@ -105,13 +105,11 @@ class MyBDMoS : AppCompatActivity() {
     {
         val decryptedToken = getDecryptedToken(applicationContext)
         val params = UpdateUserParams(email, phonenumber, dateofbirth, range, vehicle, fare,vehicledisplayname, firstname, lastname)
-        println(params)
         apiService.delivererPut(decryptedToken, params).enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                println(response)
                 if (response.isSuccessful && response.body() != null) {
 
                 }
@@ -125,7 +123,6 @@ class MyBDMoS : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     applicationContext, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG
@@ -140,20 +137,20 @@ class MyBDMoS : AppCompatActivity() {
         when(vehicle)
         {
             1-> {
-                btn_bicycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-                btn_bicycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+                btn_bicycle.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gold_btn)
+                btn_bicycle.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
             }
             2-> {
-                btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-                btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+                btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gold_btn)
+                btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
             }
             3-> {
-                btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-                btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+                btn_motorcycle.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gold_btn)
+                btn_motorcycle.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
             }
             4-> {
-                btn_car.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-                btn_car.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
+                btn_car.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gold_btn)
+                btn_car.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
             }
         }
 
@@ -171,13 +168,13 @@ class MyBDMoS : AppCompatActivity() {
     }
     fun handleMOTClick(button: Button, otherButton1:Button, otherButton2: Button ,vehicle: Int)
     {
-        button.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gold_btn)
-        otherButton1.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
-        otherButton2.background = ContextCompat.getDrawable(applicationContext, nl.bezorgdirect.mijnbd.R.drawable.rounded_gray_section)
+        button.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gold_btn)
+        otherButton1.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gray_section)
+        otherButton2.background = ContextCompat.getDrawable(applicationContext, R.drawable.rounded_gray_section)
 
-        button.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.colorPrimaryDark))
-        otherButton1.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
-        otherButton2.setTextColor(ContextCompat.getColor(applicationContext, nl.bezorgdirect.mijnbd.R.color.white))
+        button.setTextColor(ContextCompat.getColor(applicationContext, R.color.colorPrimaryDark))
+        otherButton1.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
+        otherButton2.setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
         this.vehicle = vehicle
         vehicledisplayname= button.text.toString()
         setMaxRange()

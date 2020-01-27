@@ -3,7 +3,6 @@ package nl.bezorgdirect.mijnbd.history
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,8 +37,6 @@ class MyBDHistory : Fragment() {
         override fun onItemClick(position: Int)
         {
             val intent = Intent(activity, MyBDHistoryDetails::class.java)
-            println("Pos "+position)
-            println(deliveries[position])
 
             intent.putExtra("orderSubmitted", deliveries[position].createdAt)
             //accepted
@@ -70,17 +67,14 @@ class MyBDHistory : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.activity_my_bdhistory, container, false)
+        val root = inflater.inflate(R.layout.fragment_my_bdhistory, container, false)
 
         if(activity != null) {
             val custom_toolbar_title: TextView = activity!!.findViewById(R.id.custom_toolbar_title)
             custom_toolbar_title.text = getString(R.string.lbl_history)
         }
 
-
         val verticalList = LinearLayoutManager(root.context)
-
-
 
         var listitems = HistoryAdapter(deliveries, clickHistory)
         val list_historie: RecyclerView = root.findViewById(R.id.list_historie)
@@ -88,7 +82,6 @@ class MyBDHistory : Fragment() {
         val btn_retry_history: Button = root.findViewById(R.id.btn_retry_history)
 
         btn_retry_history.setOnClickListener{
-            println("kaka")
             val myBDHistory = MyBDHistory()
             this.fragmentManager!!.beginTransaction().replace(R.id.content, myBDHistory).commit()
         }
@@ -138,7 +131,6 @@ class MyBDHistory : Fragment() {
                 call: Call<ArrayList<Delivery>>,
                 response: Response<ArrayList<Delivery>>
             ) {
-                println(response)
                 if (response.code() == 500) {
                     history_error.visibility = View.VISIBLE
                     history_content.visibility = View.GONE
@@ -158,8 +150,6 @@ class MyBDHistory : Fragment() {
                     val values = response.body()!!
                     deliveries = values
 
-                    println(deliveries[0].currentId)
-                    println(list_historie.adapter)
                     history_empty.visibility = View.GONE
                     history_error.visibility = View.GONE
                     history_content.visibility = View.VISIBLE
@@ -176,7 +166,6 @@ class MyBDHistory : Fragment() {
             }
 
             override fun onFailure(call: Call<ArrayList<Delivery>>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(nl.bezorgdirect.mijnbd.R.string.E500),
                     Toast.LENGTH_LONG

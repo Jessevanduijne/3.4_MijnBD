@@ -126,8 +126,6 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val fromParts = params.startTime!!.split(":")
         val toParts = params.endTime!!.split(":")
 
-        println(fromParts)
-        println(toParts)
         val fromHourIndex = hours.indexOf(fromParts[0])
         val fromMinIndex = mins.indexOf(fromParts[1])
         val toHourIndex = hours.indexOf(toParts[0])
@@ -325,7 +323,6 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
                         MijnbdApplication.appContext,
@@ -371,7 +368,6 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
         val service = getApiService()
         val decryptedToken = getDecryptedToken(cont!!)
         val params  = ArrayList<Availability>()
-        println(availability)
         params.add(availability)
         service.availablitiesPut(auth = decryptedToken, availability = params).enqueue(object :
             Callback<ArrayList<Availability>> {
@@ -379,7 +375,6 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
                 call: Call<ArrayList<Availability>>,
                 response: Response<ArrayList<Availability>>
             ) {
-                println(response)
                 if (response.code() == 500) {
                     Toast.makeText(
                         cont!!,

@@ -8,11 +8,13 @@
 
     <!-- vehicles: -->
     <string name="V1">Fiets</string>
-    <string name="V2_3">Motor</string>
+    <string name="V2_3">Motor/Scooter</string>
     <string name="V4">Auto</string>
     <string name="VNone">Geen</string>
 
     <!-- General -->
+    <string name="lbl_minutes_full">Minuten</string>
+    <string name="lbl_hours_full">Uren</string>
     <string name="lbl_seconds_short">sec.</string>
     <string name="lbl_minutes_short">min.</string>
     <string name="lbl_hours_short">u.</string>
@@ -23,6 +25,12 @@
     <string name="unknown">\?</string>
     <string name="lbl_destination">Bestemming</string>
     <string name="lbl_your_position">Jouw positie</string>
+    <string name="try_again">Probeer opnieuw</string>
+    <string name="confirm">Bevestig</string>
+    <string name="cancel">Annuleer</string>
+    <string name="from">Van</string>
+    <string name="to">Tot</string>
+    <string name="sure_delete">Weet u zeker dat u dit wilt verwijderen?</string>
 
     <!-- Location dialog -->
     <string name="loc_permission">Deze app heeft locatie toegang nodig om te functioneren. Geef de app alstublieft permissie uw locatie te gebruiken.</string>
@@ -30,6 +38,7 @@
     <string name="close_app">Sluit app</string>
 
     <!-- Error -->
+    <string name="showerror_500">Oeps er ging iets mis bij het ophalen van uw gegevens :(</string>
     <string name="E500">Oops something went wrong, try again later.</string>
     <string name="E401">Oops permission denied.</string>
     <string name="wrong_phone">Geen valide telefoonnummer</string>
@@ -90,10 +99,13 @@
 
     <!-- MijnBD Overview: -->
     <string name="lbl_mybdpersonalia">Mijn Bezorg.Direct</string>
-    <string name="lbl_mos">Vervoer:</string>
+    <string name="lbl_mot">Vervoer:</string>
     <string name="lbl_payoutpd">€/bezorging:</string>
     <string name="lbl_payouttotal">Totale verdiensten:</string>
     <string name="lbl_availability">Beschikbaarheid</string>
+    <string name="btn_availability">beschikbaarheid</string>
+    <string name="btn_info">info</string>
+    <string name="btn_mot">vervoer</string>
 
 
     <!-- MijnBD Info: -->
@@ -108,15 +120,17 @@
     <!-- MijnBD Beschikbaarheid: -->
     <string name="lbl_mybdavailability">Beschikbaarheid</string>
     <string name="lbl_selectweek">Selecteer Week</string>
-
+    <string name="availability_empty">Geen beschikbaarheid opgegeven, druk op de witte plus knop!</string>
+    <string name="lbl_date">Datum</string>
+    <string name="lbl_starttime">Starttijd</string>
+    <string name="lbl_endtime">Eindtijd</string>
     <!-- MijnBD vervoer: -->
-    <string name="lbl_mybdmostitle">Bezorgvoorkeuren</string>
-    <string name="lbl_mybdmos">Vervoersmiddel</string>
+    <string name="lbl_mybdmottitle">Bezorgvoorkeuren</string>
+    <string name="lbl_mybdmot">Vervoersmiddel</string>
     <string name="lbl_radius">Bezorgradius</string>
 
 
     <!-- Historie: -->
-    <string name="nodeliveries">You haven\'t done any deliveries yet</string>
     <string name="title_order_details">Order details</string>
     <string name="lbl_order_submitted">Order geplaatst</string>
     <string name="lbl_warehouse_pickup_text">Order opgehaald</string>
@@ -126,13 +140,12 @@
     <string name="lbl_reward_text">Totaal</string>
     <string name="lbl_add">+</string>
 
-
+    <string name="history_empty">Geen historie beschikbaar, succes bij uw eerste opdracht!</string>
 
     <string name="btn_bicycle">Fiets</string>
     <string name="btn_motorcycle">Scooter/Motor</string>
     <string name="btn_car">Auto</string>
-    <string name="lbl_radkm1">0 KM</string>
-    <string name="lbl_radkm2">30 KM</string>
+    <string name="lbl_radkm1">0 km.</string>
     <string name="lbl_radiustext">Radius vanaf huisadres: </string>
 
     <!-- Notifications -->
