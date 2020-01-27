@@ -18,6 +18,7 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:gravity="center"
+        android:layout_marginTop="20dp"
         >
         <TextView
             android:layout_width="wrap_content"
@@ -40,6 +41,7 @@
         android:orientation="vertical"
         android:padding="10dp"
         android:gravity="center"
+        android:layout_marginTop="100dp"
         >
         <TextView
             android:layout_width="wrap_content"

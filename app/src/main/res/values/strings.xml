@@ -59,7 +59,7 @@
     <!-- Bezorgingen: -->
     <!-- Incoming: -->
     <string name="title_assignment">Opdracht</string>
-    <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nPotentiële bezorgingen verschijnen snel hier </string>
+    <string name="lbl_have_patience_message">Even geduld a.u.b&#8230; \nMomenteel zijn er geen opdrachten</string>
     <string name="lbl_earnings">Verdiensten</string>
     <string name="lbl_delivery">Bezorging</string>
     <string name="lbl_estimated_travel_time">Geschatte reistijd</string>
