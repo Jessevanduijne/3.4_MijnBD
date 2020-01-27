@@ -58,8 +58,18 @@ class DeliveringFragment(val delivery: Delivery? = null): Fragment(), OnMapReady
         }
 
         btn_cancel_delivery.setOnClickListener {
-            val fragment = CancelAssignmentFragment(delivery!!, true)
-            replaceFragment(nl.bezorgdirect.mijnbd.R.id.delivery_fragment, fragment)
+            val locationHelper = LocationHelper(this.activity!!)
+            locationHelper.getLastLocation { location -> run {
+                val intent = Intent(context, CancelAssignmentActivity::class.java)
+                intent.putExtra("deliveryId", delivery!!.id)
+                intent.putExtra("orderpickedup", true)
+                intent.putExtra("currentLatLong", location.latitude.toString() + "," + location.longitude.toString())
+                intent.putExtra("warehouseLatLong", delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString())
+                intent.putExtra("vehicle", delivery!!.vehicle)
+                startActivity(intent)
+            }}
+
+
         }
 
         btn_call_warehouse.setOnClickListener {

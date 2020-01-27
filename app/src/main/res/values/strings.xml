@@ -20,7 +20,9 @@
     <string name="lbl_edit">wijzig</string>
     <string name="lbl_distance">km. afstand</string>
     <string name="lbl_euro">€</string>
-    <string name="unknown">?</string>
+    <string name="unknown">\?</string>
+    <string name="lbl_destination">Bestemming</string>
+    <string name="lbl_your_position">Jouw positie</string>
 
     <!-- Location dialog -->
     <string name="loc_permission">Deze app heeft locatie toegang nodig om te functioneren. Geef de app alstublieft permissie uw locatie te gebruiken.</string>

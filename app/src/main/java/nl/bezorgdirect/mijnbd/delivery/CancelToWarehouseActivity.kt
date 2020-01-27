@@ -1,83 +1,95 @@
 package nl.bezorgdirect.mijnbd.delivery
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 import com.ncorti.slidetoact.SlideToActView
-import kotlinx.android.synthetic.main.fragment_cancel_to_warehouse.*
+import kotlinx.android.synthetic.main.activity_cancel_to_warehouse.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.bezorgdirect.mijnbd.R
-import nl.bezorgdirect.mijnbd.api.Delivery
 import nl.bezorgdirect.mijnbd.api.GoogleDirections
 import nl.bezorgdirect.mijnbd.helpers.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CancelToWarehouseFragment(val delivery: Delivery) : Fragment(), OnMapReadyCallback {
+class CancelToWarehouseActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var googleMap: GoogleMap? = null
     private val apiService = getApiService()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_cancel_to_warehouse, container, false)
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_cancel_to_warehouse)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        custom_toolbar_title.text = getString(R.string.lbl_cancel)
+        setSupportActionBar(custom_toolbar)
+
         setListeners()
+        val view = window.decorView.rootView
         hideSpinner(view)
-        this.activity?.actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val mapFragment = childFragmentManager.findFragmentById(R.id.fragment_map) as SupportMapFragment
+        val mapFragment = fragment_map as SupportMapFragment
         mapFragment.getMapAsync(this)
-        //getRoute()
+        getRoute()
     }
 
     private fun setListeners() {
+        val deliveryId = intent.getStringExtra("deliveryId")
         btn_cancel_finish_finish.onSlideCompleteListener =
             object : SlideToActView.OnSlideCompleteListener {
                 override fun onSlideComplete(slider: SlideToActView) {
-                    showSpinner(view!!)
-                    val fragment = AssignmentFinishedFragment(delivery.id)
-                    replaceFragment(R.id.delivery_fragment, fragment)
+                    val view = window.decorView.rootView
+                    showSpinner(view)
+                    val intent = Intent(applicationContext, AssignmentActivity::class.java)
+                    startActivity(intent)
                 }
             }
     }
 
     override fun onMapReady(googleMap: GoogleMap?) {
+        val currentLatLong = intent.getStringExtra("currentLatLong")
+        val currentLatLongArray = currentLatLong.split(",")
+
+        val warehouseLatLong = intent.getStringExtra("warehouseLatLong")
+        val warehouseLatLongArray = warehouseLatLong.split(",")
+
         this.googleMap = googleMap
-//        val latLngOrigin = LatLng(delivery!!.Current.Latitude!!, delivery!!.Current.Longitude!!)
-//        val latLngDestination = LatLng(delivery!!.Warehouse.Latitude!!.toDouble(), delivery!!.Warehouse.Longitude!!.toDouble())
-//        this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title("Your position"))
-//        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(delivery!!.Warehouse.Address))
-//        this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 16.5f))
+        val latLngOrigin = LatLng(currentLatLongArray[0].toDouble(), currentLatLongArray[1].toDouble())
+        val latLngDestination = LatLng(warehouseLatLongArray[0].toDouble(), warehouseLatLongArray[1].toDouble())
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngOrigin).title(getString(R.string.lbl_your_position)))
+        this.googleMap!!.addMarker(MarkerOptions().position(latLngDestination).title(getString(R.string.lbl_destination)))
+        this.googleMap!!.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngOrigin, 16.5f))
     }
 
     private fun getRoute(){
+
+        val currentLatLong = intent.getStringExtra("currentLatLong")
+        val warehouseLatLong = intent.getStringExtra("warehouseLatLong")
+        val vehicle = intent.getIntExtra("vehicle", 0)
+
         val service = getGoogleService()
         val path: MutableList<List<LatLng>> = ArrayList()
 
-        val startLatLong = delivery!!.current.latitude.toString() + "," + delivery!!.current.longitude.toString()
-        val endLatLong = delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString()
-
         var travelmode = ""
-        when(delivery!!.vehicle)
+        when(vehicle)
         {
             1 or 2 -> travelmode = "cycling" // bike / scooter
             3 or 4 -> travelmode = "driving" // motor / car
         }
 
         val apiKey = getString(R.string.google_maps_key)
-        val call = service.getDirections(startLatLong, endLatLong, apiKey, travelmode = travelmode)
+        val call = service.getDirections(currentLatLong, warehouseLatLong, apiKey, travelmode = travelmode)
         call.enqueue(object: Callback<GoogleDirections> {
 
             override fun onResponse(call: Call<GoogleDirections>, response: Response<GoogleDirections>) {

@@ -62,8 +62,17 @@ class RetrievingFragment(val delivery: Delivery? = null, val currentLocation: La
         }
 
         btn_cancel_delivery.setOnClickListener {
-            val fragment = CancelAssignmentFragment(delivery!!, false)
-            replaceFragment(R.id.delivery_fragment, fragment)
+            val locationHelper = LocationHelper(this.activity!!)
+            locationHelper.getLastLocation { location -> run {
+                val intent = Intent(context, CancelAssignmentActivity::class.java)
+                intent.putExtra("deliveryId", delivery!!.id)
+                intent.putExtra("orderpickedup", false)
+                intent.putExtra("currentLatLong", location.latitude.toString() + "," + location.longitude.toString())
+                intent.putExtra("warehouseLatLong", delivery!!.warehouse.latitude.toString() + "," + delivery!!.warehouse.longitude.toString())
+                intent.putExtra("vehicle", delivery!!.vehicle)
+                startActivity(intent)
+            } }
+
         }
     }
 

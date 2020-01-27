@@ -7,6 +7,7 @@
     android:background="@color/colorPrimaryDark"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
     <include layout="@layout/spinner"/>
 
     <LinearLayout
@@ -15,7 +16,7 @@
         android:orientation="vertical"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="80dp">
 
         <TextView
             android:layout_width="match_parent"

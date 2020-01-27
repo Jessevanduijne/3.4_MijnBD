@@ -5,8 +5,10 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/cancel_fragment_layout">
 
+    <include layout="@layout/toolbar" />
     <include layout="@layout/spinner"/>
 
     <LinearLayout
@@ -15,7 +17,7 @@
         android:orientation="vertical"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="70dp">
 
        <TextView
            android:layout_width="match_parent"

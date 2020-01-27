@@ -1,6 +1,9 @@
 package nl.bezorgdirect.mijnbd.delivery
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -16,6 +19,7 @@ import nl.bezorgdirect.mijnbd.MijnbdApplication.Companion.canReceiveNotification
 import nl.bezorgdirect.mijnbd.R
 import nl.bezorgdirect.mijnbd.api.*
 import nl.bezorgdirect.mijnbd.helpers.*
+import nl.bezorgdirect.mijnbd.services.NotificationService
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -93,7 +97,7 @@ class NewAssignmentFragment : Fragment() {
         }
 
         btn_delivery_refuse.setOnClickListener{
-            canReceiveNotification = true
+           // startNotificationService()
             confirmAssignment(false, notificationId, delivery)
         }
     }
@@ -131,6 +135,7 @@ class NewAssignmentFragment : Fragment() {
                         else {
                             val fragment = NoAssignmentFragment()
                             replaceFragment(R.id.delivery_fragment, fragment)
+                            canReceiveNotification = true
                         }
                     }
                     else Log.e("NEW_ASSIGNMENT", "Confirming assignment response unsuccessful")
@@ -196,8 +201,11 @@ class NewAssignmentFragment : Fragment() {
                         val toWarehouseDistance = distanceInformation.distance.text.removeLetters()
                         val toWarehouseDuration = distanceInformation.duration.text.removeLetters()
                         travelDuration += toWarehouseDuration.toInt()
-                        lbl_to_warehouse_kilometers.text = toWarehouseDistance
-                        lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+
+                        if(lbl_to_client_kilometers != null) {
+                            lbl_to_warehouse_kilometers.text = toWarehouseDistance
+                            lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                        }
                         callCount++
                         if(callCount == 2) {
                             callback()
@@ -219,8 +227,12 @@ class NewAssignmentFragment : Fragment() {
                         val toClientDuration = distanceInformation.duration.text.removeLetters()
                         travelDuration += toClientDuration.toInt()
 
-                        lbl_to_client_kilometers.text = toClientDistance
-                        lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                        if(lbl_to_client_kilometers != null) {
+                            lbl_to_client_kilometers.text = toClientDistance
+                            lbl_new_assignment_estimated_minutes.text = travelDuration.toString()
+                        }
+
+
                         callCount++
                         if(callCount == 2) {
                             callback()
@@ -272,15 +284,23 @@ class NewAssignmentFragment : Fragment() {
         timer?.start()
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
+    private fun startNotificationService(){
+        val activityManager = activity?.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val notificationServiceClass = NotificationService::class.java
+        val notificationIntent = Intent(this.context, notificationServiceClass)
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
+        var notificationServiceIsRunning = false
+        // Loop through running services
+        for (service in activityManager.getRunningServices(Integer.MAX_VALUE)) {
+            if (notificationServiceClass.name == service.service.className) {
+                // If the service is running then return true
+                notificationServiceIsRunning = true
+            }
+        }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+        if(!notificationServiceIsRunning) {
+            activity?.startService(notificationIntent)
+        }
+        else Log.e("NOTIFICATION", "Notification service already started")
     }
 }

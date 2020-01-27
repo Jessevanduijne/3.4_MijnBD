@@ -98,15 +98,6 @@
                         android:textSize="@dimen/text_size_h2"
                         android:layout_marginTop="-10dp"/>
                 </LinearLayout>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/lightGray"
-                    android:textSize="@dimen/text_size_text_smaller"
-                    android:text="@string/lbl_edit"
-                    android:paddingStart="10dp"
-                    android:layout_marginTop="30dp"
-                    android:paddingEnd="10dp"/>
             </LinearLayout>
 
             <LinearLayout
