@@ -23,6 +23,7 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("hoi")
         setTheme(R.style.AppThemeNoBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)

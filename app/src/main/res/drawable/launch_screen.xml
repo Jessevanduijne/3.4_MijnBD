@@ -9,9 +9,8 @@
 
     <item>
 
-        <bitmap
-            android:src="@drawable/ic_logo_y"
-            android:gravity="center"/>
+        <bitmap android:src="@drawable/ic_launcher"
+            android:gravity="center_vertical|center_horizontal" />
 
     </item>
 
