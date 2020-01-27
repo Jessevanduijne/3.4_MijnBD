@@ -32,11 +32,13 @@ class AssignmentFinishedFragment(val deliveryId: String): Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showLoadingOverlay(view)
+
+        val parentview = view.rootView
+        showLoadingOverlay(parentview)
         getUpdatedDelivery { delivery -> run {
             setOnClickListeners(delivery)
             setLayout(delivery)
-            showContent(view)
+            showContent(parentview)
         } }
 
     }
