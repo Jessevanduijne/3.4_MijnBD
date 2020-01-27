@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.NumberPicker
@@ -48,7 +47,7 @@ class MyBDAvailability : AppCompatActivity() {
         setContentView(R.layout.activity_my_bdavailability)
 
         val custom_toolbar_title: TextView = this.findViewById(R.id.custom_toolbar_title)
-        custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
+        custom_toolbar_title.text = getString(R.string.lbl_mybdavailability)
         setSupportActionBar(custom_toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -185,7 +184,6 @@ class MyBDAvailability : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
@@ -250,7 +248,6 @@ class MyBDAvailability : AppCompatActivity() {
                     filterAndSortAvailabilities()
                     println("sort")
                     list_availabilities.adapter = AvailabilityAdapter(availabilities)
-                    Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
                     hideSpinner(root)
                     availability_empty.visibility = View.GONE
                     availability_error.visibility = View.GONE
@@ -259,7 +256,6 @@ class MyBDAvailability : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
@@ -350,21 +346,21 @@ class MyBDAvailability : AppCompatActivity() {
     {
         if("$fromHour:$fromMin" == "$toHour:$toMin") {
             Toast.makeText(
-                this, "Start en eind tijd mogen niet hetzelfde zijn.",
+                this, resources.getString(R.string.av_startend),
                 Toast.LENGTH_LONG
             ).show()
         }
         else if(availabilities.any {it.date == date && it.startTime!! == "$fromHour:$fromMin:00" && it.endTime!! == "$toHour:$toMin:00"})
         {
             Toast.makeText(
-                this, "U heeft deze beschikbaarheid al opgegeven",
+                this, resources.getString(R.string.av_same),
                 Toast.LENGTH_LONG
             ).show()
         }
         else if(availabilities.any {it.date == date && it.startTime!! < "$toHour:$toMin:00" && it.endTime!! > "$fromHour:$fromMin:00"})
         {
             Toast.makeText(
-                this, "Uw beschikbaarheid overlapt met een eerder opgegeven beschikbaarheid",
+                this, resources.getString(R.string.av_overlap),
                 Toast.LENGTH_LONG
             ).show()
         }
