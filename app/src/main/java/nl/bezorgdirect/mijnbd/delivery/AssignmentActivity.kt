@@ -43,6 +43,7 @@ class AssignmentActivity : AppCompatActivity() {
         LocationHelper(this).checkLocationPermission()
 
         bottom_navigation.selectedItemId = id.action_deliveries
+        setBottomNav()
         custom_toolbar_title.text = getString(string.title_assignment)
         setSupportActionBar(custom_toolbar)
         setFragment() // Sets the initial state
@@ -66,7 +67,6 @@ class AssignmentActivity : AppCompatActivity() {
                         val delivery = response.body()
                         val initialLocation = LatLng(delivery!!.current.latitude!!, delivery!!.current.longitude!!)
                         canReceiveNotification = false
-
                         when(delivery.status) {
                             2 -> replaceFragment(id.content, RetrievingFragment(delivery, initialLocation))
                             3 -> replaceFragment(id.content, DeliveringFragment(delivery))
@@ -76,12 +76,10 @@ class AssignmentActivity : AppCompatActivity() {
                         if(canReceiveNotification) {
                             val noAssignmentFragment = NoAssignmentFragment()
                             replaceFragment(id.content, noAssignmentFragment)
-                            setBottomNav()
                         }
                         else {
                             val newAssignmentFragment = NewAssignmentFragment()
                             replaceFragment(id.content, newAssignmentFragment)
-                            setBottomNav()
                         }
                     }
                     showContent(view)
@@ -91,7 +89,6 @@ class AssignmentActivity : AppCompatActivity() {
                     val noAssignmentFragment = NoAssignmentFragment()
                     replaceFragment(id.content, noAssignmentFragment)
                     showContent(view)
-                    setBottomNav()
                 }
             })
     }
