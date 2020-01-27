@@ -24,6 +24,8 @@ data class Delivery (
     val customerId : String,
     val currentId : String,
     val deliveredAt : String,
+    val acceptedAt : String,
+    val createdAt : String,
     val price : Float,
     val tip : Float,
     val paymentMethod : Int,

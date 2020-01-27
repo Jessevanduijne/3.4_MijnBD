@@ -182,16 +182,9 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
             updateParams.startTime = "$fromHour:$fromMin"
             updateParams.endTime = "$toHour:$toMin"
 
-            if("$fromHour:$fromMin" != "$toHour:$toMin") {
+            if(checkAvailability(fromHour, fromMin, toHour, toMin, date, list[listId])) {
                 dialog.dismiss()
                 updateAvailability(updateParams, listId)
-            }
-            else
-            {
-                Toast.makeText(
-                    cont, "Start en eind tijd mogen niet hetzelfde zijn.",
-                    Toast.LENGTH_LONG
-                ).show()
             }
         }
         val btn_cancel = dialog .findViewById(R.id.btn_closeAddAvailability) as Button
@@ -286,6 +279,35 @@ class AvailabilityAdapter(var list: ArrayList<Availability>) : RecyclerView.Adap
             day.add(Calendar.DATE, 1)
         }
         return dates
+    }
+
+    fun checkAvailability(fromHour: String, fromMin :String, toHour: String, toMin :String, date:String, oldAvailability: Availability) : Boolean
+    {
+        if("$fromHour:$fromMin" == "$toHour:$toMin") {
+            Toast.makeText(
+                cont!!, "Start en eind tijd mogen niet hetzelfde zijn.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(list.any {it.date == date && it.startTime!! == "$fromHour:$fromMin:00" && it.endTime!! == "$toHour:$toMin:00" && it != oldAvailability})
+        {
+            Toast.makeText(
+                cont!!, "U heeft deze beschikbaarheid al opgegeven",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(list.any {it.date == date && it.startTime!! < "$toHour:$toMin:00" && it.endTime!! > "$fromHour:$fromMin:00" && it != oldAvailability})
+        {
+            Toast.makeText(
+                cont!!, "Uw beschikbaarheid overlapt met een eerder opgegeven beschikbaarheid",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else
+        {
+            return true
+        }
+        return false
     }
     fun deleteAvailability(id: String, listId: Int)
     {

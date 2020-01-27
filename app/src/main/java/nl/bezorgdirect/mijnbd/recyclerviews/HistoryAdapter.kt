@@ -31,11 +31,11 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
 
 
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HistoryAdapter.MyViewHolder, position: Int) {
         val item = list[position]
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         if(item.deliveredAt != null && item.warehousePickUpAt != null) {
-            val starttime: Date = inputFormat.parse(item.warehousePickUpAt)//acceptedAt wharhouse pickup for now
+            val starttime: Date = inputFormat.parse(item.acceptedAt)
             val endtime: Date = inputFormat.parse(item.deliveredAt)
             holder.travel.text = setTravelTime(starttime, endtime)
             holder.time.text = setTimeFromTo(starttime, endtime)
@@ -90,21 +90,27 @@ class HistoryAdapter (val list: ArrayList<Delivery>, val clicklistener: HistoryL
         var minutes = seconds / 60
         val hours = minutes / 60
         minutes -= hours * 60
-        println(diff)
+        println(minutes)
         var traveltime = ""
-        if (hours > 0) {
-            traveltime += String.format("%d %s",hours,cont?.resources?.getString(R.string.lbl_hours_short))
-        }
-        if (minutes > 0) {
-            traveltime += String.format("%d %s",minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
-        }
         if(minutes == 0L && hours == 0L)
         {
             traveltime = String.format("%d %s", minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
         }
         else
         {
-            traveltime = String.format("%s %s",cont?.resources?.getString(R.string.unknown),cont?.resources?.getString(R.string.lbl_minutes_short))
+            if (hours > 0) {
+                traveltime += String.format("%d %s",hours,cont?.resources?.getString(R.string.lbl_hours_short))
+            }
+            if (minutes > 0) {
+                traveltime += String.format("%d %s",minutes,cont?.resources?.getString(R.string.lbl_minutes_short))
+            }
+            if(minutes <= 0 && hours <= 0) {
+                traveltime = String.format(
+                    "%s %s",
+                    cont?.resources?.getString(R.string.unknown),
+                    cont?.resources?.getString(R.string.lbl_minutes_short)
+                )
+            }
         }
         return traveltime
     }

@@ -23,8 +23,20 @@ import retrofit2.Response
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("hoi")
+        setTheme(R.style.AppThemeNoBar)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        checkLoginNeeded()
+
+        btn_login.setOnClickListener {
+            validate(txt_username.text.toString(), txt_password.text.toString(), this)
+        }
+
+    }
+    private fun checkLoginNeeded()
+    {
         val keyStoreWrapper = KeyStoreWrapper(this, "mybd")
         val Key = keyStoreWrapper.getAndroidKeyStoreAsymmetricKeyPair("BD_KEY")
 
@@ -39,16 +51,11 @@ class LoginActivity : AppCompatActivity() {
                 goToApp(this)
             }
         }
-
-        btn_login.setOnClickListener {
-            validate(txt_username.text.toString(), txt_password.text.toString(), sharedPref, this)
-        }
-
     }
 
-    private fun validate(username: String = "", password: String = "", sharedPref: SharedPreferences, context: Context)
+    private fun validate(username: String = "", password: String = "", context: Context)
     {
-
+        val sharedPref: SharedPreferences = this.getSharedPreferences("mybd", Context.MODE_PRIVATE)
         if(username == "" || password == "")
         {
             sendToast(resources.getString(R.string.nocreds))

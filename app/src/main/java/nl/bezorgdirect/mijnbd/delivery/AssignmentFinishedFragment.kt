@@ -125,7 +125,7 @@ class AssignmentFinishedFragment(val deliveryId: String): Fragment(){
 
         btn_new_assignment.setOnClickListener {
             val fragment = NoAssignmentFragment()
-            replaceFragment(R.id.delivery_fragment, fragment)
+            replaceFragment(R.id.content, fragment)
         }
     }
 

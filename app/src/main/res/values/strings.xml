@@ -35,6 +35,9 @@
     <string name="wrong_phone">Geen valide telefoonnummer</string>
     <string name="wrong_email">Geen valide E-mail adres</string>
     <string name="no_permission">Toegang geweigerd</string>
+    <string name="av_startend">Start en eind tijd mogen niet hetzelfde zijn.</string>
+    <string name="av_same">U heeft deze beschikbaarheid al opgegeven.</string>
+    <string name="av_overlap">Uw beschikbaarheid overlapt met een eerder opgegeven beschikbaarheid.</string>
 
     <!-- Login: -->
     <string name="username">E-mail</string>

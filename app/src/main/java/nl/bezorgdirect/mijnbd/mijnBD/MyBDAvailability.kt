@@ -5,7 +5,6 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.NumberPicker
@@ -48,7 +47,7 @@ class MyBDAvailability : AppCompatActivity() {
         setContentView(R.layout.activity_my_bdavailability)
 
         val custom_toolbar_title: TextView = this.findViewById(R.id.custom_toolbar_title)
-        custom_toolbar_title.text = getString(R.string.lbl_mybdpersonalia)
+        custom_toolbar_title.text = getString(R.string.lbl_mybdavailability)
         setSupportActionBar(custom_toolbar)
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
@@ -185,7 +184,6 @@ class MyBDAvailability : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
@@ -246,12 +244,10 @@ class MyBDAvailability : AppCompatActivity() {
                 }else if (response.isSuccessful && response.body() != null) {
                     changed = 1
                     val values = response.body()!!
-                    val fromatter = SimpleDateFormat("yyyy-MM-dd")
-                    val today = Date()
                     availabilities.addAll(values)
                     filterAndSortAvailabilities()
-                    list_availabilities.adapter!!.notifyDataSetChanged()
-                    Toast.makeText(context, "Availability added!", Toast.LENGTH_SHORT).show()
+                    println("sort")
+                    list_availabilities.adapter = AvailabilityAdapter(availabilities)
                     hideSpinner(root)
                     availability_empty.visibility = View.GONE
                     availability_error.visibility = View.GONE
@@ -260,7 +256,6 @@ class MyBDAvailability : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<ArrayList<Availability>>, t: Throwable) {
-                Log.e("HTTP", "Could not fetch data", t)
                 Toast.makeText(
                     context, resources.getString(R.string.E500),
                     Toast.LENGTH_LONG
@@ -331,18 +326,11 @@ class MyBDAvailability : AppCompatActivity() {
 
             val fullDate: Date = inputFormat.parse(dates[dayPicker.value])
             val date = outputFormat.format(fullDate)
-            if("$fromHour:$fromMin" != "$toHour:$toMin") {
-                dialog.dismiss()
 
+            if(checkAvailability(fromHour, fromMin, toHour, toMin, date)) {
+                dialog.dismiss()
                 params.add(AddAvailabilityParams(date, "$fromHour:$fromMin", "$toHour:$toMin"))
                 postAvailabilities(cont!!, params)
-            }
-            else
-            {
-                Toast.makeText(
-                    this, "Start en eind tijd mogen niet hetzelfde zijn.",
-                    Toast.LENGTH_LONG
-                ).show()
             }
 
         }
@@ -354,6 +342,34 @@ class MyBDAvailability : AppCompatActivity() {
         dialog.show()
     }
 
+    fun checkAvailability(fromHour: String, fromMin :String, toHour: String, toMin :String, date:String) : Boolean
+    {
+        if("$fromHour:$fromMin" == "$toHour:$toMin") {
+            Toast.makeText(
+                this, resources.getString(R.string.av_startend),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(availabilities.any {it.date == date && it.startTime!! == "$fromHour:$fromMin:00" && it.endTime!! == "$toHour:$toMin:00"})
+        {
+            Toast.makeText(
+                this, resources.getString(R.string.av_same),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else if(availabilities.any {it.date == date && it.startTime!! < "$toHour:$toMin:00" && it.endTime!! > "$fromHour:$fromMin:00"})
+        {
+            Toast.makeText(
+                this, resources.getString(R.string.av_overlap),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+        else
+        {
+            return true
+        }
+        return false
+    }
     fun initValsPicker(picker: NumberPicker, values: Array<String>)
     {
         picker.displayedValues = null
