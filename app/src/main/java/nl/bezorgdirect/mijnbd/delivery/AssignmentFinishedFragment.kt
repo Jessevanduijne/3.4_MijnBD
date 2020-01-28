@@ -118,6 +118,7 @@ class AssignmentFinishedFragment(val deliveryId: String): Fragment(){
             intent.putExtra("statusDisplayName", d.status) // TODO: show display name
             intent.putExtra("status", d.status)
             intent.putExtra("vehicle", d.vehicle)
+            intent.putExtra("orderSubmitted", d.warehousePickUpAt)
             startActivity(intent)
         }
 

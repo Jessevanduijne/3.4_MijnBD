@@ -20,6 +20,10 @@ import nl.bezorgdirect.mijnbd.helpers.getDecryptedToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.app.ActivityManager.RunningAppProcessInfo
+import android.app.ActivityManager
+
+
 
 
 class NotificationService: Service() {
@@ -123,10 +127,16 @@ class NotificationService: Service() {
         }
 
 
+        val myProcess = RunningAppProcessInfo()
+        ActivityManager.getMyMemoryState(myProcess)
+        val isInBackground = myProcess.importance != RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+
         notificationManager.notify(0, builder.build())
 
-        val assignmentIntent = Intent(this.applicationContext, AssignmentActivity::class.java)
-        assignmentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(assignmentIntent)
+        if(!isInBackground) {
+            val assignmentIntent = Intent(this.applicationContext, AssignmentActivity::class.java)
+            assignmentIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(assignmentIntent)
+        }
     }
 }
